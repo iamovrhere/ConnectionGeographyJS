@@ -1,0 +1,70 @@
+Linkedin_maps
+date: 2014-02-26
+
+testing: https://netbeans.org/kb/docs/webclient/html5-js-support.html
+
+Linkedin:
+----------
+***IMPORTANT***
+Of the most interest is :
+ -https://developer.linkedin.com/documents/inapipeoplesearch
+ -https://developer.linkedin.com/documents/inapiconnections
+
+"Vetted API" limitations still exist with JS.
+
+********
+
+Consider for JS:
+ -https://developer.linkedin.com/documents/javascript-api-reference-0
+ -https://developer.linkedin.com/documents/making-api-requests-using-inapi
+ -https://developer.linkedin.com/documents/inapiprofile
+ -https://developer.linkedin.com/documents/inapipeoplesearch
+ -https://developer.linkedin.com/documents/inapiconnections
+
+
+Consider the limitations with the REST api:
+ -https://developer.linkedin.com/documents/people
+
+Moreover, the "Vetted API" limitations for REST people search.
+ -https://developer.linkedin.com/documents/people-search-api
+
+
+
+Google Maps + Geocoding
+------------------------
+***IMPORTANT***
+Maps:
+ -https://developers.google.com/maps/documentation/javascript/tutorial
+
+Geocoding:
+ -https://developers.google.com/maps/documentation/javascript/geocoding
+ -http://stackoverflow.com/questions/7955899/google-maps-geocoding-api-incorrect-rate-limiting
+
+
+
+Design
+-------
+Use workers if possible.
+Design for FF then chrome.
+
+1. Use linkedin "connection" API initially. Later, one can try to use search API.
+
+2. Google API for maps for now. 
+Remember to use "geodesic" to produce curved lines.
+Remember to try and reshift markers and polylines when mouseover'd 
+Remember to try and show dialog at mouseover event.
+
+marker['infowindow'].open(map,  marker);
+            //alert('mouseover ' + marker.toString());
+            for (var property in marker){
+                console.log("Marker property: %s", property);
+            }
+            eventLineB.setMap(map);
+            eventLineA.setMap(null);
+
+
+3. Later one can use an SVG and svgpan to plot the world map.
+https://code.google.com/p/svgpan
+
+
+
