@@ -1,14 +1,13 @@
-
 /**
  * Builds the linkedin connect button for php authentication.
+ * @param {string} id The id to give the button.
  * @param {string} popupHref The popup location
  * @returns {LinkedInConnect}
  * 
  * @author Jason J.
- * @version 0.1.0-20140304
+ * @version 0.1.2-20140306
  */
-function LinkedInConnect(popupHref) {
-    var id = 'linkedin-connect-button';
+function LinkedInConnect(id, popupHref) {
     /** @type Element */
     var linkedinButton = document.createElement('span');
         linkedinButton.setAttribute('id', id);
@@ -37,23 +36,19 @@ function LinkedInConnect(popupHref) {
     var top = window.screenTop !== undefined ? window.screenTop : screen.top;
         top = (screen.height/2)-(height/2)  + top ;
     this.popupWindow = function(){
-        console.log(left+" "+ top);
+        //console.log(left+" "+ top);
         window.open(popupHref, "Connect with Linkedin", "toolbar=no,menubar=no,scrollbars=yes,width="+width+",height="+height+",top="+top+",left="+left);
     };
     
     if (linkedinButton.addEventListener) {
+        //we are relying on pre-set compatibility functions.
         linkedinButton.addEventListener('mouseover', hover, false);
         linkedinButton.addEventListener('mousedown', down, false);
         linkedinButton.addEventListener('mouseup', normal, false);
         linkedinButton.addEventListener('mouseout', normal, false);
         linkedinButton.addEventListener('click', this.popupWindow, false);
-    } else if (linkedinButton.attachEvent) {
-        linkedinButton.attachEvent('onmouseover',  hover);
-        linkedinButton.attachEvent('onmousedown',  down);
-        linkedinButton.attachEvent('onmouseup',  normal);
-        linkedinButton.attachEvent('onmouseout',  normal);
-        linkedinButton.attachEvent('onclick',  this.popupWindow);
     } else {
+        //problems!
         linkedinButton['onmouseover'] = hover;
         linkedinButton['onmousedown'] = normal;
         linkedinButton['onmouseup'] = normal;
