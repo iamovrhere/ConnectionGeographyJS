@@ -1,0 +1,140 @@
+/* Controls the layout of the map, the app settings and layout.
+
+    Version: 0.1.0-20140306
+    Author     : Jason J.
+*/
+
+/**
+* #.# General
+*
+* These are styles that are used generically in the app.
+*/
+html { 
+    height: 100%; 
+}
+body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+
+    font-family: verdana;
+    font-size: 10pt;
+}
+
+/** Centering items veritcally part 1. */
+.centered-item-outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+/** Centering items veritcally part 2. */
+.centered-item-middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/**
+* #.# App container
+*
+* This is the main container of the app where all the content resides.
+*/
+#app-container {
+    height: 90%;
+    width: 80%; 
+    position: relative;
+    
+    margin: auto;
+    margin-top: 10px;
+} 
+ 
+/**
+* #.## Map Container/Canvas
+*
+* This the map section; minimal styling here.
+*/
+#map-canvas { 
+    height: 100%;
+}
+
+/**
+* #.## App Controls
+*
+* This where the main app controls and HUD are shown.
+*/
+#app-controls {
+    position: absolute;
+    top: 0px;
+    
+    min-height: 60px;
+    width: 100%;
+    
+    clear: both;
+    /** Places controls in front of the map. */
+    z-index: 99;
+}
+/** The background style for the HUD. 
+Currently a transparent white. */
+#app-controls-background {
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    /** Ensure it is in the background. */
+    z-index: -1;
+    
+    background: white;
+    /* IE 8 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+   /* IE 5-7 
+   filter: alpha(opacity=50);*/
+   /* Safari 1.x */
+   -khtml-opacity: 0.5;
+   /* Good browsers */
+   opacity: 0.5;
+}
+
+/**
+* #.### Connect splash 
+*
+* The splash that covers the map and requests the user to connect.
+*/
+#connect-splash {
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    
+    text-align: center;
+    font-size: 8pt;
+}
+/** The background of the splash, translucent white. */
+#connect-splash-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: white;
+    /* IE 8 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+   /* IE 5-7 
+   filter: alpha(opacity=50);*/
+   
+   /* Safari 1.x */
+   -khtml-opacity: 0.5;
+
+   /* Good browsers */
+   opacity: 0.5;
+}
+
+/** Centering items veritcally part 3. 
+See: .centered-item-outer
+See: .centered-item-middle  
+*/
+#linkedin-connect-button { 
+    position: absolute;
+    width: 140px;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -70px;
+}
+
