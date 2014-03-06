@@ -4,7 +4,7 @@
  * Reusable, should be placed a library for reuse!
  * 
  * @author Jason J. <admin@ovrhere.com>
- * @version 0.1.0-20140304
+ * @version 0.1.1-20140306
  */
 class Session {   
     /** @var String The current session name.     */
@@ -17,7 +17,7 @@ class Session {
     private function __clone() {}
 
     /** Start the session and make the session container
-     * @param String $session_name The session name to give to prevent server 
+     * @param String $session_name (Optional) The session name to give to prevent server 
      * collisions.     */
     public static function startSession($session_name = '') {	
         //Added to prevent potential session classes.
@@ -37,14 +37,18 @@ class Session {
         return self::$_sess;
     }
 
-    /** End session. Used when logging out the user. */
-    public static function endSession() {
+    /** End session. Used when logging out the user. 
+     * @param String $session_name (Optional) The session name to give to prevent server 
+     * collisions.     */     
+    public static function endSession($session_name = '') {
         if (ini_get("session.use_cookies")) {
             $params = session_get_cookie_params();
-            setcookie(session_name(), '', time() - 42000,
+            setcookie(session_name().$session_name, '', time() - 42000,
                             $params["path"], $params["domain"],
                             $params["secure"], $params["httponly"] );
         }
+        session_start();
+        $_SESSION[self::$_sess] = array();
         session_destroy();
     }
     /** Sets the expiration time for inactivity. If set to null it is removed.
@@ -113,7 +117,8 @@ class Session {
      */
     public static function read($name) {
         self::ensureParameterNotEmpty($name);
-        return $_SESSION[self::$_sess][$name];
+        return isset($_SESSION[self::$_sess][$name]) ?
+               $_SESSION[self::$_sess][$name] : null;
     }
 
     /**
