@@ -2,12 +2,12 @@
 require_once 'configure.php';
 require_once 'getprofile_func.php';
 
-/** @version 0.1.2-20140306 */
+/** @version 0.2.0-20140307 */
 
 //redirect uri supplied to linkedin for auth. 
 define('REDIRECT_URI', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME']);
 
-if (isset($_GET['logout']) && $_GET['logout']){
+if (isset($_REQUEST['logout']) && $_REQUEST['logout']){
     Session::endSession(SESSION_NAME);
     echo 'logout';
     exit;
