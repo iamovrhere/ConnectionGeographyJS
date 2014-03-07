@@ -31,6 +31,7 @@ restore_error_handler();
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
     </script>
     
+    <script src="js/CachedGeocoder.js" type="text/javascript"></script>
     <script src="js/MapDisplay.js" type="text/javascript"></script>
     <script src="js/LinkedInConnect.js" type="text/javascript"></script>
     <script id="application-js-start" type="text/javascript" src="js/main.js" ></script>
@@ -41,24 +42,48 @@ restore_error_handler();
   <body >
       <div id="app-container">
         <div id="map-canvas" ></div>
-        <div id="connect-splash" class="centered-item-outer" >
-            <div id="connect-splash-background" ></div>
-            <div id="connect-splash-inner" class="centered-item-middle" style="display: none;"></div>            
-        </div>
         <div id ="app-controls" style="display: none;">
             <div id="app-controls-background" ></div>
             <div id="linkedin-display"  style="display: none;"></div>            
                 <script type="text/javascript">
-              <?php 
-              if ($user_json){
-                  echo 'myConnectionsMap.linkedin.setAndShowUser('.$user_json.');';
-              } else {
-                  ?>  
-                      myConnectionsMap.linkedin.showLoginSplash();
-                  <?php
-              }
-              ?>
+                google.maps.event.addDomListener(window, 'load', function(){ 
+                    if (browserSupportCheck() < 0) return;
+                    <?php 
+                    if ($user_json){
+                        echo 'myConnectionsMap.linkedin.setAndShowUser('.$user_json.');';
+                    } else {
+                        ?>  
+                            myConnectionsMap.linkedin.showLoginSplash();
+                        <?php
+                    }
+                    ?>
+                  });
                   </script>
+                  <div id="right-panel">
+                    <div id="disconnect-wrapper">
+                        <a href="javascript:void(0)" id="disconnect-app-action" 
+                           title="Disconnect from App">Disconnect [x]</a>
+                    </div>
+                    <div id="input-controls">
+                        <span id="colour-by-connections-wrapper" >
+                            <span class="colour-choice" 
+                                  title="Shows denser connections as red, sparser connections as blue">
+                                <input type="radio" name="colour-connections-choice" 
+                                       id="connections-by-hotcold" /> 
+                              <label for="connections-by-hotcold">Density by colour</label>
+                            </span>
+                            <span class="colour-choice" 
+                                  title="Shows all connections as blue">
+                                <input type="radio" name="colour-connections-blue" 
+                                       id="connections-style-none" 
+                                       checked="checked" /> 
+                              <label for="connections-style-blue">All blue</label>
+                            </span>
+                        </span>
+                      <input type="button" id="perform-action" value="Run" />
+                    </div>
+                  </div>
+                      
          </div>
       </div>
 

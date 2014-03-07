@@ -1,6 +1,6 @@
 /* Controls the layout of the map, the app settings and layout.
 
-    Version: 0.1.0-20140306
+    Version: 0.2.0-20140307
     Author     : Jason J.
 */
 
@@ -66,7 +66,7 @@ body {
     position: absolute;
     top: 0px;
     
-    min-height: 60px;
+    min-height: 40px;
     width: 100%;
     
     clear: both;
@@ -85,14 +85,63 @@ Currently a transparent white. */
     
     background: white;
     /* IE 8 */
-   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
    /* IE 5-7 
-   filter: alpha(opacity=50);*/
+   filter: alpha(opacity=70);*/
    /* Safari 1.x */
-   -khtml-opacity: 0.5;
+   -khtml-opacity: 0.7;
    /* Good browsers */
-   opacity: 0.5;
+   opacity: 0.7;
 }
+
+/**
+* #.### Right panel
+*
+* The right part of the control panel with inputs
+*/
+#right-panel {
+    float: right;
+    margin: 3px;
+}
+
+/** The disconnect link being aligned to the right. */
+#disconnect-app-action {
+    float: right;
+    margin: 3px;
+    font-size: 8pt;
+}
+/** Setting the disconect link to be red on hover. */
+#disconnect-app-action:hover {
+    color: red;
+}
+
+/**
+* #.#### Inputs
+*
+* The actual inputs of the app. Checkboxes, buttons, etc.
+*/
+#input-controls {
+    font-size: 9pt;
+}
+/** Set all the contents to be centered vertically. */
+#input-controls * {
+    position: relative;
+    display:inline-block;    
+    vertical-align:middle; 
+}
+
+/** Set the colour by connections input to be pointer and centered. */
+#colour-by-connections-wrapper input, 
+#colour-by-connections-wrapper label {
+    position: relative;
+    display:inline-block;    
+    vertical-align:middle; 
+    cursor: pointer;
+}
+
+/**
+/////////////////////////////////////////////////////////////////////////////
+*/
 
 /**
 * #.### Connect splash 
@@ -109,7 +158,7 @@ Currently a transparent white. */
     font-size: 8pt;
 }
 /** The background of the splash, translucent white. */
-#connect-splash-background {
+.splash-background {
     position: absolute;
     height: 100%;
     width: 100%;
