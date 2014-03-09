@@ -31,16 +31,19 @@ restore_error_handler();
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
     </script>
     
+    <script src="js/ConnectionManager.js" type="text/javascript"></script>
     <script src="js/CachedGeocoder.js" type="text/javascript"></script>
     <script src="js/MapDisplay.js" type="text/javascript"></script>
     <script src="js/LinkedInConnect.js" type="text/javascript"></script>
+    <script src="js/compat.js" type="text/javascript"></script>
     <script id="application-js-start" type="text/javascript" src="js/main.js" ></script>
 
     
     
   </head>
   <body >
-      <div id="app-container">
+    <div id="app-notice-banner" >Warning yo!</div>
+    <div id="app-container">
         <div id="map-canvas" ></div>
         <div id ="app-controls" style="display: none;">
             <div id="app-controls-background" ></div>
@@ -83,9 +86,10 @@ restore_error_handler();
                       <input type="button" id="perform-action" value="Run" />
                     </div>
                   </div>
-                      
+
          </div>
       </div>
+        
 
   </body>
 </html>

@@ -35,17 +35,41 @@ body {
 }
 
 /**
+* #.# Notice Banner
+*
+* The warnings and notices that the current browser may not be compatible.
+*/
+#app-notice-banner {
+    /** Hidden by default. */
+    display: none;
+    
+    /* Yellowish */
+    background: #fcfccc;
+    padding: 5px;
+    
+    font-weight: bold;
+    font-family: arial;
+    text-align: center;
+    font-style: italic;
+}
+
+body {
+    height: 90%;
+    width: 80%; 
+    
+    margin: auto;
+    margin-top: 10px;
+}
+
+/**
 * #.# App container
 *
 * This is the main container of the app where all the content resides.
 */
 #app-container {
-    height: 90%;
-    width: 80%; 
+    height: 100%;
     position: relative;
     
-    margin: auto;
-    margin-top: 10px;
 } 
  
 /**
