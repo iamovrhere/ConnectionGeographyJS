@@ -1,3 +1,6 @@
+/*For keys:
+ * https://developer.linkedin.com/documents/connections-api
+ * http://developer.linkedin.com/documents/profile-fields */
 /**
  * Caches requests made to Linkedin API.
  * 
