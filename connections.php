@@ -1,7 +1,21 @@
 <?php
 require_once 'configure.php';
 /** 
- *  @version 0.1.0-20140305
+ * REQUESTS: 
+ *  + auto_page - loads successive pages if paganated.
+ *  + start - loads request starting at this element.
+ * 
+ * Returns:
+ * 200 - ok
+ * 401 - auth error
+ * 403 - throttle error
+ * 404 - other error
+ * 
+ * See doc for details:
+ * https://developer.linkedin.com/documents/connections-api
+ * http://developer.linkedin.com/documents/profile-fields
+ * 
+ * @version 0.2.0-20140307
  */
 
 set_error_handler(array('ErrorHandling', 'errorHandlerException'), E_NOTICE | E_WARNING);
@@ -9,8 +23,12 @@ Session::startSession(SESSION_NAME);
 
 $request = '/v1/people/~/connections:(firstName,lastName,pictureUrl,numConnections,numConnectionsCapped,location:(name,country:(code)))';
 //$request = '/v1/people/~/connections:(firstName,lastName)';
-//$args = array('count' => '10');
 //$t0 = microtime(true);
+$args = array('count' => '10');
+//$args = array();
+if(isset($_GET['start'])||isset($_POST['start'])){
+    $args['start'] = isset($_POST['start']) ? $_POST['start'] : $_GET['start'];
+}
 
 //So we can do error checking easily.
 function linkedinRequest($request, array $args=null){
@@ -25,14 +43,15 @@ function linkedinRequest($request, array $args=null){
         } elseif (preg_match('/403/', $msg)){
             header('HTTP/1.1 403 Throttle limit for calls to this resource is reached', true, 403);
         } else {
+            header('HTTP/1.1 404 Error of some kind: '.$msg, true, 404);
             echo $msg;
         }
         exit;
     }
 }
-$connections_json = linkedinRequest($request);
+$connections_json = linkedinRequest($request, $args);
 
-if(!(isset($_GET['auto_page']) && $_GET['auto_page'])){
+if(!(isset($_REQUEST['auto_page']) && $_REQUEST['auto_page'])){
     print $connections_json; //return them
     exit;
 } else {
