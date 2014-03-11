@@ -29,7 +29,7 @@
  * <li>onFocusStrokeWeight 	number 	The stroke width in pixels.</li>
  * </ul>
  * @author Jason J.
- * @version 0.1.1-20140310
+ * @version 0.1.2-20140311
  * @type FocusPolyline
  * @see google.maps.Polyline
  */
@@ -99,11 +99,9 @@ function FocusPolyline(polylineOptions, focusOptions){
             options = appendOption(options, 'strokeOpacity', m_focusOptions.strokeOpacity);
             options = appendOption(options, 'strokeWeight', m_focusOptions.strokeWeight);            
         }
-        console.log('setFocus! %s', JSON.stringify(options))
         this.parent.setOptions.call(this, options);
     };
     
-    console.log('polyline: %s %s', this.parent.setOptions, this.setOptions);
 }
 /** Inheritence. 
  * @type google.maps.Marker */

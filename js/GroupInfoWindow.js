@@ -9,7 +9,7 @@
  * using the form of google.maps.InfoWindowOptions
  * @param {String} locationName (Optional) The location name to display as the area.
  * @author Jason J.
- * @version 0.1.0-201403010
+ * @version 0.1.1-201403011
  * @type GroupInfoWindow
  * @see google.maps.InfoWindow 
  * @see group_info_window.css
@@ -87,7 +87,7 @@ function GroupInfoWindow(infoWindowOptions, locationName){
      * @param {Number} index The page number to set it to. */
     var setPage = function(index){
         if (index < 0  || index > infoWindowPages.length) return;
-        console.log('setPage:'+ index);
+        
         if (0 === index){  //disable prev.
             prevLink.setAttribute('style', 'visibility: hidden');
         } else if (index > 0 ){ //enable
