@@ -9,7 +9,7 @@
  * using the form of google.maps.InfoWindowOptions
  * @param {String} locationName (Optional) The location name to display as the area.
  * @author Jason J.
- * @version 0.1.1-201403011
+ * @version 0.1.2-201403011
  * @type GroupInfoWindow
  * @see google.maps.InfoWindow 
  * @see group_info_window.css
@@ -153,11 +153,9 @@ function GroupInfoWindow(infoWindowOptions, locationName){
                         '" title="'+fullname+'"/>';
         var connections = '<span class="connections" >'+
                             record.numConnections+
+                            (record.numConnectionsCapped ? '+' : '')+
                         '</span>';
-        if (record.numConnectionsCapped){
-            connectionsPlus = true;
-            connections += '+';
-        }
+        
             recordBlock.innerHTML = img + '<span class="fullname">'+
                                     fullname+'</span>' + connections;
 
@@ -168,6 +166,9 @@ function GroupInfoWindow(infoWindowOptions, locationName){
         firstConnectionsTotal ++;
         //second connections
         secondConnectionTotal += record.numConnections;
+        if (record.numConnectionsCapped){
+            connectionsPlus = true;
+        }
         
         currentPageSize++;        
         this.updateHeader();
@@ -176,8 +177,7 @@ function GroupInfoWindow(infoWindowOptions, locationName){
     /** Updates the header with the new location info. */ 
     this.updateHeader = function(){
         header.innerHTML =
-                (locationName ? 'Area: ' + 
-                '<span class="location-name">'+locationName +'</span><br/>' : '')+
+                '<span class="location-name">'+locationName +'</span><br/>'+
                 '1st Connections:'+
                 '<span class="connections">'+firstConnectionsTotal +'</span><br/>'+
                 '2nd Connections: '+

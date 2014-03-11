@@ -1,6 +1,6 @@
 /* Does the styles for the info-windows of the map for this app.
     Created on : 20140310
-    Version: 0.1.0-20140310
+    Version: 0.1.1-20140311
     Author     : Jason J.
 */
 
@@ -12,7 +12,7 @@
 */
 #you-are-here {
     border-bottom: solid #d6d6d6 2px;
-    padding: 3px;
+    padding-bottom: 6px;
     margin-bottom: 3px;
     height:  25px;
     vertical-align: middle;
@@ -23,8 +23,6 @@
     height: 25px;
     margin-right: 7px;
 }
-
-
 
 /**
 * #.# Info box header
@@ -40,9 +38,12 @@
 /** The location name */
 .group-info-window .info-header .location-name{
     font-weight: bold;
+    text-align: center;
+    
+    display: inline-block;
+    width: 100%;
 }
-/** The location name and connection styles, not counting the labels. */
-.group-info-window .info-header .location-name,
+/** Connection styles, not counting the labels. */
 .group-info-window .info-header .connections {
     float: right;
     margin-left: 5px;
@@ -64,7 +65,9 @@ high-specificity required to override map styles. */
 We want padding to give .info-footer space.
 */
 .group-info-window .page-container{
-    padding-bottom: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 35px;
 }
 
 /**
@@ -72,9 +75,10 @@ We want padding to give .info-footer space.
 *
 * Each record, such as name, picture and connection total.
 */
-/** The size is required for consistency. */
+/** The width is required for consistency. 
+Line-height is that of the image height.*/
 .group-info-window .page-container .record {
-    line-height: 15px;
+    line-height: 25px;
     min-width: 160px;
 }
 
@@ -83,6 +87,7 @@ We want padding to give .info-footer space.
     height: 25px;
     margin-right: 5px;
 }
+
 /** The record names, made to be of certain size.
 This gives consistency, without sacrificing flexibility. */
 .group-info-window .record .fullname {
