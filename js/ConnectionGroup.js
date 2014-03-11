@@ -6,7 +6,7 @@
  * @param {FocusPolyline} polyline The focusable polyline for this connection group.
  * @param {GroupInfoWindow} infoWindow The info window for the group.
  * @author Jason J.
- * @version 0.1.0-20140309
+ * @version 0.2.0-20140311
  * @type ConnectionGroup
  * @see GroupInfoWindow 0.1.1
  * @see FocusPolyline 0.1.2
@@ -71,6 +71,11 @@ function ConnectionGroup(map, marker, polyline, infoWindow){
         marker.setMap(Map);
         polyline.setMap(Map);
         infoWindow.setPosition(marker.getPosition());
+    };
+    
+    this.clear = function(){
+        marker.setMap(null);
+        polyline.setMap(null);
     };
 }
 
