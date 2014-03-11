@@ -5,7 +5,7 @@
  * @returns {CachedGeocoder}
  * 
  * @author Jason J.
- * @version 0.3.0-20140309
+ * @version 0.3.1-20140310
  * @see google.maps.Geocoder
  */
 function CachedGeocoder(){
@@ -157,7 +157,7 @@ function CachedGeocoder(){
                 bulkGeocoding(this, this.inputQueue[0], startInterval);
                 return false;
             }
-            return true;
+            return this.isGeocoding == false;
         };
         /** Adds to the queue and attempts to start if if not already started. 
          * @param {string} address the address to add. */
@@ -210,7 +210,7 @@ function CachedGeocoder(){
      */
     this.getCachedAddress = function(address){
         return cachedValues[address];
-    };    c
+    };    
     
     /**
      * Adds event listeners for when the bulk geocoder 
