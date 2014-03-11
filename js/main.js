@@ -4,7 +4,7 @@
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.6.0-201400311
+ * @version 0.7.0-201400311
  * @type Object
  * @see MapDisplay 0.1.0
  * @see CachedGeocoder 0.3.1
@@ -21,14 +21,24 @@ function MyConnectionsMap(){
      * @type CachedGeocoder */
     var cachedGeocoder = new CachedGeocoder();
     /** Reference to connection manager which retrieves + caches connections from
-     * social media.
+     * social media. NOTE: CAN BE RESET.
      * @type ConnectionManager */
-    var connectManager =  new ConnectionManager();
+    var connectManager =  0;
+    resetConnectionManager();
     
     /** @type String The id for the disconnect action. */
-    var disconnectId = 'disconnect-app-action';
+    var DISCONECT_ID = 'disconnect-app-action';
     /** @type String The id for the run/apply action. */
-    var runAndApplyId= 'perform-action';
+    var RUN_AND_APPLY_ID= 'perform-action';
+    /** @type String The id for the application status. */
+    var APP_STATUS_ID = 'app-status';
+    /** @type String The id for the application progress spinner */
+    var PROGESS_SPINNER_ID = 'app-progress-spinner';
+    
+    /** @type String The intial value for the run button. */
+    var BUTTON_RUN_VALUE = 'Run';
+    /** @type String The final value for the run button. */
+    var BUTTON_APPLY_VALUE = 'Apply';
     
     /** @type Object|Number The connections list sorted by 'address' that is: 
      * { "city, country-code": new Array( {record1}, {record2} ), ... }. 
@@ -42,16 +52,39 @@ function MyConnectionsMap(){
     var infoWindows = 0;
     /** @type Object 2nd connections total per captia. */
     var secondConnectionsTotals = {};
+    /** @type Object|ConnectionGroup the list of connection groups kept to clear map. */
+    var connectionGroups = {};
     
     ////////////////////////////////////////////////////////////////////////////
     //// 'Private' helper functions
     ////////////////////////////////////////////////////////////////////////////
-   
+   /** Attempts to preload an image if possible.
+    * 
+    * @param {Object} record If image exists in record, preload it.
+    */
+    var preloadImage = function (record){
+        if (record.pictureUrl){
+            var img = new Image();
+                img.src = record.pictureUrl;
+        }
+    };
+    
+    var resetConnections = function(){
+        infoWindows = 0;
+        secondConnectionsTotals = {};
+        for (var address in connectionGroups){
+            connectionGroups[address].clear();
+        }
+        connectionGroups = {};
+        resetConnectionManager();
+    };
+    
    /**
     * Sorts, locates and creates info-windows of the linkedin connections.
     * @param {Object} results The raw results from the linkedin api/ConnectionManager
     */ 
     var processLinkedInConnections = function(results){
+        updateAppStatus("Sorting & Locating Connections...", true); 
         var myAddress =   connectionMap.linkedin.userInfo.location.name +', ' +
                         connectionMap.linkedin.userInfo.location.country.code;
         if ( !infoWindows){
@@ -69,9 +102,10 @@ function MyConnectionsMap(){
                             //precache locations.
                             cachedGeocoder.geocodeQueueAddress(address);
                             if (address.indexOf(myAddress) >= 0){
-                            infoWindows[address].setPreheader(connectionMap.linkedin.userInfo);
+                                infoWindows[address].setPreheader(connectionMap.linkedin.userInfo);
+                            }
                         }
-                        }
+                        preloadImage(record);
                         infoWindows[address].appendRecord(record);
                         
                         secondConnectionsTotals[address] += record.numConnections;
@@ -86,12 +120,12 @@ function MyConnectionsMap(){
                 if (!cachedGeocoder.queuedGeocodeComplete()){
                     cachedGeocoder.addEventListener('queuecomplete',
                         function(){
-                            mapConnections(myAddress);
+                            plotConnections(myAddress);
                         });
                 }
             }
         } else {
-            mapConnections(myAddress);
+            plotConnections(myAddress);
         }
     };
     var bounds = 0;
@@ -100,7 +134,8 @@ function MyConnectionsMap(){
      * Maps the connections onto the map via the infoWindows list & cachedGeocoder.
      * @param {String} myAddress The address of the current user.
      */
-    function mapConnections(myAddress){
+    function plotConnections(myAddress){
+        updateAppStatus("Plotting Connections...", true); 
         var map = mapDisplay.getMap();
         
         //map.setZoom(1);
@@ -124,7 +159,8 @@ function MyConnectionsMap(){
                             fillColor: '#259CE5',
                             fillOpacity: 0.9,
                             strokeColor: '#136991',
-                            strokeWeight: (userIsHere ? 3 :2)
+                            strokeWeight: (userIsHere ? 3 :2),
+                            strokeOpacity: (userIsHere ? 1.0 : 0.8)
                           }
                     });
                     var polyline = new FocusPolyline({
@@ -132,22 +168,86 @@ function MyConnectionsMap(){
                         geodesic: true,
                         strokeColor: '#136991',
                         strokeOpacity: 0.7,
-                        strokeWeight: 6
+                        strokeWeight: 5
                     },
                     {
                         onFocusStrokeColor: '#259CE5',
                         onFocusStrokeOpacity: 1.0
                     });
-                    var group = new ConnectionGroup(
+                    if (connectionGroups[address]){
+                        connectionGroups[address].clear();
+                    }
+                    connectionGroups[address]  = new ConnectionGroup(
                             map, marker, polyline, infoWindows[address]);
-                        group.addToMap();
+                    connectionGroups[address].addToMap();
                     bounds.extend(latLng);
             } else {
                 //add to unknown set.
             }
         }
         map.fitBounds(bounds);
-        
+        updateAppStatus("Plotting Complete!", false);
+        setRunAndApply(BUTTON_APPLY_VALUE, true);
+        //clear the status after 2.5 s
+        setTimeout(function(){updateAppStatus(""); }, 2500);
+    }
+    
+    var appStatus = 0;
+    var appSpinner = 0;
+    /** Updates the app status and shows/hides spinner as required. 
+     * @param {String} message The message to display
+     * @param {Boolean} showSpinner (Optional) shows the spinner if true,
+     * hides the spinner if false.
+     */
+    function updateAppStatus(message, showSpinner){
+        if (typeof showSpinner !== 'undefined'){
+            if (!appSpinner){
+                appSpinner = document.getElementById(PROGESS_SPINNER_ID);
+            }
+            if (showSpinner){
+                appSpinner.setAttribute('style', 'display:block;');
+            } else {
+                appSpinner.setAttribute('style', 'display:none;');
+            }
+        }
+        if (!appStatus){
+            appStatus = document.getElementById(APP_STATUS_ID);
+        }
+        appStatus.innerHTML = message;
+    };
+    
+    function resetConnectionManager(){
+        connectManager = new ConnectionManager();
+        connectManager.addEventListener('linkedin', 'fetchcomplete', 
+            function(results){
+                console.log('fetchAndApplyConnections async: %s', JSON.stringify(results) );
+                processLinkedInConnections(results);
+                if (results.values){
+                    connectionMap.linkedin.numConnections =  results.values.length;
+                }
+        });
+        connectManager.addEventListener('linkedin', 'authorizationerror', 
+            function(){ //if not authorized, disconnect.
+                updateAppStatus("Warning: Authorization Error");
+                    setTimeout(function(){
+                        connectionMap.linkedin.disconnectUser('Session Timed-out');
+                        updateAppStatus("", false);
+                        setRunAndApply(BUTTON_RUN_VALUE);
+                    }, 2500);
+                
+        });
+        connectManager.addEventListener('linkedin', 'querylimitreached', 
+            function(){
+                updateAppStatus("Sorry, LinkedIn Connections could be fetched due to: "
+                                +"Daily Query Limit Reached. <br/>Try again later", false);
+                setRunAndApply(BUTTON_RUN_VALUE, false);        
+        });
+        connectManager.addEventListener('linkedin', 'unknownerror', 
+            function(){
+                updateAppStatus("Sorry, LinkedIn Connections could be fetched due to: "
+                                +"An Unknown Error. Try again later", false);
+                setRunAndApply(BUTTON_RUN_VALUE, false);
+        });
     }
     
     ////////////////////////////////////////////////////////////////////////////
@@ -173,17 +273,9 @@ function MyConnectionsMap(){
     
     /** Fetches and applies connections. */
     connectionMap.fetchAndApplyConnections = function(){
-        //Testing currently.
+        updateAppStatus("Fetching Connections...", true);
         connectManager.fetchConnections();
-        connectManager.addEventListener('linkedin', 'fetchcomplete', 
-            function(results){
-                console.log('fetchAndApplyConnections async: %s', JSON.stringify(results) );
-                processLinkedInConnections(results);
-                if (results.values){
-                    connectionMap.linkedin.numConnections =  results.values.length;
-                }
-        });
-        
+        //see resetConnectionManager();
     };
     
     /** Zooms to user, provided there are coordinates to zoom to. 
@@ -211,18 +303,19 @@ function MyConnectionsMap(){
     };
 
 
-    /** Used to disconnect the user from the app. */
-    connectionMap.linkedin.disconnectUser = function(){
+    /** Used to disconnect the user from the app. 
+     * @param {String} message The message to pass on to the login splash. */
+    connectionMap.linkedin.disconnectUser = function(message){
         var xmlReq = new XMLHttpRequest();
 
-        var disconnect = document.getElementById(disconnectId);
+        var disconnect = document.getElementById(DISCONECT_ID);
         var orgValue = disconnect.innerHTML;
             disconnect.innerHTML = 'Disconnecting...';
         var disconnectUI = function(){
             document.getElementById('app-controls').style.display = 'none';
             document.getElementById('linkedin-display').innerHTML = '';
             disconnect.innerHTML = orgValue;
-            connectionMap.linkedin.showLoginSplash();
+            connectionMap.linkedin.showLoginSplash(message);
         };
         xmlReq.open("GET", "auth.php?logout=1", true);
         xmlReq.onreadystatechange=function() {
@@ -232,6 +325,7 @@ function MyConnectionsMap(){
             }
         };
         xmlReq.send();
+        resetConnections();
     };
 
     /** Sets the main user info and then shows it.
@@ -242,8 +336,9 @@ function MyConnectionsMap(){
         this.showUser();
     };
 
-    /** Creates and displays the login splash. */
-    connectionMap.linkedin.showLoginSplash = function(){
+    /** Creates and inserts the login splash. 
+     * @param {string} message An extra message to insert above/below the connect button. */
+    connectionMap.linkedin.showLoginSplash = function(message){
         var connectSplash = document.createElement('div');
             connectSplash.setAttribute('id', 'connect-splash');
             connectSplash.setAttribute('class', 'centered-item-outer');
@@ -256,6 +351,12 @@ function MyConnectionsMap(){
         var msg = document.createElement('div');
             msg.innerHTML = '(Opens in a new window)';
         var splash = document.getElementById('connect-splash-inner');
+            if (message){
+                var msg2 = document.createElement('div');
+                    msg2.innerHTML = message;
+                    msg2.setAttribute('id', 'connect-splash-message');
+                splash.appendChild(msg2);
+            }
             splash.appendChild(inConnect.getButton());
             splash.appendChild(msg);
             splash.style.display = '';    
@@ -345,18 +446,34 @@ function MyConnectionsMap(){
     ////////////////////////////////////////////////////////////////////////////
     //// 'Private' Internal functions
     ////////////////////////////////////////////////////////////////////////////
-    
+    /** Sets the run & apply button's text and ablity.
+     *  @param {string} value The button value to have
+     * @param {boolean} enabled (Optional) Whether to enable or disable the button. Default enabled.
+     */
+    var setRunAndApply = function(value, enabled){
+        var run = document.getElementById(RUN_AND_APPLY_ID);
+            run.value =  value;
+            if (enabled == false){
+                run.setAttribute('disabled', 'disabled');
+            } else {
+                run.removeAttribute('disabled');
+            }
+        
+    };
     //Sets all click events.
     var setClickEvents = function(){
-        document.getElementById(disconnectId)
+        document.getElementById(DISCONECT_ID)
                 .addEventListener(
                 'click', 
                 function(){ connectionMap.linkedin.disconnectUser();}, 
                 false);
-        document.getElementById(runAndApplyId)
+        document.getElementById(RUN_AND_APPLY_ID)
                 .addEventListener(
                 'click', 
-                function(){ connectionMap.fetchAndApplyConnections();}, 
+                function(){
+                 setRunAndApply('Running', false);
+                 connectionMap.fetchAndApplyConnections();
+                },
                 false);
     };
     
@@ -369,27 +486,19 @@ function MyConnectionsMap(){
     //// Events
     ////////////////////////////////////////////////////////////////////////////
     
-    connectManager.addEventListener('linkedin', 'authorizationerror', 
-        function(){ //if not authorized, disconnect.
-            connectionMap.linkedin.disconnectUser();
-            /** @TODO An additional warning that one timed-out */
-        });
-    connectManager.addEventListener('linkedin', 'querylimitreached', 
-        function(){
-            /** @TODO A warning of some kind*/    
-        });
-    connectManager.addEventListener('linkedin', 'unknownerror', 
-        function(){
-            /** @TODO A warning of some kind*/    
-        }); 
+    //see resetConnectionManager(); 
         
     cachedGeocoder.addEventListener('querylimitreached', 
         function(){
-            /** @TODO A warning of some kind*/    
+            /** @TODO A warning of some kind*/
+            updateAppStatus("Sorry, Connections could not be plotted due to: "
+                            +"Daily Query Limit Reached. Try again later");
         });
     cachedGeocoder.addEventListener('unknownerror', 
         function(){
             /** @TODO A warning of some kind*/    
+            updateAppStatus("Sorry, Connections could not be plotted due to: "
+                            +"An Unknown Error. Try again later");
         });
     
     // set it in onload.
@@ -405,55 +514,68 @@ function MyConnectionsMap(){
  */
 var myConnectionsMap = MyConnectionsMap();
 
-
+//Encapuslation is your friend
+var browserSupport = {
+    suggestion: 'Firefox or Chrome.'
+};
 
 /**@returns {Number} Returns -1 for not supported, 
  * 0 for partial support, 
  * 1 for supported,
  * 2 for tested.  */
-var browserSupportCheck = function(){
+browserSupport.browserSupportCheck = function(){
     var ua = navigator.userAgent;
     
-    if (/Moz(?!.*(iP[aho]|Android|Mobile).*).*Firefox\/\d\d/i.test(ua)){
-        //Developed and test in desktop FF
+    if (/Moz(?!.*(iP[aho]|Android|Mobile).*).*Firefox\/\d{2,}/i.test(ua)){
+        //Developed and tested in desktop FF.
         return 2;
-    } else if (/MSIE.*([89]|\d\d)|Moz(?!.*(iP[aho]|Android|Mobile).*)(Firefox\/\d\d|AppleWebKit.*Chrome)/i.test(ua)){
-        //supporting IE 8+, Firefox 10+, Chrome; non-mobile
+    } else if (/MSIE.*([9]|\d{2,})|Moz(?!.*(iP[aho]|Android|Mobile).*)(Firefox\/\d{2,}|AppleWebKit.*Chrome)/i.test(ua)){
+        //supporting IE 9+, Firefox 10+, Chrome; all non-mobile
         return 1;
     } else if (/MSIE.*[0-7]/.test(ua)){
-        //no support for IE 6,7,
+        //no support for IE 6,7, & under. 
         return -1;
     }
     /* if (/Opera|Safari|Mobile|iPhone|iPad|iPod|Android|Chrome/i.test(ua)){
         return 0;
     }   */
-    //potential support for other browsers
+    //Deprecated to partial support of IE8; it's annoy and behind on standards
+    //and *should* leave the market.
+    //potential support for other browsers: buyer beware
     return 0; 
 };
-
-/** -1 for no support, 0 for partial support, 1 for supported, 2 for supported + tested. */
-var browserSupport = browserSupportCheck();
-var browserSupportSuggestion = 'Firefox or Chrome.';
-if (browserSupport >= 0){
-    if (browserSupport === 0){
-        //warn limit support
-        //alert('browser has limited support!');
-        window.addEventListener('load', function(){
-            var banner = document.getElementById('app-notice-banner');
-            banner.innerHTML = 'There is limited support for your browser. <br/>' +
-                    'If you encounter diffculty, please consider using a recent version of '
-                    + browserSupportSuggestion;
-            banner.style='display: block;';
-            banner.addEventListener('click', function(){banner.style.display='';}, false);
-        }, false);
-    }
-} else {
-    //alert('browser not supported!');
+/** Updates the banner notice.
+ *  @param {String} message The message to add
+ */
+browserSupport.bannerNotice = function(message){
     window.addEventListener('load', function(){
-            var banner = document.getElementById('app-notice-banner');
-            banner.innerHTML = 'Sorry, your browser is not supported... =( <br/>' +
-                    'Consider using a recent version of either ' +browserSupportSuggestion;
+        var banner = document.getElementById('app-notice-banner');
+            banner.innerHTML = message;
             banner.style='display: block;';
-            banner.addEventListener('click', function(){banner.style.display='';}, false);
-        }, false);
-}
+        var close = document.createElement('a');
+            close.setAttribute('href', 'javascript:void(0);')
+            close.setAttribute('id', 'close-notice-banner');
+            close.innerHTML = "x";
+            close.addEventListener('click', function(){banner.style.display='';}, false);
+        banner.appendChild(close);
+    }, false);
+};
+
+browserSupport.run = function(){
+    /** -1 for no support, 0 for partial support, 1 for supported, 2 for supported + tested. */
+    var support = browserSupport.browserSupportCheck();
+    if (support >= 0){
+        if (support === 0){
+            //warn limit support
+            //alert('browser has limited support!');
+            browserSupport.bannerNotice('There is limited support for your browser. <br/>' +
+                        'If you encounter diffculty, please consider using a recent version of '
+                        + browserSupport.suggestion);
+        }
+    } else {
+        //alert('browser not supported!');
+        browserSupport.bannerNotice('Sorry, your browser is not supported... =( <br/>' +
+                    'Consider using a recent version of either ' +browserSupport.suggestion);
+    }
+};
+browserSupport.run();

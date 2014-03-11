@@ -65,32 +65,35 @@ restore_error_handler();
                     ?>
                   });
                   </script>
-                  <div id="right-panel">
-                    <div id="disconnect-wrapper">
-                        <a href="javascript:void(0)" id="disconnect-app-action" 
-                           title="Disconnect from App">Disconnect [x]</a>
-                    </div>
-                    <div id="input-controls">
-                        <span id="colour-by-connections-wrapper" >
-                            <span class="colour-choice" 
-                                  title="Shows denser connections as red, sparser connections as blue">
-                                <input type="radio" name="colour-connections-choice" 
-                                       id="connections-by-hotcold" /> 
-                              <label for="connections-by-hotcold">Density by colour</label>
-                            </span>
-                            <span class="colour-choice" 
-                                  title="Shows all connections as blue">
-                                <input type="radio" name="colour-connections-blue" 
-                                       id="connections-style-none" 
-                                       checked="checked" /> 
-                              <label for="connections-style-blue">All blue</label>
-                            </span>
-                        </span>
-                      <input type="button" id="perform-action" value="Run" />
-                    </div>
-                  </div>
-
+            <div id="right-panel">
+              <div id="disconnect-wrapper">
+                  <a href="javascript:void(0)" id="disconnect-app-action" 
+                     title="Disconnect from App">Disconnect [x]</a>
+              </div>
+              <div id="input-controls">
+                  <form >
+                  <span id="colour-by-connections-wrapper" >
+                      <span class="colour-choice" 
+                            title="Shows denser connections as red, sparser connections as blue">
+                          <input type="radio" name="colour-connections-choice" 
+                                 id="connections-by-hotcold" /> 
+                        <label for="connections-by-hotcold">Density by colour</label>
+                      </span>
+                      <span class="colour-choice" 
+                            title="Shows all connections as blue">
+                          <input type="radio" name="colour-connections-choice" 
+                                 id="connections-style-none" 
+                                 checked="checked" /> 
+                        <label for="connections-style-blue">All blue</label>
+                      </span>
+                  </span>
+                <input type="button" id="perform-action" value="Run" />
+                </form>
+              </div>
+            </div>
+            <div id="app-status" ></div>
          </div>
+        <img id="app-progress-spinner" src="img/progress_spinner.gif" />
       </div>
         
 
