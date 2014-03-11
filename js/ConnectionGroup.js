@@ -8,8 +8,8 @@
  * @author Jason J.
  * @version 0.1.0-20140309
  * @type ConnectionGroup
- * @see GroupInfoWindow 0.1.0
- * @see FocusPolyline 0.1.0
+ * @see GroupInfoWindow 0.1.1
+ * @see FocusPolyline 0.1.2
  */
 function ConnectionGroup(map, marker, polyline, infoWindow){
     //var m_infowindow = infowindow;
