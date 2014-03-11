@@ -7,11 +7,9 @@
  * @returns {ConnectionManager}
  * 
  * @author Jason J.
- * @version 0.1.0-20140307
+ * @version 0.1.1-20140311
  */
 function ConnectionManager() {
-    var xmlhttp = new XMLHttpRequest();
-        xmlhttp.open('GET', 'connections.php', true);
     /** Whether or not the request has been sent. */
     var requestSent = false;    
     /** Whether or not the request is complete. */
@@ -99,15 +97,17 @@ function ConnectionManager() {
                     }
                 } else if (xmlreq.status === 401) {
                     fireEvent('linkedin', 'authorizationerror');
+                    requestSent = false;
                 } else if (xmlreq.status === 403) {
                     fireEvent('linkedin', 'querylimitreached');
+                    requestSent = false;
                 } else {
                     fireEvent('linkedin', 'unknownerror');
+                    requestSent = false;
                 }
             }
         };
     };
-    xmlhttp.onreadystatechange = onresponse(xmlhttp);
         
     ////////////////////////////////////////////////////////////////////////////
     //// Public functions
@@ -135,7 +135,10 @@ function ConnectionManager() {
      * It is suggested you call addEventListener with 'fetchcomplete'. */
     this.fetchConnections = function(){
         if (!requestSent){
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.open('GET', 'connections.php', true);
             xmlhttp.send();
+            xmlhttp.onreadystatechange = onresponse(xmlhttp);
             requestSent = true;
         } else if (requestComplete) {
             fireEvent('linkedin', 'fetchcomplete');
