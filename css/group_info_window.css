@@ -1,0 +1,132 @@
+/* Does the styles for the info-windows of the map for this app.
+    Created on : 20140310
+    Version: 0.1.0-20140310
+    Author     : Jason J.
+*/
+
+
+/**
+* #.# You are here Pre-header
+*
+* This states what should be already known.
+*/
+#you-are-here {
+    border-bottom: solid #d6d6d6 2px;
+    padding: 3px;
+    margin-bottom: 3px;
+    height:  25px;
+    vertical-align: middle;
+    text-align: center;
+}
+/** Resize the image. */
+#you-are-here img {
+    height: 25px;
+    margin-right: 7px;
+}
+
+
+
+/**
+* #.# Info box header
+*
+* This states the area & connection totals.
+*/
+.group-info-window .info-header {
+    padding-bottom: 3px;
+    
+    border-bottom: solid #d6d6d6 2px;
+    margin-bottom: 3px;
+}
+/** The location name */
+.group-info-window .info-header .location-name{
+    font-weight: bold;
+}
+/** The location name and connection styles, not counting the labels. */
+.group-info-window .info-header .location-name,
+.group-info-window .info-header .connections {
+    float: right;
+    margin-left: 5px;
+}
+
+/** The record and info-header connection spans,
+high-specificity required to override map styles. */
+.group-info-window .info-header span.connections,
+.group-info-window .record span.connections{
+    font-weight: bold;
+    margin-left: 5px;
+    float: right;
+}
+
+/**
+* #.# The page container 
+*
+* Contains each page. 
+We want padding to give .info-footer space.
+*/
+.group-info-window .page-container{
+    padding-bottom: 30px;
+}
+
+/**
+* #.## Indivdual Records 
+*
+* Each record, such as name, picture and connection total.
+*/
+/** The size is required for consistency. */
+.group-info-window .page-container .record {
+    line-height: 15px;
+    min-width: 160px;
+}
+
+/** The record images, spacing and height. */
+.group-info-window .record img {
+    height: 25px;
+    margin-right: 5px;
+}
+/** The record names, made to be of certain size.
+This gives consistency, without sacrificing flexibility. */
+.group-info-window .record .fullname {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width:  100px;
+    max-width:  300px;
+    display: inline-block;
+}
+
+/**
+* #.# Info box footer
+*
+* This contains the next/prev. buttons and the page count.
+*/
+/** We want it to the bottom always. */
+.group-info-window .info-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    border-top: solid #d6d6d6 2px;
+    padding-top: 3px;
+}
+/** We want the children always be relative to each other. */
+.group-info-window .info-footer * { 
+    position: relative;
+}
+/** Page count in the center, filling space. */
+.group-info-window .info-footer .page-count {
+    position: relative;
+    display: block;
+    z-index: 0;
+    text-align: center;
+}
+/** Previous page is left. We need z-index to ensure it is always clickable. */
+.group-info-window .info-footer .prev-page {
+    float: left;
+    z-index: 1;
+}
+/** Next page is right. We need z-index to ensure it is always clickable. */
+.group-info-window .info-footer .next-page{
+    float: right;
+    z-index: 1;
+}
+
+
