@@ -26,11 +26,15 @@ restore_error_handler();
     <!-- The layout of the app. -->
     <link rel="stylesheet"  href="css/app_layout.css" />
     <link rel="stylesheet"  href="css/linkedin_card_layout.css" />
+    <link rel="stylesheet"  href="css/group_info_window.css" />
     
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
     </script>
     
+    <script src="js/FocusPolyline.js" type="text/javascript"></script>
+    <script src="js/GroupInfoWindow.js" type="text/javascript"></script>
+    <script src="js/ConnectionGroup.js" type="text/javascript"></script>
     <script src="js/ConnectionManager.js" type="text/javascript"></script>
     <script src="js/CachedGeocoder.js" type="text/javascript"></script>
     <script src="js/MapDisplay.js" type="text/javascript"></script>
@@ -50,7 +54,6 @@ restore_error_handler();
             <div id="linkedin-display"  style="display: none;"></div>            
                 <script type="text/javascript">
                 google.maps.event.addDomListener(window, 'load', function(){ 
-                    if (browserSupportCheck() < 0) return;
                     <?php 
                     if ($user_json){
                         echo 'myConnectionsMap.linkedin.setAndShowUser('.$user_json.');';

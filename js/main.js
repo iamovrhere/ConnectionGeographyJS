@@ -4,11 +4,14 @@
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.5.0-201400309
+ * @version 0.6.0-201400311
  * @type Object
  * @see MapDisplay 0.1.0
- * @see CachedGeocoder 0.3.0
+ * @see CachedGeocoder 0.3.1
  * @see ConnectionManager 0.1.0
+ * @see ConnectionGroup 0.1.0
+ * @see GroupInfoWindow 0.1.1
+ * @see FocusPolyline 0.1.2
  */
 function MyConnectionsMap(){
     /** The reference to the map element. 
@@ -30,44 +33,122 @@ function MyConnectionsMap(){
     /** @type Object|Number The connections list sorted by 'address' that is: 
      * { "city, country-code": new Array( {record1}, {record2} ), ... }. 
      * <br/>
-     * Intial value is 0. 
+     * Intial value is empty. 
      * For keys:
      * https://developer.linkedin.com/documents/connections-api
      * http://developer.linkedin.com/documents/profile-fields */
-    var connectionsList = 0;
-    
+    //var connectionsList = 0;
+    /** @type Object|GroupInfoWindow Contains a list of addresses that point to info windows. */
+    var infoWindows = 0;
+    /** @type Object 2nd connections total per captia. */
+    var secondConnectionsTotals = {};
     
     ////////////////////////////////////////////////////////////////////////////
     //// 'Private' helper functions
     ////////////////////////////////////////////////////////////////////////////
-    
-    var sortAndLocateLinkedinConnections = function(results){
-        cachedGeocoder.addEventListener('geocodeupdate', function(r,s){
-            console.log('geo: %s', JSON.stringify(r));});
-        if (!connectionsList){
-            connectionsList = {};
+   
+   /**
+    * Sorts, locates and creates info-windows of the linkedin connections.
+    * @param {Object} results The raw results from the linkedin api/ConnectionManager
+    */ 
+    var processLinkedInConnections = function(results){
+        var myAddress =   connectionMap.linkedin.userInfo.location.name +', ' +
+                        connectionMap.linkedin.userInfo.location.country.code;
+        if ( !infoWindows){
+            infoWindows = {};
+            secondConnectionsTotals = {};
             if(results.values){
                 for(var index=0,SIZE=results.values.length; index < SIZE; index++){
                     try{
                         var record = results.values[index];
                         var address = record.location.name +', '+record.location.country.code;
-                        if (!connectionsList[address]){ 
-                            //if unset, create array and find location. 
-                            connectionsList[address] = new Array();
-                            //precache locations
+                        if (!infoWindows[address]){ 
+                            //if unset, create window
+                            infoWindows[address] = new GroupInfoWindow({}, record.location.name);
+                            secondConnectionsTotals[address] = 0;
+                            //precache locations.
                             cachedGeocoder.geocodeQueueAddress(address);
+                            if (address.indexOf(myAddress) >= 0){
+                            infoWindows[address].setPreheader(connectionMap.linkedin.userInfo);
                         }
-                        connectionsList[address].push(record);
+                        }
+                        infoWindows[address].appendRecord(record);
+                        
+                        secondConnectionsTotals[address] += record.numConnections;
                     } catch (e){
-                        //In case we fail to get address or something, we will save it as unknown.
-                        connectionsList['unknown'] = record;
+                        console.log('unexpected error?: '+ e);
+                        //In case we fail to get an address or something, we will save it as unknown.
+                        infoWindows['unknown'] = new GroupInfoWindow({}, 'unknown');
+                        infoWindows['unknown'].appendRecord(record);
                     }
                 }
-                console.log('sortAndLocateLinkedinConnections: %s', JSON.stringify(connectionsList));
-                console.log('complete?: %s', cachedGeocoder.queuedGeocodeComplete());
+                
+                if (!cachedGeocoder.queuedGeocodeComplete()){
+                    cachedGeocoder.addEventListener('queuecomplete',
+                        function(){
+                            mapConnections(myAddress);
+                        });
+                }
             }
+        } else {
+            mapConnections(myAddress);
         }
     };
+    var bounds = 0;
+    
+    /**
+     * Maps the connections onto the map via the infoWindows list & cachedGeocoder.
+     * @param {String} myAddress The address of the current user.
+     */
+    function mapConnections(myAddress){
+        var map = mapDisplay.getMap();
+        
+        //map.setZoom(1);
+        bounds = new google.maps.LatLngBounds();
+        for (var address in infoWindows) {
+            var userIsHere =  address.indexOf(myAddress) >=0 ;
+            console.log('trying: '+address);
+            
+            console.log('infoWindows: '+infoWindows[address].toString());
+            //We precached them during sorting.
+            var results = cachedGeocoder.getCachedAddress(address);
+            if (results){
+                console.log('adding: '+address);
+                
+                var latLng = results[0].geometry.location;
+                    var marker = new google.maps.Marker({
+                        position: latLng,
+                        icon: {
+                            path: google.maps.SymbolPath.CIRCLE,
+                            scale: (userIsHere ? 9: 7),
+                            fillColor: '#259CE5',
+                            fillOpacity: 0.9,
+                            strokeColor: '#136991',
+                            strokeWeight: (userIsHere ? 3 :2)
+                          }
+                    });
+                    var polyline = new FocusPolyline({
+                        path: [connectionMap.linkedin.userInfo.location.coordinates, latLng],
+                        geodesic: true,
+                        strokeColor: '#136991',
+                        strokeOpacity: 0.7,
+                        strokeWeight: 6
+                    },
+                    {
+                        onFocusStrokeColor: '#259CE5',
+                        onFocusStrokeOpacity: 1.0
+                    });
+                    var group = new ConnectionGroup(
+                            map, marker, polyline, infoWindows[address]);
+                        group.addToMap();
+                    bounds.extend(latLng);
+            } else {
+                //add to unknown set.
+            }
+        }
+        map.fitBounds(bounds);
+        
+    }
     
     ////////////////////////////////////////////////////////////////////////////
     //// Public function/object
@@ -83,7 +164,9 @@ function MyConnectionsMap(){
                 id: 0, pictureUrl: 0, firstName: 0, lastName: 0, 
                 //coordinates are provided by geocode.
                 location: {name:0, coordinates: 0, country: { code: 0}}, 
-                numConnectionsCapped: 0        
+                numConnectionsCapped: 0,
+                //Manually added
+                numConnections: 0
             }
         }
     };
@@ -95,13 +178,17 @@ function MyConnectionsMap(){
         connectManager.addEventListener('linkedin', 'fetchcomplete', 
             function(results){
                 console.log('fetchAndApplyConnections async: %s', JSON.stringify(results) );
-                sortAndLocateLinkedinConnections(results);
+                processLinkedInConnections(results);
+                if (results.values){
+                    connectionMap.linkedin.numConnections =  results.values.length;
+                }
         });
         
     };
     
-    /** Zooms to user, provided there are coordinates to zoom to. */
-    connectionMap.zoomToUser = function(){
+    /** Zooms to user, provided there are coordinates to zoom to. 
+     * @param {boolean} zoom (Optional) Whether to zoom into the user, default is false. */
+    connectionMap.moveToUser = function(zoom){
         var location = this.linkedin.userInfo.location.coordinates;
         var map = mapDisplay.getMap();
         //We have nothing to use, give up.
@@ -115,9 +202,10 @@ function MyConnectionsMap(){
         var finalZoom = 7;
         //if less than our final zoom? zoom in, else: zoom out
         var lvl = map.getZoom() < finalZoom ? 1 : -1;    
-
-        for (var zoom = map.getZoom(), step=0; zoom !== finalZoom; zoom+=lvl){
-            doZoomTimeout(zoom, 60*step++);
+        if (zoom){
+            for (var zoom = map.getZoom(), step=0; zoom !== finalZoom; zoom+=lvl){
+                doZoomTimeout(zoom, 60*step++);
+            }
         }
         map.panTo(location);
     };
@@ -188,7 +276,7 @@ function MyConnectionsMap(){
                                         .userInfo
                                         .location
                                         .coordinates = results[0].geometry.location;
-                       connectionMap.zoomToUser();
+                       connectionMap.moveToUser(true);
                     }
                 });
     };
@@ -229,7 +317,9 @@ function MyConnectionsMap(){
             }
 
         //remove hidden style.
-        document.getElementById('app-controls').style.display = '';
+        var controlPanel = document.getElementById('app-controls');
+        
+        
         var displayCard = document.getElementById('linkedin-display');
             displayCard.appendChild(userPic);
             displayCard.appendChild(userInfo);
@@ -237,9 +327,18 @@ function MyConnectionsMap(){
             displayCard.style.display = '';
             displayCard.setAttribute('title', title.trim());
             displayCard.addEventListener('click', 
-                                        function(){connectionMap.zoomToUser();}, 
-                                        false);
-
+                                    function(){connectionMap.moveToUser();}, 
+                                    false);
+        controlPanel.style.display = '';
+        
+        if (!document.getElementById('special-hidden-control-padding')){  
+            //simple hack to prevent overlap
+            var controlPadding = document.createElement('div');
+                controlPadding.setAttribute('id', 'special-hidden-control-padding');
+                controlPadding.setAttribute('style', 'width: 100%; height: 55px;');
+            mapDisplay.getMap().controls[google.maps.ControlPosition.TOP_CENTER].push(controlPadding);
+        } 
+        
     };
 
     
@@ -295,7 +394,7 @@ function MyConnectionsMap(){
     
     // set it in onload.
     window.addEventListener('load', function(){setClickEvents();}, false);
-    
+      
     
     return connectionMap;
 };
@@ -304,7 +403,7 @@ function MyConnectionsMap(){
  * The entry point into the application. 
  * Always call last.
  */
-var myConnectionsMap = {};
+var myConnectionsMap = MyConnectionsMap();
 
 
 
@@ -336,8 +435,6 @@ var browserSupportCheck = function(){
 var browserSupport = browserSupportCheck();
 var browserSupportSuggestion = 'Firefox or Chrome.';
 if (browserSupport >= 0){
-    //myConnectionsMap.init();
-    myConnectionsMap = MyConnectionsMap();
     if (browserSupport === 0){
         //warn limit support
         //alert('browser has limited support!');
