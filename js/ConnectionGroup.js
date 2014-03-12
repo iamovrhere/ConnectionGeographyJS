@@ -2,11 +2,11 @@
  * Objects that represents a group of connections.
  * That is: Marker, Polyline.
  * @param {new google.maps.Map} map The map to add markers and polylines to
- * @param {google.maps.Marker} marker The marker for this connection group.
+ * @param {FocusMarker} marker The focusable marker for this connection group.
  * @param {FocusPolyline} polyline The focusable polyline for this connection group.
  * @param {GroupInfoWindow} infoWindow The info window for the group.
  * @author Jason J.
- * @version 0.2.0-20140311
+ * @version 0.3.0-20140311
  * @type ConnectionGroup
  * @see GroupInfoWindow 0.1.1
  * @see FocusPolyline 0.1.2
@@ -19,6 +19,7 @@ function ConnectionGroup(map, marker, polyline, infoWindow){
     function infoWindowClosed(){
         keepFocused = false;
         polyline.setFocus(false);
+        marker.setFocus(false);
     }
     
     /** The click events for this group. */
@@ -39,6 +40,7 @@ function ConnectionGroup(map, marker, polyline, infoWindow){
         }
         //infoWindow.open(map);
         polyline.setFocus(true);
+        marker.setFocus(true);
     };
     
     /** The mouseout events for this group. */
@@ -48,8 +50,8 @@ function ConnectionGroup(map, marker, polyline, infoWindow){
         }
         //infoWindow.close();
         polyline.setFocus(false);
+        marker.setFocus(false);
     };
-    
     
     ////////////////////////////////////////////////////////////////////////////
     //// Events

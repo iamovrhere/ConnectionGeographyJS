@@ -4,14 +4,15 @@
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.7.0-201400311
+ * @version 0.8.0-201400311
  * @type Object
  * @see MapDisplay 0.1.0
  * @see CachedGeocoder 0.3.1
- * @see ConnectionManager 0.1.0
- * @see ConnectionGroup 0.1.0
- * @see GroupInfoWindow 0.1.1
- * @see FocusPolyline 0.1.2
+ * @see ConnectionManager 0.1.1
+ * @see ConnectionGroup 0.2.0
+ * @see GroupInfoWindow 0.1.2
+ * @see FocusPolyline 0.1.3
+ * @see FocusMarker 0.1.0
  */
 function MyConnectionsMap(){
     /** The reference to the map element. 
@@ -143,46 +144,54 @@ function MyConnectionsMap(){
         for (var address in infoWindows) {
             var userIsHere =  address.indexOf(myAddress) >=0 ;
             console.log('trying: '+address);
-            
-            console.log('infoWindows: '+infoWindows[address].toString());
-            //We precached them during sorting.
-            var results = cachedGeocoder.getCachedAddress(address);
-            if (results){
-                console.log('adding: '+address);
-                
-                var latLng = results[0].geometry.location;
-                    var marker = new google.maps.Marker({
-                        position: latLng,
-                        icon: {
-                            path: google.maps.SymbolPath.CIRCLE,
-                            scale: (userIsHere ? 9: 7),
-                            fillColor: '#259CE5',
-                            fillOpacity: 0.9,
+            //Try for safety.
+            try {
+                //We precached them during sorting.
+                var results = cachedGeocoder.getCachedAddress(address);
+                if (results){
+                    console.log('adding: '+address);
+
+                    var latLng = results[0].geometry.location;
+                        var marker = new FocusMarker({   //new google.maps.Marker({new FocusMarker({ 
+                            position: latLng,
+                            icon: {
+                                path: google.maps.SymbolPath.CIRCLE,
+                                scale: (userIsHere ? 9: 7),
+                                fillColor: '#259CE5',
+                                fillOpacity: 0.9,
+                                strokeColor: '#136991',
+                                strokeWeight: (userIsHere ? 3 :2),
+                                strokeOpacity: (userIsHere ? 1.0 : 0.8)
+                              }
+                        },
+                        {
+                            onFocusStrokeColor: '#259CE5',
+                            onFocusStrokeOpacity: 1.0
+                        });
+
+                        var polyline = new FocusPolyline({
+                            path: [connectionMap.linkedin.userInfo.location.coordinates, latLng],
+                            geodesic: true,
                             strokeColor: '#136991',
-                            strokeWeight: (userIsHere ? 3 :2),
-                            strokeOpacity: (userIsHere ? 1.0 : 0.8)
-                          }
-                    });
-                    var polyline = new FocusPolyline({
-                        path: [connectionMap.linkedin.userInfo.location.coordinates, latLng],
-                        geodesic: true,
-                        strokeColor: '#136991',
-                        strokeOpacity: 0.7,
-                        strokeWeight: 5
-                    },
-                    {
-                        onFocusStrokeColor: '#259CE5',
-                        onFocusStrokeOpacity: 1.0
-                    });
-                    if (connectionGroups[address]){
-                        connectionGroups[address].clear();
-                    }
-                    connectionGroups[address]  = new ConnectionGroup(
-                            map, marker, polyline, infoWindows[address]);
-                    connectionGroups[address].addToMap();
-                    bounds.extend(latLng);
-            } else {
-                //add to unknown set.
+                            strokeOpacity: 0.7,
+                            strokeWeight: 5
+                        },
+                        {
+                            onFocusStrokeColor: '#259CE5',
+                            onFocusStrokeOpacity: 1.0
+                        });
+                        if (connectionGroups[address]){
+                            connectionGroups[address].clear();
+                        }
+                        connectionGroups[address]  = new ConnectionGroup(
+                                map, marker, polyline, infoWindows[address]);
+                        connectionGroups[address].addToMap();
+                        bounds.extend(latLng);
+                } else {
+                    //add to unknown set.
+                }
+            } catch (e){
+                   console.log('Skipped "%s" :', address);
             }
         }
         map.fitBounds(bounds);
@@ -380,6 +389,7 @@ function MyConnectionsMap(){
                        connectionMap.moveToUser(true);
                     }
                 });
+        setRunAndApply(BUTTON_RUN_VALUE, true);
     };
     /** Shows the user on the display. */
     connectionMap.linkedin.showUser = function(){

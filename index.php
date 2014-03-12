@@ -32,6 +32,7 @@ restore_error_handler();
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
     </script>
     
+    <script src="js/FocusMarker.js" type="text/javascript"></script>
     <script src="js/FocusPolyline.js" type="text/javascript"></script>
     <script src="js/GroupInfoWindow.js" type="text/javascript"></script>
     <script src="js/ConnectionGroup.js" type="text/javascript"></script>
