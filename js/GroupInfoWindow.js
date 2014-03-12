@@ -9,10 +9,10 @@
  * using the form of google.maps.InfoWindowOptions
  * @param {String} locationName (Optional) The location name to display as the area.
  * @author Jason J.
- * @version 0.1.3-201403011
+ * @version 0.2.0-201403012
  * @type GroupInfoWindow
  * @see google.maps.InfoWindow 
- * @see group_info_window.css
+ * @see group_info_window.css 0.1.1
  */
 function GroupInfoWindow(infoWindowOptions, locationName){
     this.parent.constructor.call(this, infoWindowOptions);
@@ -77,11 +77,19 @@ function GroupInfoWindow(infoWindowOptions, locationName){
     
     //Reset content.
     this.parent.setContent.call(this,infoBody);
+    //Add events
+    google.maps.event.addListener(this, 'closeclick', windowClosed);
+    
     
     ////////////////////////////////////////////////////////////////////////////
     //// private functions
     ////////////////////////////////////////////////////////////////////////////
-   
+    
+    
+    /** The actions to perform when the window is closer. */
+    function windowClosed(){
+         infoOpen  = false;
+     };
     
     /** Set the current page of the info window. 
      * @param {Number} index The page number to set it to. */
@@ -125,6 +133,10 @@ function GroupInfoWindow(infoWindowOptions, locationName){
     ////////////////////////////////////////////////////////////////////////////
     //// Public functions
     ////////////////////////////////////////////////////////////////////////////
+    
+    this.getLocation = function(){
+        return locationName;
+    };
     
     /** Whether or not the info window is open. */
     this.isOpen = function(){
@@ -199,18 +211,19 @@ function GroupInfoWindow(infoWindowOptions, locationName){
         infoBody.insertBefore(preheader, header);
     };
     
+    
     ////////////////////////////////////////////////////////////////////////////
     //// Overriden functions
     ////////////////////////////////////////////////////////////////////////////
-    
     this.toString = function(){
         return '[GroupInfoWindow]'+infoBody.outerHTML;
     };
     
-    this.close = function(){
+    /* this.close = function(){
         this.parent.close.call(this);
         infoOpen  = false;
-    };
+        delete GroupInfoWindow.openWindows[''+lastOpened];
+    }; */
     
     this.open = function(arg1, arg2){
         this.parent.open.call(this, arg1, arg2);
