@@ -9,13 +9,13 @@
  * using the form of google.maps.InfoWindowOptions
  * @param {String} locationName (Optional) The location name to display as the area.
  * @author Jason J.
- * @version 0.1.2-201403011
+ * @version 0.1.3-201403011
  * @type GroupInfoWindow
  * @see google.maps.InfoWindow 
  * @see group_info_window.css
  */
 function GroupInfoWindow(infoWindowOptions, locationName){
-    google.maps.InfoWindow.call(this.parent, infoWindowOptions);
+    this.parent.constructor.call(this, infoWindowOptions);
     
     /** @type Array The pages for the info window. */
     var infoWindowPages = new Array();
@@ -222,7 +222,7 @@ function GroupInfoWindow(infoWindowOptions, locationName){
 
 /** Inheritence. 
  * @type google.maps.InfoWindow */
-GroupInfoWindow.prototype = new google.maps.InfoWindow();
+GroupInfoWindow.prototype = Object.create(google.maps.InfoWindow.prototype);
 /** Constructor. */
 GroupInfoWindow.prototype.constructor = GroupInfoWindow;
 /** Class parent. */

@@ -29,12 +29,13 @@
  * <li>onFocusStrokeWeight 	number 	The stroke width in pixels.</li>
  * </ul>
  * @author Jason J.
- * @version 0.1.2-20140311
+ * @version 0.1.3-20140311
  * @type FocusPolyline
  * @see google.maps.Polyline
  */
 function FocusPolyline(polylineOptions, focusOptions){
-    google.maps.Polyline.call(this, polylineOptions);
+    //google.maps.Polyline.call(this, polylineOptions);
+    this.parent.constructor.call(this, polylineOptions);
     var zIndex = polylineOptions.zIndex ? polylineOptions.zIndex : 0;
     
     var m_focusOptions = focusOptions;
@@ -104,8 +105,8 @@ function FocusPolyline(polylineOptions, focusOptions){
     
 }
 /** Inheritence. 
- * @type google.maps.Marker */
-FocusPolyline.prototype = new google.maps.Polyline();
+ * @type google.maps.Polyline */
+FocusPolyline.prototype = Object.create(google.maps.Polyline.prototype);
 /** Constructor. */
 FocusPolyline.prototype.constructor = FocusPolyline;
 /** Class parent. */
