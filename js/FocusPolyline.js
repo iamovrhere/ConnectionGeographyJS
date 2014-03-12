@@ -68,8 +68,15 @@ function FocusPolyline(polylineOptions, focusOptions){
     ////////////////////////////////////////////////////////////////////////////
     //// public functions
     ////////////////////////////////////////////////////////////////////////////
+    /* @param {number} the z-index to set. */
+   /* this.setZIndex= function(z_index){ 
+    * //Causes a recursion loop between setZIndex<->setOptions
+        this.setOptions({zIndex: z_index});
+    }; */
+    
     /** @return {number} Returns the current z index or 0. */
     this.getZIndex= function(){ return zIndex; };
+    
     /** @param {Object} options As per the constructor. */
     this.setFocusOptions = function(options){
         m_focusOptions = options;
