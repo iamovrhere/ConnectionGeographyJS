@@ -1,21 +1,24 @@
 /*
  * Reference: //http://stackoverflow.com/questions/5623838/rgb-to-hex-and-hex-to-rgb
  */
-
 /**
- * Used to calculate colour gradients based upon the location of a value between
- * two values. 
+ * Used to calculate approximate colour gradients based upon the relative position 
+ * of a value between the maximum and minimum values.
+ * <br/>
+ * (This object is still experimental)
  * <br/>
  * Colours take the form of either 6 letter hex (aa1122) to be parsed or {r:0,g:0,b:0}
+ * @param {Number} minValue The value at which the minColour is represented
+ * @param {Number} maxValue The value for which the maxColour is represented
  * @param {String|Object} minColour The start or minimum colour
  * @param {String|Object} maxColour The end or maximum colour.
  * @param {String|Object} midColour (Optional) The middle or 50% colour
- * If omitted, it will graduate between the two.
+ * If omitted, the object will attempt graduate between the two.
  * @author Jason J.
- * @version 0.1.0-20140312
+ * @version 0.2.0-20140313
  * @type ColourGradient
  */
-function ColourGradient(minColour, maxColour, midColour)  {
+function ColourGradient(minValue, maxValue, minColour, maxColour, midColour)  {
     /** @type Object|{r,g,b} The start colour. */
     var m_minColour = processArg(minColour);
     /** @type Object|{r,g,b} The middle colour. Sometimes null. */
@@ -42,6 +45,18 @@ function ColourGradient(minColour, maxColour, midColour)  {
     
     console.log('shift: %s.', 
     JSON.stringify(shift));
+    
+    var m_minValue = minValue;
+    //prevent zeroes.
+    var m_maxValue = 0 === maxValue ? 0.0001 : maxValue;
+    /** @type Number The difference between max and min. */
+    var m_range  = maxValue - minValue;
+    /** @type Number Mid-way between min & max. */
+    var m_middleValue = m_maxValue - m_range/2; 
+    
+    ////////////////////////////////////////////////////////////////////////////
+    //// functions
+    ////////////////////////////////////////////////////////////////////////////
     
     /** Tests the argument to see if valid, if not throws error. 
      *  @param {Mixed} arg The argument to test.
@@ -99,7 +114,7 @@ function ColourGradient(minColour, maxColour, midColour)  {
      * brighter (+ve).
      * @returns {Object|{r,g,b}} The colour in rgb format.
      * @throws Error If value is less than min or greater than max.     */
-    function _getRgbGradient(value, min, max, offset){
+    function _getRgbGradient(value, min, middle, max, range, offset){
         if (value < min || value > max ){
             throw new Error('Value is not within the range of (min)%s <= (value)%s <= (max)%s',
                             min, value, max);
@@ -107,13 +122,6 @@ function ColourGradient(minColour, maxColour, midColour)  {
         if (!offset){
             offset = 0;
         }
-        //prevent zeroes.
-        max = 0 === max ? 0.0001 : max;
-        var range  = max - min;
-        //Prevent zeroes, close enough.
-        var middle = (max === range) ? max/2 : max - range/2; 
-        console.log('(value %s) min: %s, middle: %s, max: %s, [range: %s] -> percent: %s %', 
-            value, min, middle, max, range, (value-min)/range*100);
             
         switch (value){
             case min: 
@@ -156,30 +164,28 @@ function ColourGradient(minColour, maxColour, midColour)  {
     ////////////////////////////////////////////////////////////////////////////
     /**
      * Calculates the colour to return based upon value's position between min and max.
+     * Optionally offsets this value.
      * @param {Number} value The value to get a colour for
-     * @param {Number} min The value for which the start colour is returned
-     * @param {Number} max The value for which the end colour is returned
      * @param {Number} offset (Optional). The offset to apply to make the colour darker (-ve) or
      * brighter (+ve).
      * @returns {String} The colour in hex string format. (#001122)
      * @throws Error If value is less than min or greater than max.     */
-    this.getHexGradient = function(value, min, max, offset){
-        var rgb = _getRgbGradient(value, min, max, offset);
+    this.getHexGradient = function(value, offset){
+        var rgb = _getRgbGradient(value, m_minValue, m_middleValue, m_maxValue, m_range, offset);
         var hex = ColourGradient.rgbToHex(rgb.r, rgb.g, rgb.b);
         console.log('rgb: %s hex: %s', JSON.stringify(rgb), hex);
         return hex;
     };
     /**
      * Calculates the colour to return based upon value's position between min and max.
+     * Optionally offsets this value.
      * @param {Number} value The value to get a colour for
-     * @param {Number} min The value for which the start colour is returned
-     * @param {Number} max The value for which the end colour is returned
      * @param {Number} offset (Optional). The offset to apply to make the colour darker (-ve) or
      * brighter (+ve).
      * @returns {Object|{r,g,b}} The colour in rgb format.
      * @throws Error If value is less than min or greater than max.     */
-    this.getRgbGradient = function (value, min, max, offset){
-        return _getRgbGradient(value, min, max, offset);
+    this.getRgbGradient = function (value, offset){
+        return _getRgbGradient(value, m_minValue, m_middleValue, m_maxValue, m_range, offset);
     };
 }
 
