@@ -22,7 +22,7 @@ restore_error_handler();
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <title>Connections Map</title>
+    <title>Connections Map (Alpha)</title>
     
     <!-- Linkedin button style. -->
     <link rel="stylesheet" href="css/linkedin_button.css" />
@@ -51,7 +51,7 @@ restore_error_handler();
     
   </head>
   <body >
-    <div id="app-notice-banner" >Warning yo!</div>
+      <div id="app-notice-banner" ></div>
     <div id="app-container">
         <div id="map-canvas" ></div>
         <div id ="app-controls" style="display: none;">

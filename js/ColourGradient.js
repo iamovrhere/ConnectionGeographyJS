@@ -15,7 +15,7 @@
  * @param {String|Object} midColour (Optional) The middle or 50% colour
  * If omitted, the object will attempt graduate between the two.
  * @author Jason J.
- * @version 0.2.0-20140313
+ * @version 0.2.1-20140313
  * @type ColourGradient
  */
 function ColourGradient(minValue, maxValue, minColour, maxColour, midColour)  {
@@ -25,11 +25,6 @@ function ColourGradient(minValue, maxValue, minColour, maxColour, midColour)  {
     var m_midColour = midColour ? processArg(midColour) : null;
     /** @type Object|{r,g,b} The end colour. */
     var m_maxColour = processArg(maxColour);
-    
-    console.log('min: %s, mid: %s, max: %s, ', 
-    minColour, midColour, maxColour);
-    console.log('min: %s, mid: %s, max: %s, ', 
-    JSON.stringify(m_minColour), m_midColour ? JSON.stringify(m_midColour) : '', JSON.stringify(m_maxColour));
     
     /** @type Object|{r,g,b} The amounts to shift rgb froms start towards the end. */
     var shift = {   };
@@ -43,8 +38,6 @@ function ColourGradient(minValue, maxValue, minColour, maxColour, midColour)  {
         shift.two = configureGradientShift(m_midColour, m_maxColour);
     }
     
-    console.log('shift: %s.', 
-    JSON.stringify(shift));
     
     var m_minValue = minValue;
     //prevent zeroes.
@@ -173,7 +166,6 @@ function ColourGradient(minValue, maxValue, minColour, maxColour, midColour)  {
     this.getHexGradient = function(value, offset){
         var rgb = _getRgbGradient(value, m_minValue, m_middleValue, m_maxValue, m_range, offset);
         var hex = ColourGradient.rgbToHex(rgb.r, rgb.g, rgb.b);
-        console.log('rgb: %s hex: %s', JSON.stringify(rgb), hex);
         return hex;
     };
     /**

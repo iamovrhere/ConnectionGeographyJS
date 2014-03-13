@@ -4,7 +4,7 @@
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.9.0-201400313
+ * @version 0.9.1-201400313
  * @type Object
  * @see MapDisplay 0.1.0
  * @see CachedGeocoder 0.3.1
@@ -13,7 +13,8 @@
  * @see GroupInfoWindow 0.2.0
  * @see FocusPolyline 0.1.3
  * @see FocusMarker 0.1.0
- * @see ColourGradient 0.1.0
+ * @see ColourGradient 0.2.1
+ * @see LinkedInConnect 0.1.2
  */
 function MyConnectionsMap(){
     /** The reference to the map element. 
@@ -136,7 +137,7 @@ function MyConnectionsMap(){
                         firstConnectionsTotals[address] ++;
                         secondConnectionsTotals[address] += record.numConnections;
                     } catch (e){
-                        console.log('unexpected error?: '+ e);
+                        console.log('Unexpected error?: '+ e);
                         //In case we fail to get an address or something, we will save it as unknown.
                         infoWindows['unknown'] = new GroupInfoWindow({}, 'unknown');
                         infoWindows['unknown'].appendRecord(record);
@@ -217,7 +218,7 @@ function MyConnectionsMap(){
         }
         updateAppStatus("Plotting Connections...", true); 
         //map.setZoom(1);
-        console.log('skiphome? %s mode? %s', skiphome, mode);
+        
         for (var address in infoWindows) {
             var userIsHere =  address.indexOf(myAddress) >=0 ;
             
@@ -227,7 +228,7 @@ function MyConnectionsMap(){
                 //We precached them during sorting.
                 var results = cachedGeocoder.getCachedAddress(address);
                 if (results){
-                    console.log('adding: '+address);
+                    //console.log('adding: '+address);
                     var lightColor = (colourGrad) ? colourGrad.getHexGradient(deltaInfo.deltas[address]) :
                                     '#259CE5';
                     var darkColor =  (colourGrad) ? colourGrad.getHexGradient(deltaInfo.deltas[address], -35) :
@@ -313,7 +314,6 @@ function MyConnectionsMap(){
     function getColourMode(){
         var select =document.getElementById(ID_COLOUR_CHOICE_CONNECT);
         var value = ''+select.options[select.selectedIndex].value;
-        console.log('Value: %s', value)
         return value.indexOf('colour-style-stoplight') === 0 ? 1 : 0;
     }
     
@@ -651,10 +651,10 @@ var browserSupport = {
 browserSupport.browserSupportCheck = function(){
     var ua = navigator.userAgent;
     
-    if (/Moz(?!.*(iP[aho]|Android|Mobile).*).*Firefox\/\d{2,}/i.test(ua)){
+    if (/Moz(?!.*(iP[aho]|Android|Mobile).*).*(Firefox\/\d{2,}|AppleWebKit.*Chrom)/i.test(ua)){
         //Developed and tested in desktop FF.
         return 2;
-    } else if (/MSIE.*([9]|\d{2,})|Moz(?!.*(iP[aho]|Android|Mobile).*)(Firefox\/\d{2,}|AppleWebKit.*Chrome)/i.test(ua)){
+    } else if (/MSIE.*([9]|\d{2,})|Moz(?!.*(iP[aho]|Android|Mobile).*)(Firefox\/\d{2,}|AppleWebKit.*Chrom)/i.test(ua)){
         //supporting IE 9+, Firefox 10+, Chrome; all non-mobile
         return 1;
     } else if (/MSIE.*[0-7]/.test(ua)){
@@ -673,17 +673,20 @@ browserSupport.browserSupportCheck = function(){
  *  @param {String} message The message to add
  */
 browserSupport.bannerNotice = function(message){
-    window.addEventListener('load', function(){
+    var loaded = function(){
         var banner = document.getElementById('app-notice-banner');
+        if (!banner) return; //no loaded
             banner.innerHTML = message;
-            banner.style='display: block;';
+            banner.style.display = 'block';
         var close = document.createElement('a');
             close.setAttribute('href', 'javascript:void(0);')
             close.setAttribute('id', 'close-notice-banner');
             close.innerHTML = "x";
             close.addEventListener('click', function(){banner.style.display='';}, false);
         banner.appendChild(close);
-    }, false);
+    };
+    loaded();
+    window.addEventListener('load', loaded, false);
 };
 
 browserSupport.run = function(){
