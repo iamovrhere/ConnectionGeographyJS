@@ -44,7 +44,7 @@ Geocoding:
 
 Design
 -------
-Use workers if possible.
+Use workers if possible. 
 Design for FF then chrome.
 
 1. Use linkedin "connection" API initially. Later, one can try to use search API.
@@ -66,5 +66,39 @@ marker['infowindow'].open(map,  marker);
 3. Later one can use an SVG and svgpan to plot the world map.
 https://code.google.com/p/svgpan
 
+Problems: No Caribbean maps
 
 
+Ideas:
+--------
+Branch out to include other social networks:
+-facebook
+-google+
+
+
+Problems:
+------------
+
+Multiple people in the same city: how do we give them info boxes, paths, etc?
+
+Soln: 
+=====
+We build one path + mark per coordinates. 
+This means multiple connections share an info box.
+
+
+These info boxes will show: 
+[_] You are Here
+-----------------
+Area: City
+1st Connections: 5 [p] <-- person image
+2nd Connections: 600+ {5 + 500 + ...+x} [p]<-- person image
+ [_] Bob 2 500+ [p]<-- person image
+ ...(3) Expand <-- expand
+
+(3 - 5 per page)
+[<] 1/10 [>]
+
+Collapse...
+
+Images: 34px - 36px?
