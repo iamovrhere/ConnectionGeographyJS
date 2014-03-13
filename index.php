@@ -15,7 +15,10 @@ restore_error_handler();
 <!DOCTYPE html>
 <html>
   <head>
-      
+      <!-- 
+          Version: 0.1.0a-20140313
+          By: Jason J.
+      -->
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
@@ -40,6 +43,7 @@ restore_error_handler();
     <script src="js/CachedGeocoder.js" type="text/javascript"></script>
     <script src="js/MapDisplay.js" type="text/javascript"></script>
     <script src="js/LinkedInConnect.js" type="text/javascript"></script>
+    <script src="js/ColourGradient.js" type="text/javascript"></script>
     <script src="js/compat.js" type="text/javascript"></script>
     <script id="application-js-start" type="text/javascript" src="js/main.js" ></script>
 
@@ -73,21 +77,19 @@ restore_error_handler();
               </div>
               <div id="input-controls">
                   <form >
-                  <span id="colour-by-connections-wrapper" >
-                      <span class="colour-choice" 
-                            title="Shows denser connections as red, sparser connections as blue">
-                          <input type="radio" name="colour-connections-choice" 
-                                 id="connections-by-hotcold" /> 
-                        <label for="connections-by-hotcold">Density by colour</label>
-                      </span>
-                      <span class="colour-choice" 
-                            title="Shows all connections as blue">
-                          <input type="radio" name="colour-connections-choice" 
-                                 id="connections-style-none" 
-                                 checked="checked" /> 
-                        <label for="connections-style-blue">All blue</label>
-                      </span>
-                  </span>
+                    <span id="skip-home-checkbox-wrapper">
+                        <input id="skip-home-checkbox" name="skip-home-checkbox" 
+                               type="checkbox"  />
+                        <label for="skip-home-checkbox">Skip Home</label>
+                    </span>
+                    <select id="colour-by-connections" >
+                        <option value="colour-style-none" 
+                              title="Shows all connections as blue"
+                              >All blue</option>
+                        <option value="colour-style-stoplight" selected="selected"
+                              title="Shows denser connections as red, sparser connections as green"
+                              >*Density (Stop-Light)</option>
+                    </select>
                 <input type="button" id="perform-action" value="Run" />
                 </form>
               </div>

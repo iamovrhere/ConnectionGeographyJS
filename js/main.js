@@ -4,15 +4,16 @@
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.8.0-201400311
+ * @version 0.9.0-201400313
  * @type Object
  * @see MapDisplay 0.1.0
  * @see CachedGeocoder 0.3.1
  * @see ConnectionManager 0.1.1
- * @see ConnectionGroup 0.2.0
- * @see GroupInfoWindow 0.1.2
+ * @see ConnectionGroup 0.4.0
+ * @see GroupInfoWindow 0.2.0
  * @see FocusPolyline 0.1.3
  * @see FocusMarker 0.1.0
+ * @see ColourGradient 0.1.0
  */
 function MyConnectionsMap(){
     /** The reference to the map element. 
@@ -28,18 +29,24 @@ function MyConnectionsMap(){
     resetConnectionManager();
     
     /** @type String The id for the disconnect action. */
-    var DISCONECT_ID = 'disconnect-app-action';
+    var ID_DISCONECT = 'disconnect-app-action';
+    /** @type String The id for the control divs with inputs. */
+    var ID_INPUT_CONTROLS = 'input-controls';
+    /** @type String the id for the colour connections choice. */
+    var ID_COLOUR_CHOICE_CONNECT ='colour-by-connections';
+    /** @type String the id skip home checkbox. */
+    var ID_SKIP_HOME ='skip-home-checkbox';
     /** @type String The id for the run/apply action. */
-    var RUN_AND_APPLY_ID= 'perform-action';
+    var ID_RUN_AND_APPLY= 'perform-action';
     /** @type String The id for the application status. */
-    var APP_STATUS_ID = 'app-status';
+    var ID_APP_STATUS = 'app-status';
     /** @type String The id for the application progress spinner */
-    var PROGESS_SPINNER_ID = 'app-progress-spinner';
+    var ID_PROGESS_SPINNER = 'app-progress-spinner';
     
     /** @type String The intial value for the run button. */
-    var BUTTON_RUN_VALUE = 'Run';
+    var VALUE_BUTTON_RUN = 'Run';
     /** @type String The final value for the run button. */
-    var BUTTON_APPLY_VALUE = 'Apply';
+    var VALUE_BUTTON_APPLY = 'Apply';
     
     /** @type Object|Number The connections list sorted by 'address' that is: 
      * { "city, country-code": new Array( {record1}, {record2} ), ... }. 
@@ -51,10 +58,14 @@ function MyConnectionsMap(){
     //var connectionsList = 0;
     /** @type Object|GroupInfoWindow Contains a list of addresses that point to info windows. */
     var infoWindows = 0;
-    /** @type Object 2nd connections total per captia. */
-    var secondConnectionsTotals = {};
     /** @type Object|ConnectionGroup the list of connection groups kept to clear map. */
     var connectionGroups = {};
+    
+    /** @type Object indexed by addresses, 1st connections total per captia. */
+    var firstConnectionsTotals = {};
+    /** @type Object indexed by addresses, 2nd connections total per captia. */
+    var secondConnectionsTotals = {};
+    
     
     ////////////////////////////////////////////////////////////////////////////
     //// 'Private' helper functions
@@ -69,9 +80,10 @@ function MyConnectionsMap(){
                 img.src = record.pictureUrl;
         }
     };
-    
+    /** Resets everything to do with connections. */
     var resetConnections = function(){
         infoWindows = 0;
+        firstConnectionsTotals = {};
         secondConnectionsTotals = {};
         for (var address in connectionGroups){
             connectionGroups[address].clear();
@@ -79,6 +91,14 @@ function MyConnectionsMap(){
         connectionGroups = {};
         resetConnectionManager();
     };
+    
+    /** 
+     * @TODO URGENT: Refactoring needs to be done; all this processing and map
+     * plotting should have its own object with this one reserved for UI 
+     * interactions.
+     * 
+     * Should clean up about 200-300 lines
+     */
     
    /**
     * Sorts, locates and creates info-windows of the linkedin connections.
@@ -88,6 +108,9 @@ function MyConnectionsMap(){
         updateAppStatus("Sorting & Locating Connections...", true); 
         var myAddress =   connectionMap.linkedin.userInfo.location.name +', ' +
                         connectionMap.linkedin.userInfo.location.country.code;
+        var skipHome = getSkipHomeMode();
+        var colourMode = getColourMode();
+        
         if ( !infoWindows){
             infoWindows = {};
             secondConnectionsTotals = {};
@@ -99,6 +122,7 @@ function MyConnectionsMap(){
                         if (!infoWindows[address]){ 
                             //if unset, create window
                             infoWindows[address] = new GroupInfoWindow({}, record.location.name);
+                            firstConnectionsTotals[address] = 0;
                             secondConnectionsTotals[address] = 0;
                             //precache locations.
                             cachedGeocoder.geocodeQueueAddress(address);
@@ -109,6 +133,7 @@ function MyConnectionsMap(){
                         preloadImage(record);
                         infoWindows[address].appendRecord(record);
                         
+                        firstConnectionsTotals[address] ++;
                         secondConnectionsTotals[address] += record.numConnections;
                     } catch (e){
                         console.log('unexpected error?: '+ e);
@@ -121,67 +146,127 @@ function MyConnectionsMap(){
                 if (!cachedGeocoder.queuedGeocodeComplete()){
                     cachedGeocoder.addEventListener('queuecomplete',
                         function(){
-                            plotConnections(myAddress);
+                            plotConnections(myAddress,colourMode, skipHome);
                         });
+                } else {
+                    plotConnections(myAddress,colourMode, skipHome);
                 }
             }
         } else {
-            plotConnections(myAddress);
+            plotConnections(myAddress,colourMode, skipHome);
         }
     };
-    var bounds = 0;
+    
+    cachedGeocoder.addEventListener('querylimitreached', 
+        function(){
+            /** @TODO A warning of some kind*/
+            updateAppStatus("Sorry, Connections could not be plotted due to: "
+                            +"Daily Geocoding Query Limit Reached. Try again later", false);
+        });
+    
+   /**
+    * Iterates through the connection totals and calculates the connection delta info.
+    * @param {string} myAddress The address to skip 
+    * @returns {MyConnectionsMap.calcConnectionDeltaInfo.results} with the elements:
+    * deltas: { index list of address=>delta}, max: 0, min: 99
+    */
+    var calcConnectionDensityDeltaInfo = function(myAddress){
+        var results = {
+            deltas: {},
+            max: 0,
+            min: 99
+        };
+        /** Calculates the delta for connections. */
+        var calcConnectionDelta = function(first, second){
+             return first + second/(2);
+        };
+         
+        for (var address in firstConnectionsTotals) {
+            if (myAddress===address){ continue;}
+            var d = calcConnectionDelta(firstConnectionsTotals[address],secondConnectionsTotals[address]);
+            results.deltas[address] = d;
+            if (d < results.min){
+                results.min = d;
+            }
+            if (d > results.max){
+                results.max = d;
+            }
+        };
+        return results;
+    };
     
     /**
      * Maps the connections onto the map via the infoWindows list & cachedGeocoder.
      * @param {String} myAddress The address of the current user.
+     * @param {Number} mode 0 is for blue, 1 is for stoplight.
+     * @param {boolean} skiphome <code>true</code> to skip plotting home.
      */
-    function plotConnections(myAddress){
-        updateAppStatus("Plotting Connections...", true); 
+    function plotConnections(myAddress, mode, skiphome){
         var map = mapDisplay.getMap();
+        var bounds = bounds = new google.maps.LatLngBounds();
         
+        var deltaInfo = 0;
+        var colourGrad = 0;
+        if (0 !== mode){
+            updateAppStatus("Calculating Gradients...", true); 
+            deltaInfo = calcConnectionDensityDeltaInfo(skiphome ? myAddress : '');
+            if (1 === mode){
+                //Stop-light colours.
+                colourGrad =  new ColourGradient(deltaInfo.min, deltaInfo.max, '60ec00', 'df0600', 'ffed00');
+            }
+        }
+        updateAppStatus("Plotting Connections...", true); 
         //map.setZoom(1);
-        bounds = new google.maps.LatLngBounds();
+        console.log('skiphome? %s mode? %s', skiphome, mode);
         for (var address in infoWindows) {
             var userIsHere =  address.indexOf(myAddress) >=0 ;
-            console.log('trying: '+address);
+            
+            //console.log('trying: '+address);
             //Try for safety.
             try {
                 //We precached them during sorting.
                 var results = cachedGeocoder.getCachedAddress(address);
                 if (results){
                     console.log('adding: '+address);
-
+                    var lightColor = (colourGrad) ? colourGrad.getHexGradient(deltaInfo.deltas[address]) :
+                                    '#259CE5';
+                    var darkColor =  (colourGrad) ? colourGrad.getHexGradient(deltaInfo.deltas[address], -35) :
+                                    '#136991';
                     var latLng = results[0].geometry.location;
-                        var marker = new FocusMarker({   //new google.maps.Marker({new FocusMarker({ 
+                    
+                        var marker = new FocusMarker({   //new google.maps.Marker({
                             position: latLng,
                             icon: {
                                 path: google.maps.SymbolPath.CIRCLE,
                                 scale: (userIsHere ? 9: 7),
-                                fillColor: '#259CE5',
+                                fillColor: lightColor,
                                 fillOpacity: 0.9,
-                                strokeColor: '#136991',
+                                strokeColor: darkColor, 
                                 strokeWeight: (userIsHere ? 3 :2),
                                 strokeOpacity: (userIsHere ? 1.0 : 0.8)
                               }
                         },
                         {
-                            onFocusStrokeColor: '#259CE5',
+                            onFocusStrokeColor: lightColor,
                             onFocusStrokeOpacity: 1.0
                         });
 
                         var polyline = new FocusPolyline({
                             path: [connectionMap.linkedin.userInfo.location.coordinates, latLng],
                             geodesic: true,
-                            strokeColor: '#136991',
+                            strokeColor: darkColor,//'#136991',
                             strokeOpacity: 0.7,
                             strokeWeight: 5
                         },
                         {
-                            onFocusStrokeColor: '#259CE5',
+                            onFocusStrokeColor: lightColor,//'#259CE5',
                             onFocusStrokeOpacity: 1.0
                         });
                         if (connectionGroups[address]){
                             connectionGroups[address].clear();
+                        }
+                        if (userIsHere && skiphome){
+                            continue;
                         }
                         connectionGroups[address]  = new ConnectionGroup(
                                 map, marker, polyline, infoWindows[address]);
@@ -191,12 +276,12 @@ function MyConnectionsMap(){
                     //add to unknown set.
                 }
             } catch (e){
-                   console.log('Skipped "%s" :', address);
+                   console.log('Skipped "%s" : %s', address, e);
             }
         }
         map.fitBounds(bounds);
         updateAppStatus("Plotting Complete!", false);
-        setRunAndApply(BUTTON_APPLY_VALUE, true);
+        setRunAndApply(VALUE_BUTTON_APPLY, true);
         //clear the status after 2.5 s
         setTimeout(function(){updateAppStatus(""); }, 2500);
     }
@@ -211,7 +296,7 @@ function MyConnectionsMap(){
     function updateAppStatus(message, showSpinner){
         if (typeof showSpinner !== 'undefined'){
             if (!appSpinner){
-                appSpinner = document.getElementById(PROGESS_SPINNER_ID);
+                appSpinner = document.getElementById(ID_PROGESS_SPINNER);
             }
             if (showSpinner){
                 appSpinner.setAttribute('style', 'display:block;');
@@ -220,16 +305,28 @@ function MyConnectionsMap(){
             }
         }
         if (!appStatus){
-            appStatus = document.getElementById(APP_STATUS_ID);
+            appStatus = document.getElementById(ID_APP_STATUS);
         }
         appStatus.innerHTML = message;
     };
+    /** @return {Number} The colour mode selected, 1 for stop-light, 0 for anything else. */
+    function getColourMode(){
+        var select =document.getElementById(ID_COLOUR_CHOICE_CONNECT);
+        var value = ''+select.options[select.selectedIndex].value;
+        console.log('Value: %s', value)
+        return value.indexOf('colour-style-stoplight') === 0 ? 1 : 0;
+    }
+    
+    /** @return {boolean} <code>true</code> to skip home, <code>false</code> otherwise. */
+    function getSkipHomeMode(){
+        var skipHome =document.getElementById(ID_SKIP_HOME);
+        return skipHome.checked;
+    }
     
     function resetConnectionManager(){
         connectManager = new ConnectionManager();
         connectManager.addEventListener('linkedin', 'fetchcomplete', 
             function(results){
-                console.log('fetchAndApplyConnections async: %s', JSON.stringify(results) );
                 processLinkedInConnections(results);
                 if (results.values){
                     connectionMap.linkedin.numConnections =  results.values.length;
@@ -241,7 +338,7 @@ function MyConnectionsMap(){
                     setTimeout(function(){
                         connectionMap.linkedin.disconnectUser('Session Timed-out');
                         updateAppStatus("", false);
-                        setRunAndApply(BUTTON_RUN_VALUE);
+                        setRunAndApply(VALUE_BUTTON_RUN);
                     }, 2500);
                 
         });
@@ -249,13 +346,13 @@ function MyConnectionsMap(){
             function(){
                 updateAppStatus("Sorry, LinkedIn Connections could be fetched due to: "
                                 +"Daily Query Limit Reached. <br/>Try again later", false);
-                setRunAndApply(BUTTON_RUN_VALUE, false);        
+                setRunAndApply(VALUE_BUTTON_RUN, false);        
         });
         connectManager.addEventListener('linkedin', 'unknownerror', 
             function(){
                 updateAppStatus("Sorry, LinkedIn Connections could be fetched due to: "
                                 +"An Unknown Error. Try again later", false);
-                setRunAndApply(BUTTON_RUN_VALUE, false);
+                setRunAndApply(VALUE_BUTTON_RUN, false);
         });
     }
     
@@ -317,7 +414,7 @@ function MyConnectionsMap(){
     connectionMap.linkedin.disconnectUser = function(message){
         var xmlReq = new XMLHttpRequest();
 
-        var disconnect = document.getElementById(DISCONECT_ID);
+        var disconnect = document.getElementById(ID_DISCONECT);
         var orgValue = disconnect.innerHTML;
             disconnect.innerHTML = 'Disconnecting...';
         var disconnectUI = function(){
@@ -389,7 +486,7 @@ function MyConnectionsMap(){
                        connectionMap.moveToUser(true);
                     }
                 });
-        setRunAndApply(BUTTON_RUN_VALUE, true);
+        setRunAndApply(VALUE_BUTTON_RUN, true);
     };
     /** Shows the user on the display. */
     connectionMap.linkedin.showUser = function(){
@@ -403,11 +500,14 @@ function MyConnectionsMap(){
         var fullname  =  this.userInfo.firstName+' '+this.userInfo.lastName;
         var location = this.userInfo.location.name;
         var title = fullname+', '+location;
-
+        
         var userPic = document.createElement('img');
             userPic.setAttribute('id', 'linkedin-user-pic');
             userPic.setAttribute('src', this.userInfo.pictureUrl);
-
+        if (!this.userInfo.pictureUrl ){
+            title = '[No picture] ' + title;
+            userPic.setAttribute('src', 'img/nopicture.png');
+        }
 
         var userName = document.createElement('div');
             userName.setAttribute('id', 'linkedin-user-name');
@@ -461,23 +561,38 @@ function MyConnectionsMap(){
      * @param {boolean} enabled (Optional) Whether to enable or disable the button. Default enabled.
      */
     var setRunAndApply = function(value, enabled){
-        var run = document.getElementById(RUN_AND_APPLY_ID);
+        var controls = document.getElementById(ID_INPUT_CONTROLS);
+        var inputs = controls.getElementsByTagName('input');
+        var selects = controls.getElementsByTagName('select');
+            
+        var run = document.getElementById(ID_RUN_AND_APPLY);
             run.value =  value;
             if (enabled == false){
                 run.setAttribute('disabled', 'disabled');
+                for(var index =0; index < inputs.length; index++ ){
+                    inputs[index].setAttribute('disabled', 'disabled');
+                }
+                for(var index =0; index < selects.length; index++ ){
+                    selects[index].setAttribute('disabled', 'disabled');
+                }
             } else {
                 run.removeAttribute('disabled');
+                for(var index =0; index < inputs.length; index++ ){
+                    inputs[index].removeAttribute('disabled');
+                }
+                for(var index =0; index < selects.length; index++ ){
+                    selects[index].removeAttribute('disabled');
+                }
             }
-        
     };
     //Sets all click events.
     var setClickEvents = function(){
-        document.getElementById(DISCONECT_ID)
+        document.getElementById(ID_DISCONECT)
                 .addEventListener(
                 'click', 
                 function(){ connectionMap.linkedin.disconnectUser();}, 
                 false);
-        document.getElementById(RUN_AND_APPLY_ID)
+        document.getElementById(ID_RUN_AND_APPLY)
                 .addEventListener(
                 'click', 
                 function(){
@@ -502,7 +617,7 @@ function MyConnectionsMap(){
         function(){
             /** @TODO A warning of some kind*/
             updateAppStatus("Sorry, Connections could not be plotted due to: "
-                            +"Daily Query Limit Reached. Try again later");
+                            +"Daily Geocoding Query Limit Reached. Try again later", false);
         });
     cachedGeocoder.addEventListener('unknownerror', 
         function(){
