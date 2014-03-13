@@ -2,7 +2,10 @@
 require_once 'configure.php';
 require_once 'getprofile_func.php';
 
-/** @version 0.2.1-20140307 */
+/** @version 0.2.2-20140313 */
+//Super try: try the entiiire script, in case something goes wrong.
+try {
+    
 
 //redirect uri supplied to linkedin for auth. 
 define('REDIRECT_URI', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME']);
@@ -64,3 +67,8 @@ myclose();
 </script>
 <?php
 exit;
+
+
+} catch (Exception $ex) {
+    echo "Ooops! Something rather unexpecte went wrong.";
+}

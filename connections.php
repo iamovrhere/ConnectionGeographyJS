@@ -15,9 +15,11 @@ require_once 'configure.php';
  * https://developer.linkedin.com/documents/connections-api
  * http://developer.linkedin.com/documents/profile-fields
  * 
- * @version 0.2.0-20140307
+ * @version 0.2.1-20140313
  */
-
+//try everything
+try{
+    
 set_error_handler(array('ErrorHandling', 'errorHandlerException'), E_NOTICE | E_WARNING);
 Session::startSession(SESSION_NAME);
 
@@ -84,3 +86,6 @@ if(!(isset($_REQUEST['auto_page']) && $_REQUEST['auto_page'])){
 exit;
 
 restore_error_handler();
+} catch (Exception $ex) {
+    echo "Ooops! Something very unexpected went wrong.";
+}
