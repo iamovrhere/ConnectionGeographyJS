@@ -1,6 +1,5 @@
 <?php
 require_once 'configure.php';
-require_once 'getprofile_func.php';
 
 /** @version 0.2.3-20140314 */
 //Super try: try the entiiire script, in case something goes wrong.
