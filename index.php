@@ -1,6 +1,11 @@
 <?php
 require_once 'configure.php';
 Session::startSession(SESSION_NAME);
+
+//My auth nonce.
+$auth_nonce = md5(uniqid('', true).'saltis:25262'. time());
+Session::write('my_auth_nonce', $auth_nonce); // unique long string
+
 /** Either false or JSON. Suppressing warnings. */
 set_error_handler(array('ErrorHandling', 'errorHandlerException'), E_NOTICE | E_WARNING);
 $user_json = false;
@@ -16,7 +21,7 @@ restore_error_handler();
   <head>
       <!-- 
           Title: "My Connections Map"
-          Version: 0.1.0a-20140313
+          Version: 0.1.1a-20140314
           By: Jason J.
       -->
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -34,6 +39,10 @@ restore_error_handler();
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
     </script>
+
+    <script type="text/javascript"> 
+        var AUTH_NONCE = '<?php echo $auth_nonce; ?>' ;
+    </script>
     
     <script src="js/FocusMarker.js" type="text/javascript"></script>
     <script src="js/FocusPolyline.js" type="text/javascript"></script>
@@ -47,8 +56,6 @@ restore_error_handler();
     <script src="js/compat.js" type="text/javascript"></script>
     <script id="application-js-start" type="text/javascript" src="js/main.js" ></script>
 
-    
-    
   </head>
   <body >
       <div id="app-notice-banner" ></div>
@@ -63,9 +70,9 @@ restore_error_handler();
                     if ($user_json){
                         echo 'myConnectionsMap.linkedin.setAndShowUser('.$user_json.');';
                     } else {
-                        ?>  
-                            myConnectionsMap.linkedin.showLoginSplash();
-                        <?php
+                        echo 'myConnectionsMap.linkedin.showLoginSplash('.
+                               (isset($_GET['timeout']) ? '"Session Timed-out"' : '').
+                             ')'; 
                     }
                     ?>
                   });

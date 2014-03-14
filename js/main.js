@@ -1,10 +1,11 @@
 
 /**
  * Module for the main of the program.
+ * @param {String} auth_nonce The nonce for the authorization. 
  * @returns {MyConnectionsMap.connectionMap}
  * 
  * @author Jason J.
- * @version 0.9.1-201400313
+ * @version 0.9.2-201400314
  * @type Object
  * @see MapDisplay 0.1.0
  * @see CachedGeocoder 0.3.1
@@ -16,7 +17,7 @@
  * @see ColourGradient 0.2.1
  * @see LinkedInConnect 0.1.2
  */
-function MyConnectionsMap(){
+function MyConnectionsMap(auth_nonce){
     /** The reference to the map element. 
      * @type MapDisplay Typically containing a google.maps.Map */
     var mapDisplay=  new MapDisplay();
@@ -336,7 +337,7 @@ function MyConnectionsMap(){
             function(){ //if not authorized, disconnect.
                 updateAppStatus("Warning: Authorization Error");
                     setTimeout(function(){
-                        connectionMap.linkedin.disconnectUser('Session Timed-out');
+                        connectionMap.linkedin.disconnectUser(true);
                         updateAppStatus("", false);
                         setRunAndApply(VALUE_BUTTON_RUN);
                     }, 2500);
@@ -407,31 +408,34 @@ function MyConnectionsMap(){
         }
         map.panTo(location);
     };
-
+    
 
     /** Used to disconnect the user from the app. 
-     * @param {String} message The message to pass on to the login splash. */
-    connectionMap.linkedin.disconnectUser = function(message){
+     * @param {boolean} sessionTimeOut Default false; whether the session has timedout */
+    connectionMap.linkedin.disconnectUser = function(sessionTimeOut){
         var xmlReq = new XMLHttpRequest();
 
         var disconnect = document.getElementById(ID_DISCONECT);
-        var orgValue = disconnect.innerHTML;
+        //var orgValue = disconnect.innerHTML;
             disconnect.innerHTML = 'Disconnecting...';
         var disconnectUI = function(){
-            document.getElementById('app-controls').style.display = 'none';
+            var stub = ''+window.location.href;
+            stub = stub.replace(/\?.*/i, '')+ (sessionTimeOut? '?timeout=1' : '');
+            window.location.replace(stub);
+            /* document.getElementById('app-controls').style.display = 'none';
             document.getElementById('linkedin-display').innerHTML = '';
             disconnect.innerHTML = orgValue;
-            connectionMap.linkedin.showLoginSplash(message);
+            connectionMap.linkedin.showLoginSplash(message); */
         };
         xmlReq.open("GET", "auth.php?logout=1", true);
         xmlReq.onreadystatechange=function() {
             if (xmlReq.readyState === 4 && xmlReq.status === 200) {
                //We don't care about response text, just that it logged out.
                disconnectUI();
+               connectionMap.linkedin = {};
             }
         };
         xmlReq.send();
-        resetConnections();
     };
 
     /** Sets the main user info and then shows it.
@@ -453,7 +457,7 @@ function MyConnectionsMap(){
                 '<div id="connect-splash-inner" class="centered-item-middle" style="display: none;">'+
                 '</div>';
         document.getElementById('app-container').appendChild(connectSplash);
-        var inConnect = new LinkedInConnect('linkedin-connect-button', 'auth.php');
+        var inConnect = new LinkedInConnect('linkedin-connect-button', 'auth.php?nonce='+auth_nonce);
         var msg = document.createElement('div');
             msg.innerHTML = '(Opens in a new window)';
         var splash = document.getElementById('connect-splash-inner');
@@ -637,7 +641,7 @@ function MyConnectionsMap(){
  * The entry point into the application. 
  * Always call last.
  */
-var myConnectionsMap = MyConnectionsMap();
+var myConnectionsMap = MyConnectionsMap(AUTH_NONCE);
 
 //Encapuslation is your friend
 var browserSupport = {

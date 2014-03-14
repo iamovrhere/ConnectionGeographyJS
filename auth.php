@@ -2,13 +2,9 @@
 require_once 'configure.php';
 require_once 'getprofile_func.php';
 
-/** @version 0.2.2-20140313 */
+/** @version 0.2.3-20140314 */
 //Super try: try the entiiire script, in case something goes wrong.
 try {
-    
-
-//redirect uri supplied to linkedin for auth. 
-define('REDIRECT_URI', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME']);
 
 if ((isset($_GET['logout']) && $_GET['logout']) ||
      (isset($_POST['logout']) && $_POST['logout']) ){
@@ -16,12 +12,28 @@ if ((isset($_GET['logout']) && $_GET['logout']) ||
     echo 'logout';
     exit;
 }
+if (!isset($_GET['nonce'])){
+    header('HTTP/1.1 401 Unauthorized', true, 401);
+    echo 'Invalid nonce';
+    exit;
+} 
+
 Session::startSession(SESSION_NAME);
+$nonce = Session::read ('my_auth_nonce');    
+//redirect uri supplied to linkedin for auth. 
+define('REDIRECT_URI', 'http://' . $_SERVER['SERVER_NAME'] . $_SERVER['SCRIPT_NAME'].'?nonce='.$nonce);
+
 
 $linkedin = new LinkedInAPI(API_KEY, API_SECRET, SCOPE, REDIRECT_URI);
 
 //check for valid session.
-if (!$linkedin->authCheck()){ 
+if (!$linkedin->authCheck($_GET['nonce'], $nonce)){
+    ?>
+<script type="text/javascript">
+    window.opener.location.replace(window.opener.location.href);
+    self.close();
+</script>
+    <?php
     exit;
 }
 
