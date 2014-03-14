@@ -1,5 +1,5 @@
 Linkedin_maps
-date: 2014-02-26
+date: 2014-03-13
 
 testing: https://netbeans.org/kb/docs/webclient/html5-js-support.html
 
@@ -44,8 +44,8 @@ Geocoding:
 
 Design
 -------
-Use workers if possible. 
-Design for FF then chrome.
+(not required) Use workers if possible. 
+(expanded support to IE9) Design for FF then chrome.
 
 1. Use linkedin "connection" API initially. Later, one can try to use search API.
 
@@ -78,27 +78,11 @@ Branch out to include other social networks:
 
 Problems:
 ------------
-
-Multiple people in the same city: how do we give them info boxes, paths, etc?
+(rem some problems solved)
+We have mutual connections, should we exclude them? show them?
 
 Soln: 
 =====
-We build one path + mark per coordinates. 
-This means multiple connections share an info box.
+-Do NOT include mutual connections in the calculations but show them bracketed
+-Offer internal connection web
 
-
-These info boxes will show: 
-[_] You are Here
------------------
-Area: City
-1st Connections: 5 [p] <-- person image
-2nd Connections: 600+ {5 + 500 + ...+x} [p]<-- person image
- [_] Bob 2 500+ [p]<-- person image
- ...(3) Expand <-- expand
-
-(3 - 5 per page)
-[<] 1/10 [>]
-
-Collapse...
-
-Images: 34px - 36px?
