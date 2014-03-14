@@ -1,6 +1,6 @@
 /* Controls the layout of the map, the app settings and layout.
 
-    Version: 0.3.0-20140313
+    Version: 0.3.1-20140313
     Author     : Jason J.
 */
 
@@ -22,11 +22,11 @@ body {
 }
 
 body {
-    height: 90%;
-    width: 80%; 
+    /* height: 90%;
+    width: 80%;  */
+    width: 100%;
     
     margin: auto;
-    margin-top: 10px;
 }
 
 /** All labels are clickable, so pointers for now. */

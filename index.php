@@ -1,6 +1,5 @@
 <?php
 require_once 'configure.php';
-require_once 'getprofile_func.php';
 Session::startSession(SESSION_NAME);
 /** Either false or JSON. Suppressing warnings. */
 set_error_handler(array('ErrorHandling', 'errorHandlerException'), E_NOTICE | E_WARNING);
@@ -16,13 +15,14 @@ restore_error_handler();
 <html>
   <head>
       <!-- 
+          Title: "My Connections Map"
           Version: 0.1.0a-20140313
           By: Jason J.
       -->
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
     <meta content="utf-8" http-equiv="encoding">
     <meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
-    <title>Connections Map (Alpha)</title>
+    <title>My Connections Map (Alpha)</title>
     
     <!-- Linkedin button style. -->
     <link rel="stylesheet" href="css/linkedin_button.css" />
