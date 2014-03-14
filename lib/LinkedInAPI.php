@@ -8,7 +8,7 @@ require_once 'Session.php';
  * @todo abstract linkedin storage to model.
  *
  * @author Jason J.  <admin@ovrhere.com>
- * @version 0.2.0-20140305
+ * @version 0.2.1-20140314
  */
 class LinkedInAPI {
     
@@ -57,9 +57,11 @@ class LinkedInAPI {
             
     /** Performs the OAuth 2 authentication checks, calling the appropriate functions
      * to authorize. 
-     * @return boolean <code>true</code> when authorized.
+     * @param {String nonce1 The expeced nonce
+     * @param {String} nonce2 The given nonce to compare
+     * @return boolean <code>true</code> when authorized, false for incorrect nonce.
      */
-    public function authCheck(){
+    public function authCheck($nonce1 = '', $nonce2 = ''){
         // OAuth 2 Control Flow
         if (isset($_GET['error'])) {
             // LinkedIn returned an error
@@ -82,10 +84,17 @@ class LinkedInAPI {
         } else { 
             Session::checkAndResetExpiration();
             if (!Session::is_set('access_token')) {
+                //check for nonce to prevent abuse.
+                if ($nonce1 !== $nonce2 ){
+                    header('HTTP/1.1 401 Unauthorized', true, 401);
+                    echo 'Invalid nonce...';
+                    return false;
+                }
                 // Start authorization process
                 $this->getAuthorizationCode();
             }
         }
+        
         return true;
     }
     
