@@ -510,7 +510,7 @@ function MyConnectionsMap(auth_nonce){
             userPic.setAttribute('src', this.userInfo.pictureUrl);
         if (!this.userInfo.pictureUrl ){
             title = '[No picture] ' + title;
-            userPic.setAttribute('src', 'img/nopicture.png');
+            userPic.setAttribute('src', RES_ROOT+'/img/nopicture.png');
         }
 
         var userName = document.createElement('div');

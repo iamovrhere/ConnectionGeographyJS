@@ -9,11 +9,12 @@
  * using the form of google.maps.InfoWindowOptions
  * @param {String} locationName (Optional) The location name to display as the area.
  * @author Jason J.
- * @version 0.2.1-201403013
+ * @version 0.2.2-201403014
  * @type GroupInfoWindow
  * @see google.maps.InfoWindow 
  * @see group_info_window.css 0.1.1
  * @see img/nopicture.png
+ * @see RES_ROOT
  */
 function GroupInfoWindow(infoWindowOptions, locationName){
     this.parent.constructor.call(this, infoWindowOptions);
@@ -165,7 +166,7 @@ function GroupInfoWindow(infoWindowOptions, locationName){
         var img = record.pictureUrl ?
                 '<img src="'+record.pictureUrl+'" title="'+fullname+'"/>':
                 //no picture provided, so no picture given.
-                '<img src="img/nopicture.png" title="No Picture"/>';
+                '<img src="'+RES_ROOT+'/img/nopicture.png" title="No Picture"/>';
         var connections = '<span class="connections" >'+
                             record.numConnections+
                             (record.numConnectionsCapped ? '+' : '')+

@@ -21,7 +21,7 @@ restore_error_handler();
   <head>
       <!-- 
           Title: "My Connections Map"
-          Version: 0.1.1a-20140314
+          Version: 0.1.2a-20140314
           By: Jason J.
       -->
     <meta content="text/html;charset=utf-8" http-equiv="Content-Type">
@@ -30,11 +30,11 @@ restore_error_handler();
     <title>My Connections Map (Alpha)</title>
     
     <!-- Linkedin button style. -->
-    <link rel="stylesheet" href="css/linkedin_button.css" />
+    <link rel="stylesheet" href="<?php echo RES_ROOT; ?>/css/linkedin_button.css" />
     <!-- The layout of the app. -->
-    <link rel="stylesheet"  href="css/app_layout.css" />
-    <link rel="stylesheet"  href="css/linkedin_card_layout.css" />
-    <link rel="stylesheet"  href="css/group_info_window.css" />
+    <link rel="stylesheet"  href="<?php echo RES_ROOT; ?>/css/app_layout.css" />
+    <link rel="stylesheet"  href="<?php echo RES_ROOT; ?>/css/linkedin_card_layout.css" />
+    <link rel="stylesheet"  href="<?php echo RES_ROOT; ?>/css/group_info_window.css" />
     
     <script type="text/javascript"
       src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
@@ -42,19 +42,20 @@ restore_error_handler();
 
     <script type="text/javascript"> 
         var AUTH_NONCE = '<?php echo $auth_nonce; ?>' ;
+        var RES_ROOT = '<?php echo RES_ROOT; ?>';
     </script>
     
-    <script src="js/FocusMarker.js" type="text/javascript"></script>
-    <script src="js/FocusPolyline.js" type="text/javascript"></script>
-    <script src="js/GroupInfoWindow.js" type="text/javascript"></script>
-    <script src="js/ConnectionGroup.js" type="text/javascript"></script>
-    <script src="js/ConnectionManager.js" type="text/javascript"></script>
-    <script src="js/CachedGeocoder.js" type="text/javascript"></script>
-    <script src="js/MapDisplay.js" type="text/javascript"></script>
-    <script src="js/LinkedInConnect.js" type="text/javascript"></script>
-    <script src="js/ColourGradient.js" type="text/javascript"></script>
-    <script src="js/compat.js" type="text/javascript"></script>
-    <script id="application-js-start" type="text/javascript" src="js/main.js" ></script>
+    <script src="<?php echo RES_ROOT; ?>js/FocusMarker.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>js/FocusPolyline.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/GroupInfoWindow.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/ConnectionGroup.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/ConnectionManager.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/CachedGeocoder.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/MapDisplay.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/LinkedInConnect.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/ColourGradient.js" type="text/javascript"></script>
+    <script src="<?php echo RES_ROOT; ?>/js/compat.js" type="text/javascript"></script>
+    <script id="application-js-start" type="text/javascript" src="<?php echo RES_ROOT; ?>/js/main.js" ></script>
 
   </head>
   <body >
@@ -103,7 +104,7 @@ restore_error_handler();
             </div>
             <div id="app-status" ></div>
          </div>
-        <img id="app-progress-spinner" src="img/progress_spinner.gif" />
+        <img id="app-progress-spinner" src="<?php echo RES_ROOT; ?>/img/progress_spinner.gif" />
       </div>
         
 
