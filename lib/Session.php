@@ -4,7 +4,7 @@
  * Reusable, should be placed a library for reuse!
  * 
  * @author Jason J. <admin@ovrhere.com>
- * @version 0.1.2-20140313
+ * @version 0.1.3-20140314
  */
 class Session {   
     /** @var String The current session name.     */
@@ -47,10 +47,10 @@ class Session {
                             $params["path"], $params["domain"],
                             $params["secure"], $params["httponly"] );
         }
-        if ($_SESSION){
+        if (isset($_SESSION)){
             $_SESSION[self::$_sess] = array();
+            session_destroy();
         } 
-        session_destroy();
     }
     /** Sets the expiration time for inactivity. If set to null it is removed.
      *  @param number|boolean $time The time in seconds to expire the session in.
