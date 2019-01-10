@@ -480,6 +480,11 @@ function MyConnectionsMap(auth_nonce){
         this.userInfo = userJson;
         var address = this.userInfo.location.name+', '+
                       this.userInfo.location.country.code;
+	/*
+         * TODO: The API has likely changed quite a bit since I last used it. Will need to recheck.
+         * Geocoding Service: This API project is not authorized to use this API.  For more information on authentication and Google Maps JavaScript API services please see: https://developers.google.com/maps/documentation/javascript/get-api-key js:51:110
+You have exceeded your request quota for this API. See https://developers.google.com/maps/documentation/javascript/error-messages?utm_source=maps_js&utm_medium=degraded&utm_campaign=billing#api-key-and-billing-errors js:51:110
+	 */
         cachedGeocoder.geocodeAddress({address:address},
                 function(results, status){
                    if (google.maps.GeocoderStatus.OK === status ) {
