@@ -1,0 +1,494 @@
+/* Creates the layout for the linkedin card.
+    Version: 0.2.0-20140306
+    Author     : Jason J.
+*/
+
+/**
+* #.# The linkedin card
+*
+* Shown on the left top corner with a text wrap.
+*/
+#linkedin-display{
+    min-height: 40px;
+    display: inline-block;
+    clear: both;
+    
+    padding: 3px;
+    padding-left: 5px;
+    
+    font-family: verdana;
+    font-size: 10pt;
+    
+    cursor: pointer;
+}
+
+/** The user picture. */
+#linkedin-user-pic {
+    height: 40px;
+    float: left;
+    margin: 5px;
+    margin-bottom: 0px;
+}
+
+/**
+* #.## User Info
+*
+* All text user info.
+*/
+#linkedin-user-info { 
+    float: left;
+}
+/** The internal element margins. */
+#linkedin-user-info div,
+#linkedin-user-info span { 
+    margin-top: 6px;
+}
+
+/** Reduce the font size, margin and location colour gray. */
+#linkedin-user-info #linkedin-user-location {
+    margin-top: 1px;
+    font-size: 8pt;
+    /** Dark gray. */
+    color: #787878;
+}
+/* Does the styles for the info-windows of the map for this app.
+    Created on : 20140310
+    Version: 0.1.1-20140311
+    Author     : Jason J.
+*/
+
+
+/**
+* #.# You are here Pre-header
+*
+* This states what should be already known.
+*/
+#you-are-here {
+    border-bottom: solid #d6d6d6 2px;
+    padding-bottom: 6px;
+    margin-bottom: 3px;
+    height:  25px;
+    vertical-align: middle;
+    text-align: center;
+}
+/** Resize the image. */
+#you-are-here img {
+    height: 25px;
+    margin-right: 7px;
+}
+
+/**
+* #.# Info box header
+*
+* This states the area & connection totals.
+*/
+.group-info-window .info-header {
+    padding-bottom: 3px;
+    
+    border-bottom: solid #d6d6d6 2px;
+    margin-bottom: 3px;
+}
+/** The location name */
+.group-info-window .info-header .location-name{
+    font-weight: bold;
+    text-align: center;
+    
+    display: inline-block;
+    width: 100%;
+}
+/** Connection styles, not counting the labels. */
+.group-info-window .info-header .connections {
+    float: right;
+    margin-left: 5px;
+}
+
+/** The record and info-header connection spans,
+high-specificity required to override map styles. */
+.group-info-window .info-header span.connections,
+.group-info-window .record span.connections{
+    font-weight: bold;
+    margin-left: 5px;
+    float: right;
+}
+
+/**
+* #.# The page container 
+*
+* Contains each page. 
+We want padding to give .info-footer space.
+*/
+.group-info-window .page-container{
+    margin-top: 10px;
+    margin-bottom: 10px;
+    padding-bottom: 35px;
+}
+
+/**
+* #.## Indivdual Records 
+*
+* Each record, such as name, picture and connection total.
+*/
+/** The width is required for consistency. 
+Line-height is that of the image height.*/
+.group-info-window .page-container .record {
+    line-height: 25px;
+    min-width: 160px;
+}
+
+/** The record images, spacing and height. */
+.group-info-window .record img {
+    height: 25px;
+    margin-right: 5px;
+}
+
+/** The record names, made to be of certain size.
+This gives consistency, without sacrificing flexibility. */
+.group-info-window .record .fullname {
+    overflow-x: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    min-width:  100px;
+    max-width:  300px;
+    display: inline-block;
+}
+
+/**
+* #.# Info box footer
+*
+* This contains the next/prev. buttons and the page count.
+*/
+/** We want it to the bottom always. */
+.group-info-window .info-footer {
+    position: absolute;
+    width: 100%;
+    bottom: 0px;
+    border-top: solid #d6d6d6 2px;
+    padding-top: 3px;
+}
+/** We want the children always be relative to each other. */
+.group-info-window .info-footer * { 
+    position: relative;
+}
+/** Page count in the center, filling space. */
+.group-info-window .info-footer .page-count {
+    position: relative;
+    display: block;
+    z-index: 0;
+    text-align: center;
+}
+/** Previous page is left. We need z-index to ensure it is always clickable. */
+.group-info-window .info-footer .prev-page {
+    float: left;
+    z-index: 1;
+}
+/** Next page is right. We need z-index to ensure it is always clickable. */
+.group-info-window .info-footer .next-page{
+    float: right;
+    z-index: 1;
+}
+
+
+/* Used to style the linkedin button. 
+Extract from the linkedin javascript button.
+    Version: 0.1.0-20140305
+    Author     : Jason J.
+*/
+
+* html #li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link{height:1% !important;}#li_ui_li_gen_1393966178953_0{position:relative !important;overflow:visible !important;display:block !important;}#li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link{border:0 !important;height:20px !important;text-decoration:none !important;padding:0 !important;margin:0 !important;display:inline-block !important;}#li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link:link, #li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link:visited, #li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link:hover, #li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link:active{border:0 !important;text-decoration:none !important;}#li_ui_li_gen_1393966178953_0 a#li_ui_li_gen_1393966178953_0-link:after{content:"." !important;display:block !important;clear:both !important;visibility:hidden !important;line-height:0 !important;height:0 !important;}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-logo{background:url(http://s.c.lnkd.licdn.com/scds/common/u/img/sprite/sprite_connect_v13.png) 0px -276px no-repeat !important;cursor:pointer !important;border:0 !important;text-indent:-9999em !important;overflow:hidden !important;padding:0 !important;margin:0 !important;position:absolute !important;left:0px !important;top:0px !important;display:block !important;width:20px !important;height:20px !important;float:right !important;}#li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-logo{background-position:-20px -276px !important;}#li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-logo, #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-logo{background-position:-40px -276px !important;}.IN-shadowed #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-logo{}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title{color:#333 !important;cursor:pointer !important;display:block !important;white-space:nowrap !important;float:left !important;margin-left:1px !important;vertical-align:top !important;overflow:hidden !important;text-align:center !important;height:18px !important;padding:0 4px 0 23px !important;border:1px solid #000 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;border-left:0 !important;text-shadow:#FFFFFF -1px 1px 0 !important;line-height:20px !important;border-radius:0 !important;-moz-border-radius:0 !important;border-top-right-radius:2px !important;border-bottom-right-radius:2px !important;-moz-border-radius-topright:2px !important;-moz-border-radius-bottomright:2px !important;background-color:#ECECEC !important;background-image:-moz-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}#li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title{border:1px solid #000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;border-left:0 !important;background-color:#EDEDED !important;background-image:-moz-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}#li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title, #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title{color:#666 !important;border:1px solid #000 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;border-left:0 !important;background-color:#DEDEDE !important;background-image:-moz-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.IN-shadowed #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title{}.IN-shadowed #li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title{}.IN-shadowed #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title, .IN-shadowed #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title{}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text, #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text *{color:#333 !important;font-size:11px !important;font-family:Arial, sans-serif !important;font-weight:bold !important;font-style:normal !important;display:inline-block !important;background:transparent none !important;vertical-align:top !important;height:18px !important;line-height:20px !important;float:none !important;}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text strong{font-weight:bold !important;}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text em{font-style:italic !important;}#li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title-text, #li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title-text *{color:#000 !important;}#li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title-text, #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title-text, #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title-text *, #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title-text *{color:#666 !important;}#li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title #li_ui_li_gen_1393966178953_0-mark{display:inline-block !important;width:0px !important;overflow:hidden !important;}.success #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title{color:#333 !important;border-top-color:#E2E2E2 !important;border-right-color:#BFBFBF !important;border-bottom-color:#B9B9B9 !important;border-left-color:#E2E2E2 !important;background-color:#ECECEC !important;background-image:-moz-linear-gradient(top, #FEFEFE 0%, #ECECEC 100%) !important;}.success #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text, .success #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title-text *{color:#333 !important;}.IN-shadowed .success #li_ui_li_gen_1393966178953_0 #li_ui_li_gen_1393966178953_0-title{}.success #li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title{color:#000 !important;border-top-color:#ABABAB !important;border-right-color:#9A9A9A !important;border-bottom-color:#787878 !important;border-left-color:#04568B !important;background-color:#EDEDED !important;background-image:-moz-linear-gradient(top, #EDEDED 0%, #DEDEDE 100%) !important;}.success #li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title-text, .success #li_ui_li_gen_1393966178953_0.hovered #li_ui_li_gen_1393966178953_0-title-text *{color:#000 !important;}.success #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title, .success #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title{color:#666 !important;border-top-color:#B6B6B6 !important;border-right-color:#B3B3B3 !important;border-bottom-color:#9D9D9D !important;border-left-color:#49627B !important;background-color:#DEDEDE !important;background-image:-moz-linear-gradient(top, #E3E3E3 0%, #EDEDED 100%) !important;}.success #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title-text, .success #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title-text, .success #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title-text *, .success #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title-text *{color:#666 !important;}.IN-shadowed .success #li_ui_li_gen_1393966178953_0.clicked #li_ui_li_gen_1393966178953_0-title, .IN-shadowed .success #li_ui_li_gen_1393966178953_0.down #li_ui_li_gen_1393966178953_0-title{}
+/* Controls the layout of the map, the app settings and layout.
+
+    Version: 0.3.1-20140313
+    Author     : Jason J.
+*/
+
+/**
+* #.# General
+*
+* These are styles that are used generically in the app.
+*/
+html { 
+    height: 100%; 
+}
+body { 
+    height: 100%; 
+    margin: 0; 
+    padding: 0; 
+
+    font-family: verdana;
+    font-size: 10pt;
+}
+
+body {
+    /* height: 90%;
+    width: 80%;  */
+    width: 100%;
+    
+    margin: auto;
+}
+
+/** All labels are clickable, so pointers for now. */
+label {
+    cursor: pointer;
+}
+
+/** Centering items veritcally part 1. */
+.centered-item-outer {
+    display: table;
+    position: absolute;
+    height: 100%;
+    width: 100%;
+}
+/** Centering items veritcally part 2. */
+.centered-item-middle {
+    display: table-cell;
+    vertical-align: middle;
+}
+
+/**
+* #.# Notice Banner
+*
+* The warnings and notices that the current browser may not be compatible.
+*/
+#app-notice-banner {
+    /** Hidden by default. */
+    display: none;
+    position: relative;
+    
+    /* Yellowish */
+    background: #fcfccc;
+    padding: 5px;
+    
+    font-weight: bold;
+    font-family: arial;
+    text-align: center;
+    font-style: italic;
+}
+/**The close button for the banner. */
+#close-notice-banner {
+    position:absolute;
+    top:3px;
+    right:3px;
+    
+    display: block;
+    border: 1px #ededa3 solid;
+    padding: 3px;
+    line-height: 16px; 
+    height: 16px; 
+    width: 16px;
+        
+    color:#000;
+    font-family:sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    text-decoration:none;
+    
+}
+
+
+
+/**
+* #.# App container
+*
+* This is the main container of the app where all the content resides.
+*/
+#app-container {
+    height: 100%;
+    position: relative;
+    
+} 
+ 
+/**
+* #.## Map Container/Canvas
+*
+* This the map section; minimal styling here.
+*/
+#map-canvas { 
+    height: 100%;
+}
+
+/**
+* #.## App Controls
+*
+* This where the main app controls and HUD are shown.
+*/
+#app-controls {
+    position: absolute;
+    top: 0px;
+    
+    min-height: 40px;
+    width: 100%;
+    
+    clear: both;
+    /** Places controls in front of the map. */
+    z-index: 99;
+}
+/** The background style for the HUD. 
+Currently a transparent white. */
+#app-controls-background {
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    /** Ensure it is in the background. */
+    z-index: -1;
+    
+    background: white;
+    /* IE 8 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
+   /* IE 5-7 
+   filter: alpha(opacity=70);*/
+   /* Safari 1.x */
+   -khtml-opacity: 0.7;
+   /* Good browsers */
+   opacity: 0.7;
+}
+/** Required to float left to center the app status. */
+#linkedin-display {
+    float: left;
+}
+
+/**
+* #.### The application status
+*
+* The status of what the application is currently doing or certain errors.
+*/
+#app-status { 
+    width: 100%;
+    height: 100%;
+    line-height: 50px;
+    
+    text-align: center;
+    /** Greyish-black. */
+    color: #555;
+    text-indent: 5%;
+}
+/** The spinner in the middle of the page, used to indicate the browser has not frozen. */
+#app-progress-spinner {
+    /** Hide by default. */
+    display: none;
+    
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    
+    height: 60px;
+    margin: -50px;
+    /*margin-left: -50px;*/
+}
+
+/**
+* #.### Right panel
+*
+* The right part of the control panel with inputs
+*/
+#right-panel {
+    float: right;
+    margin: 3px;
+}
+
+/** The disconnect link being aligned to the right. */
+#disconnect-app-action {
+    float: right;
+    margin: 3px;
+    font-size: 8pt;
+}
+/** Setting the disconect link to be red on hover. */
+#disconnect-app-action:hover {
+    color: red;
+}
+
+/**
+* #.#### Inputs
+*
+* The actual inputs of the app. Checkboxes, buttons, etc.
+*/
+#input-controls {
+    font-size: 9pt;
+}
+/** Set all the contents to be centered vertically. */
+#input-controls * {
+    position: relative;
+    display:inline-block;    
+    vertical-align:middle; 
+}
+
+
+/** Select dropdown for colouring of connections*/
+#colour-by-connections{
+    width: 100px;
+}
+/** Fix the dropdowns. */
+#colour-by-connections option {
+    display: block;
+}
+
+/** DEPRECATED 
+Set the colour by connections input to be pointer and centered. */
+#colour-by-connections-wrapper input, 
+#colour-by-connections-wrapper label {
+    position: relative;
+    display:inline-block;    
+    vertical-align:middle; 
+    cursor: pointer;
+}
+
+/**
+/////////////////////////////////////////////////////////////////////////////
+*/
+
+/**
+* #.### Connect splash 
+*
+* The splash that covers the map and requests the user to connect.
+*/
+#connect-splash {
+    position: absolute;
+    top: 0px;
+    height: 100%;
+    width: 100%;
+    
+    text-align: center;
+    font-size: 8pt;
+}
+/** The background of the splash, translucent white. */
+.splash-background {
+    position: absolute;
+    height: 100%;
+    width: 100%;
+    background: white;
+    /* IE 8 */
+   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
+   /* IE 5-7 
+   filter: alpha(opacity=50);*/
+   
+   /* Safari 1.x */
+   -khtml-opacity: 0.5;
+
+   /* Good browsers */
+   opacity: 0.5;
+}
+
+/** Centering items veritcally part 3. 
+See: .centered-item-outer
+See: .centered-item-middle  
+*/
+#linkedin-connect-button { 
+    position: absolute;
+    width: 140px;
+    left: 50%;
+    margin-top: -20px;
+    margin-left: -70px;
+}
+
+/** The message displayed about connect. */
+#connect-splash #connect-splash-message{
+    /** Darker red. */
+    color: #d22;
+    font-weight: bold;
+    
+    position: absolute;
+    width: 300px;
+    left: 50%;
+    margin-top: -80px;
+    margin-left: -150px;
+}
