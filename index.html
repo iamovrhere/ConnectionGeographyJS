@@ -13,20 +13,36 @@
     
     <link rel="stylesheet" href="bin/ConnectionGeography.css" />
     
-    <!-- TODO Need to figure out how to load the key dynamically. -->
-    <script type="text/javascript"
-      src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAKEjJoevEsGcoXUiguLQGxuGDm1vY_fg0&sensor=false">
-    </script>
-
-    <script type="text/javascript"> 
+    <script type="text/javascript" src="bin/SecretKey.js"></script>
+    <script id='google-maps-lib' async defer type="text/javascript"></script>
+    <script id="application-js-start" type="text/javascript" ></script>
+    <script type="text/javascript">
         var AUTH_NONCE = '';
         var RES_ROOT = 'bin/';
+	function initMap() {
+	   let script = document.getElementById('application-js-start');
+	   script.onload = function() {
+	     const userInfo = {
+	       firstName: 'John',
+	       lastName: 'Doe',
+	       location: {
+	         name: 'Calgary, AB',
+		 country: {code: 'CA', name: 'Canada'}
+	       }
+	     };
+             myConnectionsMap.linkedin.setAndShowUser(userInfo);
+	   };
+	   script.setAttribute('src', 'bin/ConnectionGeography.js')
+	}
+	(function() {
+	   const googleSource = `https://maps.googleapis.com/maps/api/js?key=${SECRET_KEY}&callback=initMap&v=3.33`;
+	   let script = document.getElementById('google-maps-lib');
+	   script.setAttribute('src', googleSource);
+	})();
     </script>
-    
-    <script id="application-js-start" type="text/javascript" src="bin/ConnectionGeography.js" ></script>
 
   </head>
-  <body >
+  <body>
       <div id="app-notice-banner" ></div>
     <div id="app-container">
         <div id="map-canvas" ></div>
@@ -34,18 +50,7 @@
             <div id="app-controls-background" ></div>
             <div id="linkedin-display"  style="display: none;"></div>            
                 <script type="text/javascript">
-                google.maps.event.addDomListener(window, 'load', function(){ 
-		    const userInfo = {
-			firstName: 'John',
-			lastName: 'Doe',
-			location: {
-				name: 'Calgary, AB',
-				country: {code: 'CA', name: 'Canada'}
-			}
-		    };
-                    myConnectionsMap.linkedin.setAndShowUser(userInfo);
-                  });
-                  </script>
+		</script>
             <div id="right-panel">
               <div id="disconnect-wrapper">
                   <a href="javascript:void(0)" id="disconnect-app-action" 

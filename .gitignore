@@ -3,3 +3,6 @@
 *~
 .*sw*
 nbproject/
+
+# This is a temporary secret while working out the script basics
+bin/SecretKey.js
