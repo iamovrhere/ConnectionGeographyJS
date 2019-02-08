@@ -43,8 +43,8 @@ function MapDisplay(){
         mapOptions);
     };  
     
-    //Loads the application when the window loads.
-    google.maps.event.addDomListener(window, 'load', this.init);    
+    // TODO: This was changed during the upgrade; newer versions of google maps provide callback
+    this.init();
 }
 
 

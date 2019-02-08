@@ -908,8 +908,8 @@ function MapDisplay(){
         mapOptions);
     };  
     
-    //Loads the application when the window loads.
-    google.maps.event.addDomListener(window, 'load', this.init);    
+    // TODO: This was changed during the upgrade; newer versions of google maps provide callback
+    this.init();
 }
 
 
@@ -2020,7 +2020,8 @@ You have exceeded your request quota for this API. See https://developers.google
             var controlPadding = document.createElement('div');
                 controlPadding.setAttribute('id', 'special-hidden-control-padding');
                 controlPadding.setAttribute('style', 'width: 100%; height: 55px;');
-            mapDisplay.getMap().controls[google.maps.ControlPosition.TOP_CENTER].push(controlPadding);
+	    // TODO: Revist this. The controls have been changed since the 2014-2015 version
+            // mapDisplay.getMap().controls[google.maps.ControlPosition.TOP_CENTER].push(controlPadding);
         } 
         
     };
