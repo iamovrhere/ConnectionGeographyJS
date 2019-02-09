@@ -3,7 +3,7 @@
 # Will advance to a more sophisticated one once the basic userscript loading is done.
 
 echo "Cleaning old build..."
-rm -rf bin/*
+find bin ! -name '*SecretKey.js' -type f -exec rm -rf {} +
 
 echo "Copying images..."
 cp -r src/img/ bin/
