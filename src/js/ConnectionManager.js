@@ -58,55 +58,93 @@ function ConnectionManager() {
     /** Builds the function to handle the response.
      * @param {XMLHttpRequest} xmlreq  The current request that is responding.
      * @return {Function} The function to handle the response. */
-    var onresponse = function(xmlreq){
-        return function(){
-            if (xmlreq.readyState === 4){
-                if (xmlreq.status === 200){
-                    var json = 0; 
-                    try {
-                        json = JSON.parse(xmlreq.responseText);
-                    } catch (e){
-                        //unexpect behaviour.
-                    }
-                    if (json){
-                        
-                        //If undefined, then it must not have anything set.
-                        if (typeof linkedinConnections._total === 'undefined'){
-                           linkedinConnections= json;
-                        } else {
-                            //we must have some elements set already.);
-                            if (Array.isArray(linkedinConnections.values)){
-                                linkedinConnections.values = 
-                                    linkedinConnections .values
-                                                        .concat(json.values);
-                            }
-                        }
-                        
-                        if (linkedinConnections.values && 
-                            json._total > linkedinConnections.values.length){
-                            var xmlhttp2 = new XMLHttpRequest();
-                            var arg = 'start='+linkedinConnections.values.length;
-                            
-                            xmlhttp2.open('GET', 'connections.php?'+arg, true);
-                            xmlhttp2.send();
-                            xmlhttp2.onreadystatechange = onresponse(xmlhttp2);
-                        } else {
-                            fireEvent('linkedin', 'fetchcomplete');
-                            requestComplete = true;
-                        }
-                    }
-                } else if (xmlreq.status === 401) {
-                    fireEvent('linkedin', 'authorizationerror');
-                    requestSent = false;
-                } else if (xmlreq.status === 403) {
-                    fireEvent('linkedin', 'querylimitreached');
-                    requestSent = false;
-                } else {
-                    fireEvent('linkedin', 'unknownerror');
-                    requestSent = false;
-                }
-            }
-        };
+    const mockResponse = function(){
+	// TODO replace with actual data scraping.
+	setTimeout(() => {
+		const json = {
+		  values: [
+	     	    {
+	              firstName: 'Who',
+	              lastName: 'First',
+		      numConnections: 5,
+	              location: {
+	                name: 'Calgary, AB',
+		        country: {code: 'CA', name: 'Canada'}
+	              },
+		    },
+		    {
+	              firstName: 'Jack',
+	              lastName: 'Black',
+		      numConnections: 1,
+	              location: {
+	                name: 'Toronto, ON',
+		        country: {code: 'CA', name: 'Canada'}
+	              },
+		    },
+		    {
+	              firstName: 'John',
+	              lastName: 'Doe',
+		      numConnections: 5,
+	              location: {
+	                name: 'Calgary, AB',
+		        country: {code: 'CA', name: 'Canada'}
+	              },
+		    },
+		    {
+	              firstName: 'Bob',
+	              lastName: 'Doe',
+		      numConnections: 10,
+	              location: {
+	                name: 'Saint Michael, Barbados',
+		        country: {code: 'BB', name: 'Barbados'}
+	              },
+		    },
+		    {
+	              firstName: 'Jane',
+	              lastName: 'Doe',
+		      numConnections: 10,
+	              location: {
+	                name: 'Saint Michael, Barbados',
+		        country: {code: 'BB', name: 'Barbados'}
+	              },
+		    },
+		    {
+	              firstName: 'Bob',
+	              lastName: 'Doe',
+		      numConnections: 10,
+	              location: {
+	                name: 'Saint Michael, Barbados',
+		        country: {code: 'BB', name: 'Barbados'}
+	              },
+		    },
+		    {
+	              firstName: 'Jane',
+	              lastName: 'Doe',
+		      numConnections: 10,
+	              location: {
+	                name: 'Saint Michael, Barbados',
+		        country: {code: 'BB', name: 'Barbados'}
+	              },
+		    },
+		  ],
+		  _total: 7
+		};
+			
+		//If undefined, then it must not have anything set.
+		if (typeof linkedinConnections._total === 'undefined'){
+		   linkedinConnections= json;
+		} else {
+		    //we must have some elements set already.);
+		    if (Array.isArray(linkedinConnections.values)){
+			linkedinConnections.values = 
+			    linkedinConnections .values
+						.concat(json.values);
+		    }
+		}
+			
+		fireEvent('linkedin', 'fetchcomplete');
+		requestComplete = true;
+	}, 5000);
     };
         
     ////////////////////////////////////////////////////////////////////////////
@@ -135,11 +173,7 @@ function ConnectionManager() {
      * It is suggested you call addEventListener with 'fetchcomplete'. */
     this.fetchConnections = function(){
         if (!requestSent){
-            var xmlhttp = new XMLHttpRequest();
-            xmlhttp.open('GET', 'connections.php', true);
-            xmlhttp.send();
-            xmlhttp.onreadystatechange = onresponse(xmlhttp);
-            requestSent = true;
+	  mockResponse();
         } else if (requestComplete) {
             fireEvent('linkedin', 'fetchcomplete');
         }
