@@ -7,6 +7,35 @@
 // @grant       GM.xmlHttpRequest
 // ==/UserScript==
 
+console.log('Is this loading?');
+
+// TODO: Still need to reconsile this with linkedin's Content-Security-Policy
+(function()
+  /*
+   * In order to use LinkedIn's internal API we need their Cross-Site Request Forgery token. 
+   * As such, we're going to sneak a peak into all the headers being sent. Once we get our token,
+   * we'll reset the call and store token.
+   */
+	const setRequestHeaderOriginal = XMLHttpRequest.prototype.setRequestHeader;
+  console.log('IIFE');
+ 
+ 	// Current configuration is: "csrf-token", "ajax:12345678901234567890"
+ 	XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
+  	// Call original with original arguments.
+  	setRequestHeaderOriginal.apply(this, arguments);
+  
+  	// We're only interested in the csrf for now.
+  	if (/csrf/.test(header)) {
+      console.log('Found our CSRF: %s', value); 
+      // TODO store this to local storage & determine its life.
+      
+      // We have our token now reset.
+      XMLHttpRequest.prototype.setRequestHeader = setRequestHeaderOriginal;
+    }
+	};
+})();
+
+
 const URL_BASE = 'example.com';
 
 /**
@@ -55,3 +84,4 @@ getResource('bin/ConnectionGeography.js']).then(jsContent => {
   scriptBlock.innerHTML = jsContent;
   // TODO decide when to kick off the script.
 });
+
