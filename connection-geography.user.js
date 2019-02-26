@@ -10,6 +10,9 @@
 console.log('Is this loading?');
 
 // TODO: Still need to reconsile this with linkedin's Content-Security-Policy
+// LinkedIn has a pretty locked down CSP; https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy
+// It may not be possible to do this automatically. One may need to restort to the ol' console copy-paste
+// approach.
 (function()
   /*
    * In order to use LinkedIn's internal API we need their Cross-Site Request Forgery token. 
