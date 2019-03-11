@@ -25,75 +25,50 @@ console.log('Is this loading?');
 
   /*
    * In order to use LinkedIn's internal API we need their Cross-Site Request Forgery token.
-   * As such, we're going to sneak a peak into all the headers being sent. Once we get our headers,
-   * for the given end point,
+   * As such, we're going to grab the token from the document cookie and re-use some static headers.
    *
    * Current configuration is: "csrf-token", "ajax:12345678901234567890"
    *
    * See:
-   *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
-   *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/open
-   *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/setRequestHeader
+   *  - https://developer.mozilla.org/en-US/docs/Web/API/Document/cookie
    */
   (function() {
-
-    const LOCAL_STORAGE = 'connection-geography';
-    const setRequestHeaderOriginal = window.XMLHttpRequest.prototype.setRequestHeader;
-    const openOriginal = window.XMLHttpRequest.prototype.open;
-    const sendOriginal = window.XMLHttpRequest.prototype.send;
-
-    function testAndSaveHeaders(o) {
-      if (!o.url || !o.headers) {
-        log.warning('Called saved prematurely.');
-        return;
+    const extractToken = document.cookie.match(/JSESSIONID=\"(ajax:[0-9]+?)\";/);
+    const initStorage = {
+      linkedInHeaders: {
+        "accept": "application/vnd.linkedin.normalized+json+2.1",
+        "csrf-token": extractToken[1],
+        "x-li-lang": "en_US",
+        "x-li-track": "{\"clientVersion\":\"1.2.7986\",\"osName\":\"web\",\"timezoneOffset\":-6,\"deviceFormFactor\":\"DESKTOP\",\"mpName\":\"voyager-web\"}",
+        "x-restli-protocol-version": "2.0.0",
+        "test": "foobar"
       }
-      if (
-        /\/voyager\/api\//.test(o.url) &&
-        /application\/vnd\.linkedin\.normalized\+json/.test(o.headers.accept)
-      ) {
-        console.log('testAndSaveHeaders - resetting');
-        /* We have our token now reset. */
-        window.XMLHttpRequest.prototype.setRequestHeader = setRequestHeaderOriginal;
-        window.XMLHttpRequest.prototype.open = openOriginal;
-        window.XMLHttpRequest.prototype.send = sendOriginal;
+    }
+    let storage = localStorage.getItem('connection-geography') ? JSON.parse(localStorage.getItem('connection-geography')) : initStorage;
+    localStorage.setItem('connection-geography', JSON.stringify(storage));
+    console.log('connection-geography : ', localStorage.getItem('connection-geography') );
 
-        let storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE));
-        storage.linkedInHeaders = o.headers;
-        localStorage.setItem(LOCAL_STORAGE, JSON.stringify(storage));
+    // Need to decodeURIComponent from the observed endpoints.
+    const testPoint = 'https://www.linkedin.com/voyager/api/search/history?count=10';
+    let xhr = new XMLHttpRequest();
+    xhr.open('GET', testPoint, true);
+    xhr.withCredentials = true;
+
+    for (let header in storage.linkedInHeaders) {
+      if (storage.linkedInHeaders.hasOwnProperty(header)) {
+        xhr.setRequestHeader(header, storage.linkedInHeaders[header]);
       }
     }
 
-    window.XMLHttpRequest.prototype.send = function() {
-      /* Call original with original arguments. */
-      sendOriginal.apply(this, arguments);
-
-      /* Now we have collected all the header and url info we can test and save. */
-      testAndSaveHeaders(this.tokenExtraction);
-      delete this.tokenExtraction;
+    xhr.onload = () => {
+      if (xhr.readyState === xhr.DONE && xhr.status === 200) {
+        console.log(xhr.response, xhr.responseXML);
+      } else {
+        console.error('Failed the UserScript request test')
+      }
     };
+    xhr.send();
 
-    window.XMLHttpRequest.prototype.open = function(method, url) {
-      openOriginal.apply(this, arguments);
-
-      this.tokenExtraction = this.tokenExtraction || {};
-      let extract = this.tokenExtraction;
-      extract.url = url;
-
-      console.log('open ' + url);
-      console.log(extract);
-    };
-
-    window.XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
-      setRequestHeaderOriginal.apply(this, arguments);
-
-      this.tokenExtraction = this.tokenExtraction || {};
-      let extract = this.tokenExtraction;
-      extract.headers = extract.headers || {};
-      extract.headers[header] = value;
-
-      console.log(`setRequestHeader ${header} ${value}`);
-      console.log(extract);
-    };
   }());
 
 })();

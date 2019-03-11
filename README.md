@@ -6,7 +6,7 @@ A means to visually represent the distribution of LinkedIn connections, moreover
 Background
 ------
 
-Once upon a time, I wrote a little application that used LinkedIn's API represent the distribution of LinkedIn connections geographically, with both 1st and 2nd connections. The application made use of vanilla JavaScript, Google Maps JavaScript API, and the LinkedIn PHP API. It worked and, while I still had various plans to improve on it, it accomplished the goal.
+Once upon a time, I wrote an application that used LinkedIn's API represent the distribution of LinkedIn connections geographically, with both 1st and 2nd connections. The application made use of vanilla JavaScript, Google Maps JavaScript API, and the LinkedIn PHP API. It worked and, while I still had various plans to improve on it, it accomplished the goal.
 <img src="./screenshots/connectgeo_screenshot_20140113.png?raw=true" title="Connection-Geography (original)"  /> 
 ]
 
@@ -21,6 +21,6 @@ Current Plan of Action
  2. ~~Get the project working with more recent version of Google Maps API~~
  3. Workout how to get the LinkedIn connection/people data
    1. **In Progress** 
- 4. Rework the project as MVP UserScript, re-using some snippets of the HTML & JavaScript
+ 4. Rework the project as MVP UserScript, re-using some snippets of the old HTML & JavaScript
  5. Rework the project using actual library vs. vanilla JavaScript
  6. Work on missing features
