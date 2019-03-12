@@ -41,15 +41,16 @@ console.log('Is this loading?');
         "x-li-lang": "en_US",
         "x-li-track": "{\"clientVersion\":\"1.2.7986\",\"osName\":\"web\",\"timezoneOffset\":-6,\"deviceFormFactor\":\"DESKTOP\",\"mpName\":\"voyager-web\"}",
         "x-restli-protocol-version": "2.0.0",
-        "test": "foobar"
+        "test": "foobar",
+        "Content-Type": "application/json"
       }
     }
     let storage = localStorage.getItem('connection-geography') ? JSON.parse(localStorage.getItem('connection-geography')) : initStorage;
     localStorage.setItem('connection-geography', JSON.stringify(storage));
     console.log('connection-geography : ', localStorage.getItem('connection-geography') );
 
-    // Need to decodeURIComponent from the observed endpoints.
-    const testPoint = 'https://www.linkedin.com/voyager/api/search/history?count=10';
+    // Need to consider encode/decodeURIComponent from the observed endpoints.
+    const testPoint = 'https://www.linkedin.com/voyager/api/search/blended?origin=FACETED_SEARCH&count=30&queryContext=List(spellCorrectionEnabled-%3Etrue,relatedSearchesEnabled-%3Etrue,kcardTypes-%3EPROFILE%7CCOMPANY)&q=all&filters=List(network-%3EF%7CS,resultType-%3EPEOPLE)&start=0';
     let xhr = new XMLHttpRequest();
     xhr.open('GET', testPoint, true);
     xhr.withCredentials = true;
@@ -62,12 +63,24 @@ console.log('Is this loading?');
 
     xhr.onload = () => {
       if (xhr.readyState === xhr.DONE && xhr.status === 200) {
-        console.log(xhr.response, xhr.responseXML);
+        console.log('xhr: ' + xhr.response);
       } else {
         console.error('Failed the UserScript request test')
       }
     };
     xhr.send();
+
+    fetch(testPoint, {
+        method: "GET", // *GET, POST, PUT, DELETE, etc.
+        mode: "cors", // no-cors, cors, *same-origin
+        cache: "no-cache", // *default, no-cache, reload, force-cache, only-if-cached
+        credentials: "same-origin", // include, *same-origin, omit
+        headers: initStorage.linkedInHeaders,
+        redirect: "follow" // manual, *follow, error
+    })
+    .then(response => response.text()) // parses response to JSON
+    .then(json => console.log('fetch :' + json))
+    .catch(error => console.log(error));
 
   }());
 

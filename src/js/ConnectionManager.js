@@ -3,6 +3,9 @@
  * http://developer.linkedin.com/documents/profile-fields */
 /**
  * Caches requests made to Linkedin API.
+ *
+ * TODO Rework to use Promises instead of using event handlers.
+ * TODO This has a terrible name; rename.
  * 
  * @returns {ConnectionManager}
  * 
