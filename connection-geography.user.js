@@ -2,9 +2,15 @@
 // @name        connection-geography
 // @namespace   ovrhere.com
 // @description Adds a connection map to LinkedIn to show the distribution of connections.
-// @include     https://www.linkedin.com/search/*
 // @version     0.0.0
-// @grant       GM.xmlHttpRequest
+// @domain       linkedin.com
+// @domain       www.linkedin.com
+// @include      https://www.linkedin.com/search/*
+// @include      https://www.google.com/*
+// @include      http://www.linkedin.com/*
+// @include      https://www.linkedin.com/*
+// @inject-into page
+// @grant         GM_xmlhttpRequest
 // ==/UserScript==
 
 console.log('Is this loading?');
@@ -86,53 +92,77 @@ console.log('Is this loading?');
 
 })();
 
-
-const URL_BASE = 'example.com';
-
-/**
- * See: https://wiki.greasespot.net/GM.xmlHttpRequest
- *
- */
-function getResource(file) {
-  return new Promise((resolve, reject) => {
-    GM.xmlHttpRequest({
-      method: "GET",
-      url: `$URL_BASE/$file`,
-      onload: function(response) {
-        resolve(response.innerHTML);
-
-        console.log([
-          response.status,
-          response.statusText,
-          response.readyState,
-          response.responseHeaders,
-          response.responseText,
-          response.finalUrl,
-          responseXML
-        ].join("\n"));
-      },
-      onerror: function(response) {
-        reject(response);
-      }
-    });
-  });
-}
+// Separate idea below
 
 const mountPoint = document.createElement('div');
-const cssBlock = document.createElement('link');
-cssBlock.setAttribute('rel', 'stylesheet');
+mountPoint.setAttribute('id', 'connection-geography');
+
+const cssBlock = document.createElement('style');
 cssBlock.setAttribute('type', 'text/css');
-cssBlock.setAttribute('href', `$URL_BASE/bin/ConnectionGeography.css`);
+
 const scriptBlock = document.createElement('script');
 scriptBlock.setAttribute('type', 'text/javascript');
 
 mountPoint.appendChild(cssBlock);
 mountPoint.appendChild(scriptBlock);
+document.getElementsByTagName('body')[0].appendChild(mountPoint);
 //TODO Find a suitable mount point in the page.
 //TODO Find a suitable time to mount the mount point.
 
-getResource('bin/ConnectionGeography.js']).then(jsContent => {
-  scriptBlock.innerHTML = jsContent;
-  // TODO decide when to kick off the script.
+
+const URL_BASE = 'example.com';
+
+/**
+ * See:
+ * - https://violentmonkey.github.io/api/gm/
+ * - https://wiki.greasespot.net/GM.xmlHttpRequest
+ *
+ * @param {string} file The file relative to URL_BASE
+ */
+function getResource(file) {
+  const resource = `${URL_BASE}/${file}`;
+  console.log('fetching: ' + resource)
+  return new Promise((resolve, reject) => {
+  console.log('starting promise');
+
+  GM_xmlhttpRequest({
+    method: "GET",
+    url: resource,
+    onload: function(response) {
+      console.log('onload: ' + resource)
+      resolve(response.responseText);
+    },
+    onerror: function(response) {
+      console.log('onerror')
+      reject(response);
+    }
+  });
+  console.log('end promise');
+});
+
+}
+
+const resources = [
+  getResource('bin/ConnectionGeography.js')
+    .then(jsContent => {
+      //scriptBlock.innerHTML = 'console.log("inline experiment 3")'; // This does not work.
+      eval('console.log("inline experiment 4")'); // This does work.
+      // This half works; the code won't run because our one-line comments break things. Need to remove one-line comments.
+      scriptBlock.innerHTML = jsContent;
+      // We get one load for inner html of a script node but ONLY if we are adding a script node.
+      // If we are adding a script node as text via html it won't run.
+      const scriptBlock2 = document.createElement('script');
+scriptBlock2.setAttribute('type', 'text/javascript');
+      scriptBlock2.innerHTML = 'console.log("inline experiment 3")';
+      mountPoint.appendChild(scriptBlock2);
+
+    }),
+  getResource('bin/ConnectionGeography.css')
+    .then(cssContent => {
+      cssBlock.innerHTML = cssContent;
+    })
+];
+Promise.all(resources).then(() => {
+  getResource('bin/index.tpl').then(html => mountPoint.innerHTML += html);
 });
 
