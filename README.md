@@ -19,8 +19,10 @@ Current Plan of Action
 
  1. ~~Drop all the ancient PHP code~~
  2. ~~Get the project working with more recent version of Google Maps API~~
- 3. Workout how to get the LinkedIn connection/people data
-   1. **In Progress** 
- 4. Rework the project as MVP UserScript, re-using some snippets of the old HTML & JavaScript
- 5. Rework the project using actual library vs. vanilla JavaScript
- 6. Work on missing features
+ 3. *Workout how to get the LinkedIn connection/people data*
+   1. **Partially complete** 
+ 4. Workout how to get Google Maps loading in LinkedIn DOM despite CSP.
+   1. **In progress**  
+ 5. Rework the project as MVP UserScript, re-using some snippets of the old HTML & JavaScript
+ 6. Rework the project using actual library vs. vanilla JavaScript
+ 7. Work on missing features
