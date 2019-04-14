@@ -1,12 +1,12 @@
-Connection-Geography UserScript
+Connection-Geography JS
 ======
 
-A means to visually represent the distribution of LinkedIn connections, moreover the distribution of “extended” connections (second connections, etc).
+A means to visually represent the distribution of LinkedIn connections.
 
 Background
 ------
 
-Once upon a time, I wrote an application that used LinkedIn's API represent the distribution of LinkedIn connections geographically, with both 1st and 2nd connections. The application made use of vanilla JavaScript, Google Maps JavaScript API, and the LinkedIn PHP API. It worked and, while I still had various plans to improve on it, it accomplished the goal.
+Back in 2014-2015, I wrote an application that used LinkedIn's API represent the distribution of LinkedIn connections geographically, with both 1st and 2nd connections. The application made use of vanilla JavaScript, Google Maps JavaScript API, and the LinkedIn PHP API. It worked and, while I still had various plans to improve on it, it accomplished the goal.
 <img src="./screenshots/connectgeo_screenshot_20140113.png?raw=true" title="Connection-Geography (original)"  />
 ]
 
@@ -25,7 +25,9 @@ Current Plan of Action
  [ ] *Workout how to get Google Maps loading in LinkedIn DOM despite CSP.*
    *  **Partially complete** (see: [GoogleMapsEverywhereCsp](https://github.com/iamovrhere/GoogleMapsEverywhereCsp))
 
- [ ] Rework the project as MVP UserScript, re-using some snippets of the old HTML & JavaScript
+ [ ] Rework the project as MVP UserScript/Plugin, re-using some snippets of the old HTML & JavaScript
+  * **May need to rework into Plugin due to CSP issues**
+
  [ ] Detail the setup of this script + dependencies
  [ ] Rework the project using actual library vs. vanilla JavaScript
  [ ] Work on missing features
