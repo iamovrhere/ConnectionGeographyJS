@@ -10,7 +10,7 @@ Back in 2014-2015, I wrote an application that used LinkedIn's API represent the
 <img src="./screenshots/connectgeo_screenshot_20140113.png?raw=true" title="Connection-Geography (original)"  />
 ]
 
-Unforunately, in February 2015 [LinkedIn announced they would be eliminating some of their APIs](https://developer.linkedin.com/blog/posts/2015/developer-program-changes) for general use. There was an option to request permissions which was made and never responded to. In the end, I decided to abandon the project, for a time.
+Unforunately, in February 2015 [LinkedIn announced they would be eliminating some of their APIs](https://developer.linkedin.com/blog/posts/2015/developer-program-changes) for general use. There was an option to request permissions which was made but never responded to. In the end, I decided to abandon the project, for a time.
 
 However, still wanting this kind of functionality but not having one, I decided to try and resurrect the project, somehow...
 
@@ -28,6 +28,7 @@ Current Plan of Action
  [ ] Rework the project as MVP UserScript/Plugin, re-using some snippets of the old HTML & JavaScript
   * **May need to rework into Plugin due to CSP issues**
 
- [ ] Detail the setup of this script + dependencies
+ [ ] Refactor and modernize ancient 2014 code.
  [ ] Rework the project using actual library vs. vanilla JavaScript
+ [ ] Detail the setup of this script + dependencies
  [ ] Work on missing features
