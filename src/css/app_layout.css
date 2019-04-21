@@ -9,16 +9,19 @@
 *
 * These are styles that are used generically in the app.
 */
-html { 
+
+#app-container { 
     height: 100%; 
-}
-body { 
-    height: 100%; 
-    margin: 0; 
-    padding: 0; 
+    width: 100%;
+
+    margin: 4px; 
+    padding: 6px; 
 
     font-family: verdana;
     font-size: 10pt;
+
+    /* Yellowish */
+    background: #fcfccc;
 }
 
 body {

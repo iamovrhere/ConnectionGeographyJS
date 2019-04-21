@@ -717,3 +717,16 @@ browserSupport.run = function(){
     }
 };
 browserSupport.run();
+
+
+(function() {
+  const userInfo = { // TODO remove
+    firstName: 'John',
+    lastName: 'Doe',
+      location: {
+        name: 'Calgary, AB',
+        country: {code: 'CA', name: 'Canada'}
+     }
+  };
+  myConnectionsMap.linkedin.setAndShowUser(userInfo);
+})();

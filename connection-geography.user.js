@@ -13,13 +13,13 @@
 
 (function() {
   'use strict';
-  debug('connection-geo ' + window.location.href);
+  console.log('connection-geo ' + window.location.href);
 
   const DEBUG = true;
   const MOUNT_ID = 'extended-nav';
   const STORAGE_NAME = 'connection-geography';
   // Content Security Policy must allow this URL in order to bootstrap.
-  const URL_BASE = 'example.com/';
+  const URL_BASE = 'http://example.com';
 
   // Always redfine the URL_BASE for the application.
   let storage = localStorage.getItem(STORAGE_NAME) ? JSON.parse(localStorage.getItem(STORAGE_NAME)) : {};
@@ -74,14 +74,16 @@
 
   const scriptBlock = document.createElement('script');
   scriptBlock.setAttribute('type', 'text/javascript');
-
-  mountPoint.appendChild(cssBlock);
+  
   document.getElementById(MOUNT_ID).appendChild(mountPoint);
 
   // Load resources.
   const resources = [
     getResource('bin/index.tpl').then(html => mountPoint.innerHTML += html),
-    getResource('bin/ConnectionGeography.css').then(cssContent => cssBlock.innerHTML = cssContent),
+    getResource('bin/ConnectionGeography.css').then(cssContent => {
+      cssBlock.innerHTML += cssContent;
+      mountPoint.appendChild(cssBlock);
+    }),
   ];
   Promise.all(resources).then(() => {
     // Requires that the CSP allows URL_BASE

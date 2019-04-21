@@ -11,10 +11,10 @@
 * This states what should be already known.
 */
 #you-are-here {
-    border-bottom: solid #d6d6d6 2px;
-    padding-bottom: 6px;
-    margin-bottom: 3px;
-    height:  25px;
+    border-bottom: solid #d6d6d6 0.1rem;
+    padding-bottom: 3rem;
+    margin-bottom: 0.5rem;
+    height:  2rem;
     vertical-align: middle;
     text-align: center;
 }
@@ -30,10 +30,10 @@
 * This states the area & connection totals.
 */
 .group-info-window .info-header {
-    padding-bottom: 3px;
+    padding-bottom: 0.5rem;
     
-    border-bottom: solid #d6d6d6 2px;
-    margin-bottom: 3px;
+    border-bottom: solid #d6d6d6 0.1rem;
+    margin-bottom: 0.5rem;
 }
 /** The location name */
 .group-info-window .info-header .location-name{
@@ -107,10 +107,14 @@ This gives consistency, without sacrificing flexibility. */
 /** We want it to the bottom always. */
 .group-info-window .info-footer {
     position: absolute;
-    width: 100%;
     bottom: 0px;
-    border-top: solid #d6d6d6 2px;
-    padding-top: 3px;
+    left: 0px;
+
+    border-top: solid #d6d6d6 0.1rem;
+
+    width: 95%;
+    margin: 0.5rem;
+    background: white;
 }
 /** We want the children always be relative to each other. */
 .group-info-window .info-footer * { 
