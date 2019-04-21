@@ -10,26 +10,18 @@
 * These are styles that are used generically in the app.
 */
 
-#app-container { 
-    height: 100%; 
-    width: 100%;
+#app-container {
+    height: 100%;
+    width: 80%;
 
-    margin: 4px; 
-    padding: 6px; 
+    margin: 0.5rem auto;
+    padding: 1rem;
 
     font-family: verdana;
     font-size: 10pt;
 
-    /* Yellowish */
-    background: #fcfccc;
-}
-
-body {
-    /* height: 90%;
-    width: 80%;  */
-    width: 100%;
-    
-    margin: auto;
+    /* White 70% opacity. */
+    background: rgba(255,255,255,0.7);
 }
 
 /** All labels are clickable, so pointers for now. */
@@ -59,11 +51,11 @@ label {
     /** Hidden by default. */
     display: none;
     position: relative;
-    
+
     /* Yellowish */
     background: #fcfccc;
     padding: 5px;
-    
+
     font-weight: bold;
     font-family: arial;
     text-align: center;
@@ -74,20 +66,20 @@ label {
     position:absolute;
     top:3px;
     right:3px;
-    
+
     display: block;
     border: 1px #ededa3 solid;
     padding: 3px;
-    line-height: 16px; 
-    height: 16px; 
+    line-height: 16px;
+    height: 16px;
     width: 16px;
-        
+
     color:#000;
     font-family:sans-serif;
     font-size: 14px;
     font-style: normal;
     text-decoration:none;
-    
+
 }
 
 
@@ -100,15 +92,15 @@ label {
 #app-container {
     height: 100%;
     position: relative;
-    
-} 
- 
+
+}
+
 /**
 * #.## Map Container/Canvas
 *
 * This the map section; minimal styling here.
 */
-#map-canvas { 
+#map-canvas {
     height: 100%;
 }
 
@@ -120,34 +112,21 @@ label {
 #app-controls {
     position: absolute;
     top: 0px;
-    
+    left: 0px;
+    right: 0px;
+
     min-height: 40px;
     width: 100%;
-    
+
     clear: both;
     /** Places controls in front of the map. */
     z-index: 99;
+
+    /** No more IE8 support. */
+    background: rgba(255,255,255,0.7);
+    padding: 1rem;
 }
-/** The background style for the HUD. 
-Currently a transparent white. */
-#app-controls-background {
-    position: absolute;
-    top: 0px;
-    height: 100%;
-    width: 100%;
-    /** Ensure it is in the background. */
-    z-index: -1;
-    
-    background: white;
-    /* IE 8 */
-   -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=70)";
-   /* IE 5-7 
-   filter: alpha(opacity=70);*/
-   /* Safari 1.x */
-   -khtml-opacity: 0.7;
-   /* Good browsers */
-   opacity: 0.7;
-}
+
 /** Required to float left to center the app status. */
 #linkedin-display {
     float: left;
@@ -158,11 +137,11 @@ Currently a transparent white. */
 *
 * The status of what the application is currently doing or certain errors.
 */
-#app-status { 
+#app-status {
     width: 100%;
     height: 100%;
     line-height: 50px;
-    
+
     text-align: center;
     /** Greyish-black. */
     color: #555;
@@ -172,11 +151,11 @@ Currently a transparent white. */
 #app-progress-spinner {
     /** Hide by default. */
     display: none;
-    
+
     position: absolute;
     top: 50%;
     left: 50%;
-    
+
     height: 60px;
     margin: -50px;
     /*margin-left: -50px;*/
@@ -214,8 +193,8 @@ Currently a transparent white. */
 /** Set all the contents to be centered vertically. */
 #input-controls * {
     position: relative;
-    display:inline-block;    
-    vertical-align:middle; 
+    display:inline-block;
+    vertical-align:middle;
 }
 
 
@@ -228,13 +207,13 @@ Currently a transparent white. */
     display: block;
 }
 
-/** DEPRECATED 
+/** DEPRECATED
 Set the colour by connections input to be pointer and centered. */
-#colour-by-connections-wrapper input, 
+#colour-by-connections-wrapper input,
 #colour-by-connections-wrapper label {
     position: relative;
-    display:inline-block;    
-    vertical-align:middle; 
+    display:inline-block;
+    vertical-align:middle;
     cursor: pointer;
 }
 
@@ -243,7 +222,7 @@ Set the colour by connections input to be pointer and centered. */
 */
 
 /**
-* #.### Connect splash 
+* #.### Connect splash
 *
 * The splash that covers the map and requests the user to connect.
 */
@@ -252,7 +231,7 @@ Set the colour by connections input to be pointer and centered. */
     top: 0px;
     height: 100%;
     width: 100%;
-    
+
     text-align: center;
     font-size: 8pt;
 }
@@ -264,9 +243,9 @@ Set the colour by connections input to be pointer and centered. */
     background: white;
     /* IE 8 */
    -ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=50)";
-   /* IE 5-7 
+   /* IE 5-7
    filter: alpha(opacity=50);*/
-   
+
    /* Safari 1.x */
    -khtml-opacity: 0.5;
 
@@ -274,11 +253,11 @@ Set the colour by connections input to be pointer and centered. */
    opacity: 0.5;
 }
 
-/** Centering items veritcally part 3. 
+/** Centering items veritcally part 3.
 See: .centered-item-outer
-See: .centered-item-middle  
+See: .centered-item-middle
 */
-#linkedin-connect-button { 
+#linkedin-connect-button {
     position: absolute;
     width: 140px;
     left: 50%;
@@ -291,7 +270,7 @@ See: .centered-item-middle
     /** Darker red. */
     color: #d22;
     font-weight: bold;
-    
+
     position: absolute;
     width: 300px;
     left: 50%;

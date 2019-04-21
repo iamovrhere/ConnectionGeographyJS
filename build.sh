@@ -20,7 +20,8 @@ cat src/js/main.js >> bin/ConnectionGeography.js
 echo "Adding bootstap..."
 cat src/js/bootstrap.js > bin/bootstrap.js
 
-echo "Adding entry point..."
+echo "Adding entry points..."
 cat src/index.html > bin/index.tpl
+cat src/navigation.html > bin/navigation.tpl
 
 echo Done.

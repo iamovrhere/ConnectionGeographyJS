@@ -13,10 +13,12 @@
 
 (function() {
   'use strict';
+  // Application expects to run once the enter document has loaded.
   console.log('connection-geo ' + window.location.href);
 
   const DEBUG = true;
-  const MOUNT_ID = 'extended-nav';
+  const BUTTON_NAV_ID = 'extended-nav';
+  const BUTTON_NAV_CLASS = 'nav-container';
   const STORAGE_NAME = 'connection-geography';
   // Content Security Policy must allow this URL in order to bootstrap.
   const URL_BASE = 'http://example.com';
@@ -25,7 +27,7 @@
   let storage = localStorage.getItem(STORAGE_NAME) ? JSON.parse(localStorage.getItem(STORAGE_NAME)) : {};
   storage.URL_BASE = URL_BASE;
   localStorage.setItem(STORAGE_NAME, JSON.stringify(storage));
-  
+
   /**
    * Simple debug method
    */
@@ -37,7 +39,7 @@
 
   /**
    * Used to fetch resources asynchronously using privileged `GM_xmlhttpRequest`.
-   * See: 
+   * See:
    * - https://violentmonkey.github.io/api/gm/
    * - https://wiki.greasespot.net/GM.xmlHttpRequest
    *
@@ -47,7 +49,7 @@
   function getResource(file) {
     const resource = `${URL_BASE}/${file}`;
     debug(`fetching: ${resource}`);
-    
+
     return new Promise((resolve, reject) => {
       debug(`promise '${file}' -->  ${window.location.href}`);
 
@@ -66,20 +68,39 @@
     });
   }
 
+  // Attach application.
   const mountPoint = document.createElement('div');
   mountPoint.setAttribute('id', 'connection-geography');
+  mountPoint.setAttribute('style', 'position: fixed; top: 50px; left: 0px; right: 0px; width: 100%; z-index: 101; height: 80%;');
+  mountPoint.style.display = 'none';
 
   const cssBlock = document.createElement('style');
   cssBlock.setAttribute('type', 'text/css');
 
   const scriptBlock = document.createElement('script');
   scriptBlock.setAttribute('type', 'text/javascript');
-  
-  document.getElementById(MOUNT_ID).appendChild(mountPoint);
+
+  document.getElementsByTagName('body')[0].appendChild(mountPoint);
+
+  // Attach button toggle.
+  const navButton = document.createElement('div');
+  navButton.setAttribute('id', 'connection-geography-toggle');
+  navButton.addEventListener('click', (e) => {
+    mountPoint.style.display = mountPoint.style.display === 'none' ? 'block' : 'none';
+    // Need to stop propagation or LinkedIn's framework's are going to try processing clicks on our faux "component".
+    e.stopPropagation();
+  });
+  navButton.style.display = 'none';
+
+  const navBar = document.getElementById(BUTTON_NAV_ID);
+  const navContainer = navBar.getElementsByClassName(BUTTON_NAV_CLASS)[0];
+  navContainer.prepend(navButton);
+
 
   // Load resources.
   const resources = [
     getResource('bin/index.tpl').then(html => mountPoint.innerHTML += html),
+    getResource('bin/navigation.tpl').then(html => navButton.innerHTML += html),
     getResource('bin/ConnectionGeography.css').then(cssContent => {
       cssBlock.innerHTML += cssContent;
       mountPoint.appendChild(cssBlock);
@@ -116,7 +137,8 @@
       });
     }
     debug('Loaded Maps');
-
+    // Ready
+    navButton.style.display = 'block';
   });
 })();
 
