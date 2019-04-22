@@ -1,15 +1,4 @@
-<!-- Navigation icon to be styled like LinkedIn native icons. -->
-<li id="connectgeo-nav-item" class="nav-item" lang="en">
-  <a class="nav-item__link" href="#">
-    <!-- TODO Use the badge notification in the application setup. -->
-    <span id="connectgeo-nav-notification" class="nav-item__badge" style="display:none">
-      <span aria-hidden="true" class="nav-item__badge-count">1</span>
-      <span class="visually-hidden">Notifications through this</span>
-    </span>
-    <span id="connectgeo-tab-icon" class="nav-item__icon" role="presentation" lang="en">
-      <li-icon aria-hidden="true" type="nav-small-people-icon" color="true">
-<!-- InkScape SVG; with cleanup & currentColor applied instead of black (#000000). -->
-<svg viewBox="0 0 24 24" width="24" height="24" x="0" y="0" preserveAspectRatio="xMinYMinmeet" class="nav-icon" focusable="false" xmlns="http://www.w3.org/2000/svg"  sodipodi:docname="connect-geo.svg">
+<svg viewBox="0 0 24 24" width="24" height="24" x="0" y="0" preserveAspectRatio="xMinYMinmeet" class="nav-icon" focusable="false" xmlns="http://www.w3.org/2000/svg" sodipodi:docname="connect-geo.svg">
   <path
      d="m 18.0847,6.49085 c 0.5895,-0.0317 0.9755,-0.4572 0.9611,-0.92879 -0.01,-0.45479 -0.5012,-0.9045 -1.0504,-0.89634 -0.4115,0.0115 -0.9993,0.35159 -1.0017,0.88818 0,0.57663 0.5657,0.93695 1.0584,0.93695 m 0.029,-3.03474 c 1.226,0 2.2197,0.92831 2.2197,2.0735 0,1.14538 -0.9937,2.07369 -2.2197,2.07369 -1.2258,0 -2.2192,-0.92831 -2.2192,-2.07369 0,-1.14519 0.9934,-2.0735 2.2192,-2.0735 m 4.569,1.80986 c 0,-2.43094 -1.7934,-3.94288 -4.5527,-3.94288 -2.7587,0 -4.514,1.58462 -4.514,4.01556 0,2.38811 1.1829,4.06049 4.465,8.88795 3.3219,-4.88901 4.6113,-6.55149 4.6113,-8.9396 M 18.0818,5e-6 c 3.1059,0 5.918,2.352295 5.918,5.254535 0,2.90167 -2.5653,6.36606 -5.918,11.33436 C 14.7296,11.6206 12.1633,8.15621 12.1633,5.25454 12.1633,2.3523 14.9752,5e-6 18.0818,5e-6"
      id="path4"
@@ -64,8 +53,3 @@
      d="m 10.4932,21.2481 c -1.52974,-3.1823 -8.09308,-3.4905 -9.860209,-0.029 -0.189808,0.3725 -0.10378,1.9778 -0.10378,1.9778 l 10.025589,0 c 0,0 0.094,-1.6312 -0.062,-1.9566 z"
      style="fill:none;stroke:currentColor;stroke-width:1.019524;stroke-miterlimit:4;stroke-dasharray:none" />
 </svg>
-      </li-icon>
-    </span>
-    <span class="nav-item__title">Connect Geo</span>
-  </a>
-</li>

@@ -1,7 +1,7 @@
 Connection-Geography JS
 ======
 
-A means to visually represent the distribution of LinkedIn connections.
+<img src="./screenshots/connect-geo.svg?raw=true" height="100" width="100"/> A means to visually represent the distribution of LinkedIn connections.
 
 Background
 ------
