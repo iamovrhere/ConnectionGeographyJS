@@ -637,7 +637,7 @@ You have exceeded your request quota for this API. See https://developers.google
         });
     
     // set it in onload.
-    window.addEventListener('load', function(){setClickEvents();}, false);
+    setClickEvents();
       
     
     return connectionMap;
