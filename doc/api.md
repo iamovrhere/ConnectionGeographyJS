@@ -2,13 +2,13 @@
 
 The internal API used by LinkedIn is bound to change. To make it easier to review & update this is what relevant data sources look like as of writing:
 
-* [Profile/Self](#profile-self")
+* [Profile/Self](#profileself")
 * [First Connections](#first-connections)
 * [Second Connections](#second-connections)
 
 Noting that outputs are trimmed down to relevant/interested fields.
 
-## Profile/Self<a name="profile-self"></a>
+## Profile/Self
 
 This one isn't strictly an API but rather inline JSON to parsed out of the HTML page.
 
@@ -141,7 +141,7 @@ To get this example data:
 }
 ```
 
-## First Connections<a name="first-connections"></a>
+## First Connections
 
 ### Base URL
 
@@ -341,7 +341,7 @@ Used `python -m json.tool < example.json > example-pretty.json` to prettify JSON
 }
 ```
 
-## Second Connections<a name="second-connections"></a>
+## Second Connections
 
 Very Similiar to [First Connections](#first-connections).
 
