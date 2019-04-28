@@ -2,7 +2,7 @@
 
 The internal API used by LinkedIn is bound to change. To make it easier to review & update this is what relevant data sources look like as of writing:
 
-* [Profile/Self](#profileself")
+* [Profile/Self](#profileself)
 * [First Connections](#first-connections)
 * [Second Connections](#second-connections)
 
@@ -349,7 +349,7 @@ Very Similiar to [First Connections](#first-connections).
 
 Same as before but referer is different:
 * Referer: `https://www.linkedin.com/search/results/people/?facetConnectionOf=%5B%22$TARGET_URN%22%5D&facetNetwork=%5B%22S%22%5D&origin=FACETED_SEARCH&page=52`
-** Decoded this looks like: `https://www.linkedin.com/search/results/people/?facetConnectionOf=[\"$TARGET_URN\"]&facetNetwork=[\"S\"]&origin=FACETED_SEARCH&page=52`
+  * Decoded this looks like: `https://www.linkedin.com/search/results/people/?facetConnectionOf=[\"$TARGET_URN\"]&facetNetwork=[\"S\"]&origin=FACETED_SEARCH&page=52`
 
 ### Parameters
 
