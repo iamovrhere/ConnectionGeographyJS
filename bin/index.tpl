@@ -3,7 +3,6 @@
     By: Jason J.
     Description: This serves as the entry point into the application.
 -->
-<script id="application-js-start" type="text/javascript" ></script>
 <div id="google-maps-set-up" style="display: none">
   <input type="password" id="maps-api-key" />
   <input type="submit" id="maps-api-submit" value="Save">
@@ -18,72 +17,31 @@
       <div id="linkedin-display"  style="display: none;"></div>            
       <div id="right-panel">
         <div id="disconnect-wrapper">
-            <a href="javascript:void(0)" id="disconnect-app-action" 
-               title="Disconnect from App">Disconnect [x]</a>
+          <!-- TODO remove -->
+          <a href="javascript:void(0)" id="disconnect-app-action" style="display: none;"
+            title="Disconnect from App">Disconnect [x]</a>
         </div>
         <div id="input-controls">
-            <form >
-              <span id="skip-home-checkbox-wrapper">
-                  <input id="skip-home-checkbox" name="skip-home-checkbox" 
-                         type="checkbox"  />
-                  <label for="skip-home-checkbox">Skip Home</label>
-              </span>
-              <select id="colour-by-connections" >
-                  <option value="colour-style-none" 
-                        title="Shows all connections as blue"
-                        >All blue</option>
-                  <option value="colour-style-stoplight" selected="selected"
-                        title="Shows denser connections as red, sparser connections as green"
-                        >*Density (Stop-Light)</option>
-              </select>
-          <input type="button" id="perform-action" value="Run" />
+          <form >
+            <span id="skip-home-checkbox-wrapper">
+               <input id="skip-home-checkbox" name="skip-home-checkbox" 
+                 type="checkbox"  />
+               <label for="skip-home-checkbox">Skip Home</label>
+            </span>
+            <select id="colour-by-connections" >
+               <option value="colour-style-none" 
+                  title="Shows all connections as blue"
+               >All blue</option>
+               <option value="colour-style-stoplight" selected="selected"
+                  title="Shows denser connections as red, sparser connections as green"
+               >*Density (Stop-Light)</option>
+            </select>
+            <input type="button" id="perform-action" value="Run" />
           </form>
         </div>
       </div>
       <div id="app-status" ></div>
     </div>
-  <img id="app-progress-spinner" src="bin/img/progress_spinner.gif" />
+   <!-- TODO Replace custom base64 gif with CSS/library replacement. -->
+  <img id="app-progress-spinner" src="data:image/gif,GIF89aP%00P%00%A5%27%00PPPTTT%5D%5D%5D%5E%5E%5E%60%60%60bbbcccfffooopppqqqsssttt%7C%7C%7C%7D%7D%7D~~~%7F%7F%7F%80%80%80%8D%8D%8D%8E%8E%8E%90%90%90%92%92%92%93%93%93%AE%AE%AE%B0%B0%B0%B2%B2%B2%B3%B3%B3%B6%B6%B6%B7%B7%B7%BA%BA%BA%BC%BC%BC%C8%C8%C8%D9%D9%D9%E7%E7%E7%EC%EC%EC%F0%F0%F0%F1%F1%F1%F2%F2%F2%F3%F3%F3%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%FF%21%FF%0BNETSCAPE2.0%03%01%00%00%00%21%FE%1DCreated%20with%20GIMP%20by%20Jason%20J.%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%1Fc%C9L%3A%9F%D0%A8t%C8%AC6%A7%D8%ACVh%ED2%B6%E0%F0%D1%EB%15%9B%C3%E4%EEy%8DM%97%D9p%A7%5B%1D%AF%1B%E7V%BB%9E%8A%BF%EE%ED%7D~%7FO%11%85%86O%81KO%06%8C%8Dq%86%90%87I%81N%8D%96%8Eg%91%9A%11%93%7DI%97%A0%06f%9B%9B%9Dn%9F%A1%A0b%A4%9Ari%95%A9%97a%AC%A5%AEU%8B%B1%AA%5B%B4%ADp%B9%BAZ%BC%91q%BF%B2%BB%C2%92l%C5%96%60%C8%C9k%CB%98%C1%CE%9C%BE%D1%A2%CD%C8v%D1%AB%DAu%DC%DD%B4%7B%C5k%E2%7F%B9%8F%C3%83C%C0%EB%EE%EF%F0%F1%F2%F3%F4%F5%F6%F7%F8O%16%FB%FC%F9O%00%00%03%22%E1G%B0%9F%BF%22%01%13%0A%24R%B0%A1%85%83C%14J%040%C4%A1C%88%13%27%0A%B1%D8%10cF%85%3F8%5E%CC%F7q%A2%C8%8E%24K%2A%3CY%D0%9F%CA%95%2C%0D%E2%7B%990%A6%CC%7B4%03%DA%DC%E72%27%ECE%9B%1E_n%8C%19Te%C5%93%10%85%08e%C81i%C4%8F%03%5B%3AE%08r%AA%D5%ABX%B3j%DD%CA5%DF%05%0D%1B6h%B8%00%CF%84%D9%B3q.pX%CBv-%D9%3Fg%E3%A2%3D%83%A1%AD%5D%0E%18%F6%C8%DDk%C2%8C%DA%BBv%DF%C6%E1%CBW%0C%60%C0v%08%EF%0D%F3%F7p%5B%C1k%14%17%DE%A2%C1%B1%5D%0D%83%25%CB%05%B3%C1r%DB%0D%995%CF%D5%D2%D9%F3Z%D0pD%C7%05S%D94%07%CC%A9U%9B%05%D3%D83%E4%23%22r%EB~%22%7B6%18%D7%1C%9C%E8%1E%BE%3B%89l1%B5%0F%DF%26B%BC%B9%08%E3%AA%CD%D4u%9C%17%89s%E7%D0%25%AFI%CEv9%F3%EB%C4%9Dh%87%F35%EC%D8%27%E0%B1%8B%DF%8C%2F%7D%F3%AEC%DC%87%87%FFC%FEp%FA%F5%ED%E7%C6%AF%7F%3F%7F%FB%F8%09%A1_%80%02%BAG%60%7C%E0%1DX%C4%7B%EE%04%01%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8_%E3%01%81%3C%1A%C9%A8tJ%AD%0E%1B%91%AC6%0B%B5z%BF%60%A1cK%8E8%C2%E8%F4%11%5B%26w%D5%F0p%BB%1D%AF%7B%D9%F3%ED%DB%CEG%3E%F2d%0F%7D%83G%10%80%5B%10%84%8AC%86%87Y%89%8B%8A%7F%8E%11%82%91T%12%14%15%15%14%12Rx%87%7BG%08%0A%0B%0B%0A%08%7D%12%16%AC%AD%AC%9EI%94%11Q%08%0C%B6%B7%B6%A9q%13%AE%BD%16%13I%A0s%A2D%09%B8%C7%0C%09p%AB%BE%BD%B0GcygH%B5%C8%C7%BAh%CD%CDQ%C2Z%C4D%D6%D6i%CC%DA%AE%CFHKMOR%D5%E1%B8%D8_%14%E5%BD%14%7D%0A%EE%C7%0Ah%15%F3%AE%15%7D%0B%F0%E1Z%B0%AF_%AB%7F%7C%02%0A%B4E0%8C%3C%83%16%EA%F1%B9%B7%90%81%BE0%E4%FA%9D%8B%D3N%20%BC%2F%10-%10%AA%C8%40MFm%1B%EBt%0C%F7%11%0C%AFr%C0%14%19s%A7%2C%CE%C9V%29%FB%AC%BC%D5%D2%A4%FE%26N9%15%912%85%EA%92%D1%A3H%93%2A%5D%CA%B4%A9%D3%A7P%ED%60%D8%D0%A1%C3%06%0CQ%A7%08%20P%A0%00%01%01H0x%18Kv%2C%D6%ACF%04%18X%CBv-X%22%19%CA%CA%F5%90%01-%91%01m%F3%1A%180D%EC%5C%B9g%D1%AA%D5%9B%F7%ED%DF%BFv%7F%10%26%FC%C3%EF%E1%B2%81%A1%0E%5E%DCV%C0%86%C7r7%A0%25%409%2F%81%0E%98%CBv%40%5B%A0s%DB%02%A0C%8F%1D%9D%B5%B4%E9%B5%05.%AB%F6%A09%2B%E7%D7%06%088%0E%1D%F9%E9d%D3%60g%7BH%8C%DB%80%90%DD%87%7BK~%FD%F6G%DC%C7u%13%FF%C0K%99%2F%11%E4d%95%0B%5E%DC%BC%C8%D4%AAW%A5%1F%D9%DA%F5%AB%F8%F3%E8%D3%AB_%CF%BE%7D%FA%0F%20D%C8%17%01%E2%03R%08%07%02%048%00%C9N%FC%F9%00%82p%09%04%00%14h%60%81%FD%A9%11%02%80%0C%8A%10%C2%22%0C%1C%28%21%00%25%A9%F1_%83%01%12B%E0%84%12%E8%26%F8%C5%07%18bh_%1F%1Cr%98%C6%85%21%CE%27%20%1F%1B%96x%A0%87V%A4%88a%1F%07%B8%28%E1%01h%C8%D8%60%1F%01%D8x%60%009%EA%08%20%8F%3E%1A%08d%18B%0E%C9G%8DE%02%80c%18%28%CA%B8%22%12%23%90P%C2%95%25%900B%14-%FA%08c%15%20%269%E2%11%24%98%60%E6%99f%92%10%05%00l%B6%E9%A6%9B%16%0A9%A5%11%25%A0i%A7%09%25%24%D1%E5%9Bm~%E9%C5%82%29%3E%88D%99w%DA%A9%26%12%11%F2%D9f%85pD%A9b%12%23%14Z%E8%96H%EC%D9%27%1F%F0%058%26%99%92%DEy%A8%9E%F9%ED%E7%A7Ruv%8Af%9E%EE%0DQ%AA%A9f%A2%9A%EA%0F%AB%B2%EAj%AA%B1%9A%3A%AB%7B%84%B2j%C2%A7%A9F%AA%AB%09%94%BE%FAC%AE%9D%F2%2Al%ADv%DE%2A%EC%B0%92%1A%BB%AC%10Ub%99e%B0%91%04%01%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%9Fe%C9L%3A%9F%D0%A8t%C8%AC6%A7%D8%ACVh%EDZ%B6%E0%F0%D1%EB%15%9B%C3%E4%EEy%8DM%97%D9p%A7%5B%1D%AF%1B%E7V%BB%9E%8A%BF%EE%ED%7D~%7FO%17%1A%1B%1B%1A%17O%81KO%11%8F%90q%17%1C%94%95%94%8AI%81N%90%9C%91g%18%96%A1%1C%18%99%7DI%9D%A8%11f%93%A2%A1%98cs%A7%A9%A8b%AD%ADri%9B%B3%9Da%AC%B6%96%AFHt%B2%BB%BC%5B%1A%BF%A1%1Aq%C5%B4%5B%1B%C9%96%1B%CC%CD%9C%60%D0%D1%94%D3p%D5%D6%C7%D9%94%CB%DC%DD%8F%60%BE%D1%C1g%E4%E5%60%E0%1Cv%E4b%E7%B6%E9k%F1b%A0%BF%A4z%D5k%F3%95%F5%A8%CD%92d%08Q%40~%C6%06%29%5C%C8%B0%A1%C3%87%10%23J%9CH%F1%8C%88%8B%18%2BBa%C0%B1%23%12%8C%203j4%D2%B1%A4G%22%21S%8A%18I%C4%A4K%06CT%AAd%F9%E3%E5K%212S%D2%B4%E9%F2G%EB%CE%99%1Ay%BE%FC%A93%A8P%93DC%8E%3C%8A4%A9%C8%8ALK%3A%7DJ1j%C7%A9%17%97Z%859ugT%9CN%BD2%8DI%94%A6%90%B1%28s%9A%1D%22%F4%A3%D2%B5Ez%C2%9DK%B7%AE%DD%BBx%F3j4%C1%B7oC%03%80%03%C7%E9K%D8%EF%9F%C0%88%05%9F%29%CC%D8%C4%9E%C4%90%0D%98i%DC%D8N%E4%C8b%283%B6%7C9q%18%CD%95%E1t%C6%BC%05%F4f%D1%A3%3D%976M8Nj%D5ZX%B7F%FD%1A0%18%D9%86%D9%D4V%1C%1B%B7c%27%00%82%0B%7F%B2%DB%F6m%D9%C0%85%2B%0F%EEdwf%E4H%96K%07%90%C4%F9s%D0I%A6O%AF%9Ez%0D%F6%EC%DA%977%EF%3C%B8%F0%93%F0%DB%C7%23%D6%88%5E%BA%DE%21%ED%C5%BF%FF%11_%F9%7C%FA%F5%99%CF%CF%AF%7F%7F%FD%FBB%E4%07%60%80%ED%0D%08_x%06%16%E1%DEBA%00%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%1Ff%D3%E9l0%C9%A8tJ%AD%0E1%9E%AC6%0B%B5z%BF%60afK%F6d%C2%E8%F4%11%5B%26w%D5%F0p%BB%1D%AF%7B%D9%F3%ED%DB%CEGn%F2d%1B%7D%83G%1D%80%5B%1D%84%8AC%86%87Y%89%8B%8A%7F%8E%1E%82%91S%1F%20%22%9B%22%20%1FQx%87%7BG%12%14%15%15%14%12%7D%9A%9C%AD%20Q%94%1EQ%12%16%B5%B6%B5%AAq%21%AD%BC%22%21I%A1s%A3D%13%B7%C6%16%13p%AC%BD%AEIcygH%B4%C7%C6%B9a%1F%CC%CC%9FH%C1Z%C3D%D4%D4i%CB%D9%9C%AF%A0LN%DFD%D3%E1%B7%D6_%E5%CC%7D%14%EE%C6%14h%F2%BD%7D%15%F6%B7%15%F9%F4%B5%E2%E7%CF%16%C00%02%07%F2%A9W%D0%02%BE0%E4%E4%9D%B3%D3%CE%1F%3C%2F%D8%12n%E3%D3%D0%82%9A%88%CC%26%F2%A9%18%EE%22%98%5D%E5~%29%2A%E6.Y%1C%90%9BD%12%22i%CBd%9AL%AE6%5E%2Au%2A%D5%FE%A5%9F%40%83%0A%1DJ%B4%A8%D1%A3H%93%D6%19A%A2%84%D3%12%24F%28%95%D2%E0%01%04%08%0F%1A%20%21a%A2%AB%D7%AE%24%A6%1Ei%10%A1%AC%D9%B2Z%89%94%F8%CA%D6D%09%B1D%1C%9C%9D%1B%C1%C1%10%AEm%D9%86%85K%96%EE%5C%AD%23%F2%E6%95%2A%D6%AF%DF%1Fx%05%7F%DD%AB%B4%AF%E1%B3%0D%D6%2A%FE%FAv%EA%83%C7s%1FH%9E%DC%B5%B2R%08%98%CFB%D8%CC%D9sR%D0%A1%CB%8E%E6%EC%D54%D2%CB%A9%23%3CH%CC%99qR%C7%A1%1B%04fm%82%F0%D4%D8%11%84%D0%16l%BBq%EA%B4%3FH%B7u%3DU%EEc%BBD%86%7B-%CE%D70r%22L%9FB%F5%0D%B7H%D5%ABY%BB%8B%1FO%BE%BC%F9%F3%E8%D3W%81p%20%40%80%03%10%84%22P%B0%60%81%02%04%7D%20%00%D8%CF%7F%7F%FCH%080%20%E0%80%02%E2%17%07%03%FD%25%08%00%03%8B%24%40%E0%83%0C%24%00%87~%0A%26%F8_%1F%01B%F8%A0%81h%E4TX%21%21%1Aj%98%06%85%1E%F6wa%1D%19%86H%20%87_%1CPb%82%07%F4%A1%80%8A%0F%2A%80F%00%2F%F6%17%40%1F%0B%D0H%E0%027%E6%C8%DF%8E%7C%F4%E8%A3%80%40%86%E1%A2%90%00%C4%C8%C7%8CG2%60c%18%24%E6x%E2%11%02%10P%40%01%04%08%20E%8A%3E%B2%F8%05%93%00D%21%80%01h%A6%89%A6%97ID%C9%E0%88B%5EI%C4%00j%D6i%C0%00I%80%19%A2%98%60%20X%E2%9BX%DAi%27%9BG8%A8%A2%84qTib%14%82%0A%1A%85%9E%03%F2%A9%06%7B%EE%C1%27%C5%99%8D%D6I%28%12%F3%D5w%DFT%04dZ%27%01%EA%15Q%80%A8j%16P%2A%11%A7%A2%8A%A6%AA%AB%0A%11%AA%AB%06%90%1A%EB%0F%98%BA%BA%E9%AA%B4%1Ap%EB%10%B9f%BAk%ACtf%8A%E7%AFD%04%AB%E6%B0%C8%E2%AA%25%97%CC%12%12%04%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%9Fh%C9L%3A%9F%D0%A8t%C8%AC6%A7%D8%ACVh%ED%8A%B6%E0%F0%D1%EB%15%9B%C3%E4%EEy%8DM%97%D9p%A7%5B%1D%AF%1B%E7V%BB%9E%8A%BF%EE%ED%7D~%7FO%26%85%86O%81KO%17%1A%1B%1B%1A%17q%86%93%87I%81N%17%1C%9A%9B%9A%91g%94%A0%26%96%7DI%18%9C%A7%1C%18f%A1%A1%A3nI%99%A8%A7%9E%60%AC%A0riN%B2%B2a%B6%AD%B8U%8B%BB%A8%B4Y%BE%B7p%1A%C3%A7%1A%B5%C7%93q%1B%CB%9C%1B%CE%CF%85%D1%D3%9B%D5%5B%D7%95l%CA%DA%1C%CD%DD%DE%A2p%B1%DA%C5%C6%D7v%E2%1Cb%DEv%E9%C3%EBZ%CF%7B%A6%C3%AA%9F%B6%83%F4%9C%EC%C5%A34%88%08%23G%90%0A%2A%5C%C8%B0%A1%C3%87%10%23J%9CHQ%0A%80%8B%18%2B%3E%B1%C0%B1%23%12%8C%203j%2C%D2%B1%A4G%22%21S%02%189%C4%A4K%0BCT%AAd%F9%F2%A5%10%99%29i%D64%F9%03%E7%E9%CC%8A%3B_%FA%CC%094%A8%C9%A1%215%1A%3D%8AT%24%C5%A5%25%9B%3A%9D%08%B5%A3%D4%8BJ%AB%C2%94%AAs%E9%CD%A6%5D%8D%C6%1C%CAR%88W%948%CB%B6%DC%F91%A9Z%92%3C%DF%CA%9DK%B7%AE%DD%BBx%2B%1A%D8%CB%97a%84%BF%80%E3%F0%1D%DC%F7%0F%E0%C3%81%CF%10%5El%60%0F%E2%C7%11%CC0fl%072d1%93%17W%B6%8C8Lf%CAp8_%DE%F2Ysh%D1%9DI%97%1E%1C%07uj-%ABY%9Fv%FD%17L%EC%C2lh%27%86%7D%BB%B1%13%06%C0%83%3F%D1%5D%DBv%EC%DF%C1%93%03w%A2%1B%F3q%24%CA%A33H%D2%DC%F9%E7%24%D2%A5SG%BD%E6%3A%F6%EC%CA%99s%16L%F8%09x%ED%E2%0FW%3C%1F%3D%EF%10%F6%E1%DD%FF%80%9F%5C%FE%7C%FA%CB%E5%E3%CF%AF%9F%BE%7D%21%F8%FD%07%20%7B%02%BE%07%5E%81E%B4%A7P%10%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%11%A9%C4%2C%91F%C8%A8tJ%AD%22I%A6%AC6K%B2z%BF%E0ciK6%95%C2%E8%B4%14%5B%26w%D5p%F5%A8%DD%86%C6%EF_6%7D%FB%C6%FB%A7c%7B%5Bg%7F%85H%81%82Y%84%86%8CC%88%89%8B%8D%8C%8F%82%91%92S%10%07%01%01%07%10Sz%89%7DG%1F%20%22%A6%22%20%1F%7F%10%00%AD%AE%AD%9EI%89ZvG%A5%A7%B8%20x%0C%AF%BD%00%0CQ%A0t%A2E%21%B8%C7%22%21q%AC%BE%BD%B1b%95Q%B7%C8%B9p%CD%CDk%C3Q%1F%D4%D4%AAh%CC%D7%AF%CFGJMN%B5%B6%DD%C8%BAh%07%E2%BD%07%85%EB%D4i%01%F0%AF%01%F3%F4%C7%F6%F8%AE%FA%FE%F0%EB%E7%EE_%2By%02%07%9EJ%13%0E%1F%B9%3B%D3%F8%B5Cc%10%80%21n%0A%BF%81%FB%F7%10O%C4n%13%D3%F0%12%07%AC%91%B1u%CA%EE4%1Cw%E9%C7%C7S%21Uj%E2%D4%B1%11%A9%5C%1A%5B%EA%DC%C9%B3%A7%FE%CF%9F%40%83%0A%1DJ%14%8E%00%02%05%0A%10%10P%94%0A%86%0D%1D%3Al%C0%80D%80%81%ABX%AF2mj%04%83%87%AF%60%BFR%252%20%ABY%03%03%B8%12%C9%10%B6%AD%87%0CC%AC%9E5%BB%95%ABW%B7m%C7%CE%9D%AB%F6%07%5E%BC%3F%E4%EE%CDZ%97%E8%DD%BFa1%10%18l%96%00%D7%0D%88%DBn%28%C08k%01%AE%1D%22%87%ED%40%B9%F2%D5%CBM3k%FE%DAa%B1g%03%8E%9BB%1E%EDa%83%E0%CA%85%87%1E%D6L%F5%B4%81%BE%AC%3D%08y%BD7%B6%E1%D1c%7F%94%1D%9C%B6%EF%0F%B6%88%E1%12%E1%8D%D5%B7%DD%BF%C1%8B%1CM%BA%D4%F8%91%A7Q%A7Z%DF%CE%BD%BB%F7%EF%E0%C3%7BG%A0%60%C1%02%05%08zJ%A0P%A1%02%05%09%85%100%98O%7F~%FAK%12%2C%E8%DF%AF%1F%FE%9D%04%F5%05%C8%40%02%92L%C0%DF%81%16L%10%87%7C%02%06x_%21%F9%21x%A0%7F%225%28%20%23%12J%A8%06%83%16%D6%D6%F7%20%1E%11f%C8%1F%85%60%28%D0a%80%0A%14B%81%88%07R%90%C6%02%27%D6%B7%40%21%15%B0%C8_%05%2F%C6H%DF%8C%7F%D4h%A3~8%A2a%A2%8E%0C%A4%F8%C7%8A%3FZ%E0%22%1A%1C%C6%F8%E1%11%0D%3C%00%01%04%0F40E%886%92%08%06%91%25%21%D1%40%04%60%86%09%A6%95Q%24i%01%1CMZ%F8%24%11%0E%88%E9f%04%0ED%81e%86Z%86%01%60%87%04z%F9%E6%9Bd%1Ea%A0%88%0A%DE%91%26%7Dk%12%B1%E7%9ER%CC%B9_%9Dh%96w%5E%A1D%7Cy%A8%9B%7D%22%B1%5E%7B%EF5%F5%C0%A4n%3E%20%1E%11%10p%2AfM%DF%85%2A%2A%98%A4z%B7%E9%A9%11x%FA%A9%10%92%9EZ%E9%A7%ACF%F0j%A4%B2%DE%CA%26%A7q%EA%8A%EB%9E%B3%FA%0A%AB%94T%06%DBH%10%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%9Fh%C9L%3A%9F%D0%A8t%C8%AC6%A7%D8%ACVh%ED%8A%B6%E0%F0%D1%EB%15%9B%C3%E4%EEy%8DM%97%D9p%A7%5B%1D%AF%1B%E7V%BB%9E%8A%BF%EE%ED%7D~%7FO%26%85%86O%81KO%17%1A%1B%1B%1A%17q%86%93%87I%81N%17%1C%9A%9B%9A%91g%94%A0%26%96%7DI%18%9C%A7%1C%18f%A1%A1%A3nI%99%A8%A7%9E%60%AC%A0riN%B2%B2a%B6%AD%B8U%8B%BB%A8%B4Y%BE%B7p%1A%C3%A7%1A%B5%C7%93q%1B%CB%9C%1B%CE%CF%85%D1%D3%9B%D5%5B%D7%95l%CA%DA%1C%CD%DD%DE%A2p%B1%DA%C5%C6%D7v%E2%1Cb%DEv%E9%C3%EBZ%CF%7B%A6%C3%AA%9F%B6%83%F4%9C%EC%C5%A34%88%08%23G%90%0A%2A%5C%C8%B0%A1%C3%87%10%23J%9CHQ%0A%80%8B%18%2B%3E%B1%C0%B1%23%12%8C%203j%2C%D2%B1%A4G%22%21S%02%189%C4%A4K%0BCT%AAd%F9%F2%A5%10%99%29i%D64%F9%03%E7%E9%CC%8A%3B_%FA%CC%094%A8%C9%A1%215%1A%3D%8AT%24%C5%A5%25%9B%3A%9D%08%B5%A3%D4%8BJ%AB%C2%94%AAs%E9%CD%A6%5D%8D%C6%1C%CAR%88W%948%CB%B6%DC%F91%A9Z%92%3C%DF%CA%9DK%B7%AE%DD%BBx%2B%1A%D8%CB%97a%84%BF%80%E3%F0%1D%DC%F7%0F%E0%C3%81%CF%10%5El%60%0F%E2%C7%11%CC0fl%072d1%93%17W%B6%8C8Lf%CAp8_%DE%F2Ysh%D1%9DI%97%1E%1C%07uj-%ABY%9Fv%FD%17L%EC%C2lh%27%86%7D%BB%B1%13%06%C0%83%3F%D1%5D%DBv%EC%DF%C1%93%03w%A2%1B%F3q%24%CA%A33H%D2%DC%F9%E7%24%D2%A5SG%BD%E6%3A%F6%EC%CA%99s%16L%F8%09x%ED%E2%0FW%3C%1F%3D%EF%10%F6%E1%DD%FF%80%9F%5C%FE%7C%FA%CB%E5%E3%CF%AF%9F%BE%7D%21%F8%FD%07%20%7B%02%BE%07%5E%81E%B4%A7P%10%00%21%F9%04%01%08%00%3F%00%2C%00%00%00%00P%00P%00%00%06%FE%C0%9FpH%2C%1A%8F%C8%9F%80P%28%10%04%C9%A8tJ%AD%0E%05%86%AC6%0B%B5z%BF%60%E1%60K6%0C%C2%E8%F4%11%5B%26w%D5%F0p%BB%1D%AF%7B%D9%F3%ED%DB%CEG%12%F2d%04%7D%83G%05%80%5B%05%84%8AC%86%87Y%89%8B%8A%7F%8E%06%82%91T%08%0A%0B%0B%0A%08Rx%87%7BG%10%07%01%01%07%10%7D%08%0C%AC%AD%AC%9EI%94%06Q%10%00%B6%B7%B6%A9q%09%AE%BD%0C%09I%A0s%A2D%0C%B8%C7%00%0Cp%AB%BE%BD%B0GcygH%B5%C8%C7%BAh%CD%CDQ%C2Z%C4D%D6%D6i%CC%DA%AE%CFHKMOR%D5%E1%B8%D8_%0A%E5%BD%0A%7D%07%EE%C7%07h%0B%F3%AE%0B%7D%01%F0%E1%0A%B0%AF_%AB%7F%7C%02%0A%B4E0%8C%3C%83%0C%EA%F1%B9%B7%10%80%BE0%E4%FA%9D%8B%D3N%20%BC%2F%10%95%0D%AA%08%40MFm%1B%EBt%0C%F7%11%0C%AFr%C0%14%19s%27r%19%CAK%2Bo%B54%A9%89S%FE%CAE%A4L%A1%BAD%B4%A8%D1%A3H%93%2A%5D%CA%B4%A9S%3B%0D%1E%40%80%F0%A0%C1S%29%23H%94%D8Z%82%C4%88%23%0D%22%88%1D%2B%D6%EAU%23%24L%A8%5D%AB%96D%11%07d%E3Fpp%96H%09%B6xM%94%18%12Vn%5C%B3g%D3%E6%C5%EB%F6%87_%BFuG%0C%1E%3C%A2%EFa%B2%80%9D%0A%5E%CC%96%C4%83%C7q%1F%9C%BDK%99m%09%08%98%C9%EET%CA%B9%B3%DA%CF%A1%C7%8ENZ%DAt%89%CB%A9%23h%BE%DA%BAs%09%C7%A1%237%9Dl%DAm%EC%08%89M%AF%FD%8A%FB%B0n%C9%C2%0B%FF%80%FB%98n%5D%21%B5%F1%EE%25R%7C%EC%F1%C0%8B%95%17%89%3A%B5%EA%F3%23Y%B9v%FD%FA%BD%BC%F9%F3%E8%D3%AB_%CF~%88%04%0A%15%2AP%90%60%F4%03%08%11%F8E%80%F8%C0G%82%85%FF%00%FEG_%24%F7%E5g%20%08uL%10%E0%82%16L%B0H%08%06F%28B%08p%F8%C7%E0%82%03%F6Q%A0%84%07%DE%AAq%E1%85%83%7C%C0%21%87%FC%85a%E1%87%01fX%C7%86%23%E6%87%60%18%14%A0%B8%20%05%7D%B4%C8%21%1A%15%C8%18%60%055%DA%18%21%8E%3A%02%C8%23%1F%3E%FE%08c%90%FF%D1Hd%91%F9%A1q%A2%8E%2A%1E%81%C1%06%1Dt%B0%01%06R%B0h%E3%8Ba%20iA%14%18x%20%E6%98bb%89%84%88L%96hb%90Q%12%91%01%99pz%90A%12Zr%C8%25%1A%0A%A2%E8%20%12a%C6%09%A7%99G%40%D8%22%85q%3C%99b%14~%FA%19E%9D%F8%DDY%28%7C%F2%B5YD%9F%89%92%09%E8%11%F6%1D%A8%26S%1BT%0A%E7%06%ED%11%D1%81%A7dv%10%EA%10%A3%92%2A%A6%A9%A7%FE%D0%A9%AA%1E%80%DA%2A%A5%A4%5E%1A%2A%AC%1E%B4%3A%04%AD%89%DAz%EA%9B%95%CE%A9%2B%11%BC%8E%E9%EB%B0%3FLY%E5%95F%05%01%00%3B" />
 </div>
-<script type="text/javascript">
-    console.log('Inline html seems to work? Nice');
-    // TODO Move to a bootstap file.
-    const AUTH_NONCE = ''; // TODO remove
-    const RES_ROOT = 'bin/'; // TODO remove
-    function initMap() {
-       let script = document.getElementById('application-js-start');
-       script.onload = function() {
-         const userInfo = { // TODO remove
-           firstName: 'John',
-           lastName: 'Doe',
-           location: {
-             name: 'Calgary, AB',
-             country: {code: 'CA', name: 'Canada'}
-           }
-         };
-         myConnectionsMap.linkedin.setAndShowUser(userInfo);
-       };
-       script.setAttribute('src', 'bin/ConnectionGeography.js')
-    }
-    (function() {
-        let storage = localStorage.getItem('connection-geography') ? JSON.parse(localStorage.getItem('connection-geography')) : {};
-        const KEY = googleMapsApiKey;
-        const SECRET_KEY = storage[KEY];
-        
-        if (SECRET_KEY) {
-          const googleSource = `https://maps.googleapis.com/maps/api/js?key=${SECRET_KEY}&callback=initMap&v=3.33`;
-          let script = document.getElementById('google-maps-lib');
-          script.setAttribute('src', googleSource);
-          // clear inline style.
-          document.getElementById('app-start').setAttribute('style', '');
-        } else {
-          const setUp = document.getElementById('google-map-set-up');
-          setUp.setAttribute('style', '');
-          setUp.getElementById('maps-api-submit').addEventListener('click', () => {
-            storage[KEY] = setUp.getElementById('maps-api-key').value;
-            localStorage.setItem('connection-geography', JSON.stringify(storage));
-            // Force refresh.
-            window.location.href = window.location.href;
-          });
-        }
-    })();
-</script>

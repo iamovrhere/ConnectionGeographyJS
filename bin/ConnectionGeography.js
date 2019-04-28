@@ -461,6 +461,9 @@ function CachedGeocoder(){
  * http://developer.linkedin.com/documents/profile-fields */
 /**
  * Caches requests made to Linkedin API.
+ *
+ * TODO Rework to use Promises instead of using event handlers.
+ * TODO This has a terrible name; rename.
  * 
  * @returns {ConnectionManager}
  * 
@@ -858,7 +861,79 @@ function ConnectionGroup(map, marker, polyline, infoWindow){
 /** Keys are defined by the milliseconds since epoch, such that:
  * {'time': groupThis,...  }
  * @type Object|ConnectionGroup A 'statically' accessible list of open groups. */
-ConnectionGroup.openGroups = {}; //Compatibility functions for IE/Other browsers to allow easier js programming
+ConnectionGroup.openGroups = {}; /*
+ * Code used to sneak a peak into all the headers being sent. Once we get our headers,
+ * for the given end point we can add them statically.
+ *
+ * Current configuration is: "csrf-token", "ajax:12345678901234567890"
+ *
+ * See:
+ *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/Using_XMLHttpRequest
+ *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/open
+ *  - https://developer.mozilla.org/en-US/docs/Web/API/XMLHttpRequest/setRequestHeader
+ */
+(function() {
+  const wrapper = function() {
+    const LOCAL_STORAGE = 'connection-geography';
+    const setRequestHeaderOriginal = window.XMLHttpRequest.prototype.setRequestHeader;
+    const openOriginal = window.XMLHttpRequest.prototype.open;
+    const sendOriginal = window.XMLHttpRequest.prototype.send;
+
+    function testAndSaveHeaders(o) {
+      if (!o.url || !o.headers) {
+        log.warning('Called saved prematurely.');
+        return;
+      }
+      if (
+        /\/voyager\/api\//.test(o.url) &&
+        /application\/vnd\.linkedin\.normalized\+json/.test(o.headers.accept)
+      ) {
+        console.log('testAndSaveHeaders - resetting');
+        /* We have our token now reset. */
+        window.XMLHttpRequest.prototype.setRequestHeader = setRequestHeaderOriginal;
+        window.XMLHttpRequest.prototype.open = openOriginal;
+        window.XMLHttpRequest.prototype.send = sendOriginal;
+
+        let storage = JSON.parse(localStorage.getItem(LOCAL_STORAGE));
+        storage.linkedInHeaders = o.headers;
+        localStorage.setItem(LOCAL_STORAGE, JSON.stringify(storage));
+      }
+    }
+
+    window.XMLHttpRequest.prototype.send = function() {
+      /* Call original with original arguments. */
+      sendOriginal.apply(this, arguments);
+
+      /* Now we have collected all the header and url info we can test and save. */
+      testAndSaveHeaders(this.tokenExtraction);
+      delete this.tokenExtraction;
+    };
+
+    window.XMLHttpRequest.prototype.open = function(method, url) {
+      openOriginal.apply(this, arguments);
+
+      this.tokenExtraction = this.tokenExtraction || {};
+      let extract = this.tokenExtraction;
+      extract.url = url;
+
+      console.log('open ' + url);
+      console.log(extract);
+    };
+
+    window.XMLHttpRequest.prototype.setRequestHeader = function(header, value) {
+      setRequestHeaderOriginal.apply(this, arguments);
+
+      this.tokenExtraction = this.tokenExtraction || {};
+      let extract = this.tokenExtraction;
+      extract.headers = extract.headers || {};
+      extract.headers[header] = value;
+
+      console.log(`setRequestHeader ${header} ${value}`);
+      console.log(extract);
+    };
+  };
+}());
+//Compatibility functions for IE/Other browsers to allow easier js programming
 if(typeof String.prototype.trim !== 'function') {
   String.prototype.trim = function() {
     return this.replace(/^\s+|\s+$/g, ''); 
@@ -2135,7 +2210,7 @@ You have exceeded your request quota for this API. See https://developers.google
         });
     
     // set it in onload.
-    window.addEventListener('load', function(){setClickEvents();}, false);
+    setClickEvents();
       
     
     return connectionMap;
@@ -2215,3 +2290,16 @@ browserSupport.run = function(){
     }
 };
 browserSupport.run();
+
+
+(function() {
+  const userInfo = { // TODO remove
+    firstName: 'John',
+    lastName: 'Doe',
+      location: {
+        name: 'Calgary, AB',
+        country: {code: 'CA', name: 'Canada'}
+     }
+  };
+  myConnectionsMap.linkedin.setAndShowUser(userInfo);
+})();

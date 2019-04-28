@@ -7,7 +7,7 @@ Background
 ------
 
 Back in 2014-2015, I wrote a web app that used LinkedIn's public API to represent the distribution of LinkedIn connections geographically, with the denisty of connections in each area. The app made use of vanilla JavaScript, Google Maps JavaScript API, and the LinkedIn PHP API. It worked and, while I still had various plans to improve on it, it accomplished the goal.
-<img src="./screenshots/connectgeo_screenshot_20140113.png?raw=true" title="Connection-Geography (original)"  />
+<img src="./screenshots/screenshot-connectgeo-20140113.png?raw=true" title="Connection-Geography (original)"  />
 
 Unforunately, in February 2015 [LinkedIn announced they would be eliminating some of their APIs](https://developer.linkedin.com/blog/posts/2015/developer-program-changes) for general use. There was an option to request permissions which was made but never responded to. In the end, I decided to abandon the project, for the time being.
 
@@ -21,6 +21,13 @@ As of writing, script is still in development. In order to use it requires:
  - Google Maps API key (with Maps and Places API enabled)
  - Firefox + UserScript agent (currently using [ViolentMonkey](https://violentmonkey.github.io/))
  - Override the Content Security Policy to allow Google Maps + script source (see: [GoogleMapsEverywhereCsp](https://github.com/iamovrhere/GoogleMapsEverywhereCsp))
+
+Progress
+------
+
+Currently running with some fake/dummy data:
+
+<img src="./screenshots/screenshot-connectgeo-20190428.png?raw=true" title="Connection-Geography (fake data)"  />
 
 Plan of Action
 ------
